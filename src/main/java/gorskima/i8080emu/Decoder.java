@@ -7,7 +7,7 @@ import com.google.common.collect.ImmutableMap;
 public class Decoder {
 
 	public enum RegisterType {
-		r, dd, ss, qq, pp, rr
+		r, dd, ss, qq
 	};
 
 	private final Map<RegisterType, Map<Integer, Register>> registerMap;
@@ -27,18 +27,9 @@ public class Decoder {
 			.put(0, Register.BC).put(1, Register.DE).put(2, Register.HL).put(3, Register.AF)
 			.build();
 
-		Map<Integer, Register> pp = ImmutableMap.<Integer, Register>builder()
-			.put(0, Register.BC).put(1, Register.DE).put(2, Register.IX).put(3, Register.SP)
-			.build();
-
-		Map<Integer, Register> rr = ImmutableMap.<Integer, Register>builder()
-			.put(0, Register.BC).put(1, Register.DE).put(2, Register.IY).put(3, Register.SP)
-			.build();
-		
 		registerMap = ImmutableMap.<Decoder.RegisterType, Map<Integer, Register>> builder()
 			.put(RegisterType.r, r).put(RegisterType.dd, dd).put(RegisterType.ss, dd)
-			.put(RegisterType.qq, qq).put(RegisterType.pp, pp).put(RegisterType.rr, rr)
-			.build();
+			.put(RegisterType.qq, qq).build();
 
 		flagMap = ImmutableMap.<Integer, Flag> builder()
 			.put(0, Flag.Z).put(1, Flag.C).put(2, Flag.PV).put(3, Flag.S)

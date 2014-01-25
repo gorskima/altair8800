@@ -1,9 +1,7 @@
 package gorskima.i8080emu;
 
 import static gorskima.i8080emu.Decoder.RegisterType.dd;
-import static gorskima.i8080emu.Decoder.RegisterType.pp;
 import static gorskima.i8080emu.Decoder.RegisterType.qq;
-import static gorskima.i8080emu.Decoder.RegisterType.rr;
 import static gorskima.i8080emu.Register.A;
 import static gorskima.i8080emu.Register.AF;
 import static gorskima.i8080emu.Register.B;
@@ -14,15 +12,10 @@ import static gorskima.i8080emu.Register.DE;
 import static gorskima.i8080emu.Register.E;
 import static gorskima.i8080emu.Register.H;
 import static gorskima.i8080emu.Register.HL;
-import static gorskima.i8080emu.Register.IX;
-import static gorskima.i8080emu.Register.IY;
 import static gorskima.i8080emu.Register.L;
 import static gorskima.i8080emu.Register.SP;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import gorskima.i8080emu.Condition;
-import gorskima.i8080emu.Decoder;
-import gorskima.i8080emu.Flag;
 
 import org.junit.Test;
 
@@ -74,22 +67,6 @@ public class DecoderTest {
 		assertThat(decoder.decodeRegister(qq, 0x10), is(DE));
 		assertThat(decoder.decodeRegister(qq, 0x20), is(HL));
 		assertThat(decoder.decodeRegister(qq, 0x30), is(AF));
-	}
-
-	@Test
-	public void testDecodingPP() {
-		assertThat(decoder.decodeRegister(pp, 0x00), is(BC));
-		assertThat(decoder.decodeRegister(pp, 0x10), is(DE));
-		assertThat(decoder.decodeRegister(pp, 0x20), is(IX));
-		assertThat(decoder.decodeRegister(pp, 0x30), is(SP));
-	}
-
-	@Test
-	public void testDecodingRR() {
-		assertThat(decoder.decodeRegister(rr, 0x00), is(BC));
-		assertThat(decoder.decodeRegister(rr, 0x10), is(DE));
-		assertThat(decoder.decodeRegister(rr, 0x20), is(IY));
-		assertThat(decoder.decodeRegister(rr, 0x30), is(SP));
 	}
 
 	@Test
