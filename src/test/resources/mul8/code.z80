@@ -9,11 +9,19 @@
 	HALT
 
 mul8:
-	LD IX,0
-	ADD IX,SP
+	; something tells me this can be done better :)
+	LD HL,0
+	ADD HL,SP
+	
 	LD A,0
-	LD B,(IX+2)
-	LD C,(IX+4)
+	
+	INC HL
+	INC HL
+	LD B,(HL)
+	
+	INC HL
+	INC HL
+	LD C,(HL)
 
 	; handle C == 0
 	;CP C
@@ -27,5 +35,3 @@ loop:
 
 done:
 	RET
-
-

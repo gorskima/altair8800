@@ -9,26 +9,32 @@
    9:	000E  76      		HALT
   10:			
   11:	000F          	mul8:
-  12:	000F  DD210000		LD IX,0
-  13:	0013  DD39    		ADD IX,SP
-  14:	0015  3E00    		LD A,0
-  15:	0017  DD4602  		LD B,(IX+2)
-  16:	001A  DD4E04  		LD C,(IX+4)
-  17:			
-  18:				; handle C == 0
-  19:				;CP C
-  20:				;JP Z,done
-  21:			
-  22:	001D          	loop:
-  23:	001D  80      		ADD A,B
-  24:	001E  0D      		DEC C
-  25:	001F  CA2500  		JP Z,done
-  26:	0022  C31D00  		JP loop
-  27:			
-  28:	0025          	done:
-  29:	0025  C9      		RET
-  30:			
-  31:			
+  12:				; something tells me this can be done better :)
+  13:	000F  210000  		LD HL,0
+  14:	0012  39      		ADD HL,SP
+  15:				
+  16:	0013  3E00    		LD A,0
+  17:				
+  18:	0015  23      		INC HL
+  19:	0016  23      		INC HL
+  20:	0017  46      		LD B,(HL)
+  21:				
+  22:	0018  23      		INC HL
+  23:	0019  23      		INC HL
+  24:	001A  4E      		LD C,(HL)
+  25:			
+  26:				; handle C == 0
+  27:				;CP C
+  28:				;JP Z,done
+  29:			
+  30:	001B          	loop:
+  31:	001B  80      		ADD A,B
+  32:	001C  0D      		DEC C
+  33:	001D  CA2300  		JP Z,done
+  34:	0020  C31B00  		JP loop
+  35:			
+  36:	0023          	done:
+  37:	0023  C9      		RET
 **** code.z80 ****
 
 
@@ -36,11 +42,11 @@
 Statistics:
 
      3	symbols
-    38	bytes
+    36	bytes
 
 
 
 Symbol Table:
 
-done              25     mul8               f     
-loop              1d     
+done              23     mul8               f     
+loop              1b     
