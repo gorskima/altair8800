@@ -78,7 +78,6 @@ public class ALU {
 		registers.setFlag(Flag.Z, isZero(result));
 		registers.setFlag(Flag.H, adder.isHalfCarry());
 		registers.setFlag(Flag.PV, adder.isOverflow());
-		registers.setFlag(Flag.N, false);
 		registers.setFlag(Flag.C, adder.isCarry());
 	}
 
@@ -87,7 +86,6 @@ public class ALU {
 		registers.setFlag(Flag.Z, isZero(result));
 		registers.setFlag(Flag.H, adder.isHalfBorrow());
 		registers.setFlag(Flag.PV, adder.isOverflow());
-		registers.setFlag(Flag.N, true);
 		registers.setFlag(Flag.C, adder.isBorrow());
 	}
 
@@ -96,7 +94,6 @@ public class ALU {
 		registers.setFlag(Flag.Z, isZero(result));
 		registers.setFlag(Flag.H, adder.isHalfCarry());
 		registers.setFlag(Flag.PV, adder.isOverflow());
-		registers.setFlag(Flag.N, false);
 	}
 
 	private void setDecrementFlags(final Adder adder, final int result) {
@@ -104,7 +101,6 @@ public class ALU {
 		registers.setFlag(Flag.Z, isZero(result));
 		registers.setFlag(Flag.H, adder.isHalfBorrow());
 		registers.setFlag(Flag.PV, adder.isOverflow());
-		registers.setFlag(Flag.N, true);
 	}
 
 	public void and(final int op2) {
@@ -138,7 +134,6 @@ public class ALU {
 		registers.setFlag(Flag.S, getSign8(result));
 		registers.setFlag(Flag.Z, isZero(result));
 		registers.setFlag(Flag.PV, getParity(result));
-		registers.setFlag(Flag.N, false);
 		registers.setFlag(Flag.C, false);
 	}
 
@@ -154,7 +149,6 @@ public class ALU {
 		registers.setRegister(Register.A, result);
 
 		registers.setFlag(Flag.H, true);
-		registers.setFlag(Flag.N, true);
 	}
 
 	private int invert(final int op) {
@@ -186,7 +180,6 @@ public class ALU {
 
 		registers.setFlag(Flag.C, adder.isCarry());
 		registers.setFlag(Flag.H, adder.isHalfCarry());
-		registers.setFlag(Flag.N, false);
 	}
 
 	public void adc16(final int op2) {
@@ -200,7 +193,6 @@ public class ALU {
 		registers.setFlag(Flag.Z, isZero(result));
 		registers.setFlag(Flag.H, adder.isHalfCarry());
 		registers.setFlag(Flag.PV, adder.isOverflow());
-		registers.setFlag(Flag.N, false);
 		registers.setFlag(Flag.C, adder.isCarry());
 	}
 
@@ -216,7 +208,6 @@ public class ALU {
 		registers.setFlag(Flag.Z, isZero(result));
 		registers.setFlag(Flag.H, adder.isHalfBorrow());
 		registers.setFlag(Flag.PV, adder.isOverflow());
-		registers.setFlag(Flag.N, true);
 		registers.setFlag(Flag.C, adder.isBorrow());
 	}
 	
@@ -304,7 +295,6 @@ public class ALU {
 
 	private void setCommonRotationFlags() {
 		registers.setFlag(Flag.H, false);
-		registers.setFlag(Flag.N, false);
 	}
 	
 	private int getCarry() {

@@ -1,6 +1,5 @@
 package gorskima.i8080emu;
 
-import static gorskima.i8080emu.Flag.N;
 import static gorskima.i8080emu.Flag.PV;
 import static gorskima.i8080emu.Flag.S;
 import static gorskima.i8080emu.Flag.Z;
@@ -39,7 +38,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
 		assertThat(reg.testFlag(PV), is(pv));
-		assertThat(reg.testFlag(N), is(false)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
 	}
 	
@@ -61,7 +59,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
 		assertThat(reg.testFlag(PV), is(pv));
-		assertThat(reg.testFlag(N), is(false)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
 	}
 	
@@ -82,7 +79,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
 		assertThat(reg.testFlag(PV), is(pv));
-		assertThat(reg.testFlag(N), is(true)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
 	}
 	
@@ -104,7 +100,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
 		assertThat(reg.testFlag(PV), is(pv));
-		assertThat(reg.testFlag(N), is(true)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
 	}
 	
@@ -125,7 +120,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
 		assertThat(reg.testFlag(PV), is(pv));
-		assertThat(reg.testFlag(N), is(false)); // always
 		// TODO check that C is unaffected
 	}
 	
@@ -146,7 +140,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
 		assertThat(reg.testFlag(PV), is(pv));
-		assertThat(reg.testFlag(N), is(true)); // always
 		// TODO check that C is unaffected
 	}
 
@@ -167,7 +160,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
 		assertThat(reg.testFlag(PV), is(pv));
-		assertThat(reg.testFlag(N), is(true)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
 	}
 	
@@ -189,7 +181,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
 		assertThat(reg.testFlag(PV), is(pv));
-		assertThat(reg.testFlag(N), is(true)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
 	}
 	
@@ -210,7 +201,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(true)); // always
 		assertThat(reg.testFlag(PV), is(pv));
-		assertThat(reg.testFlag(N), is(false)); // always
 		assertThat(reg.testFlag(Flag.C), is(false)); // always
 	}
 
@@ -234,7 +224,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(false)); // always
 		assertThat(reg.testFlag(PV), is(pv));
-		assertThat(reg.testFlag(N), is(false)); // always
 		assertThat(reg.testFlag(Flag.C), is(false)); // always
 	}
 	
@@ -258,7 +247,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(false)); // always
 		assertThat(reg.testFlag(PV), is(pv));
-		assertThat(reg.testFlag(N), is(false)); // always
 		assertThat(reg.testFlag(Flag.C), is(false)); // always
 	}
 	
@@ -277,7 +265,6 @@ public class ALUTest {
 		alu.cpl();
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(Flag.H), is(true)); // always
-		assertThat(reg.testFlag(N), is(true)); // always
 		// TODO check that S, Z, PV and C are unaffected
 	}
 	
@@ -297,7 +284,6 @@ public class ALUTest {
 		assertThat(reg.getRegister(HL), is(result));
 		assertThat(reg.testFlag(Flag.C), is(c));
 		assertThat(reg.testFlag(Flag.H), is(h));
-		assertThat(reg.testFlag(N), is(false)); // always
 		// TODO check that S, Z and PV are unaffected
 	}
 	
@@ -319,7 +305,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Flag.Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
 		assertThat(reg.testFlag(Flag.PV), is(pv));
-		assertThat(reg.testFlag(Flag.N), is(false)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
 	}
 	
@@ -341,7 +326,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Flag.Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
 		assertThat(reg.testFlag(Flag.PV), is(pv));
-		assertThat(reg.testFlag(Flag.N), is(true)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
 	}
 	
@@ -361,7 +345,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
 		assertThat(reg.testFlag(PV), is(pv));
-		assertThat(reg.testFlag(N), is(false)); // always
 		// TODO check that C is unaffected
 	}
 	
@@ -381,7 +364,6 @@ public class ALUTest {
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
 		assertThat(reg.testFlag(PV), is(pv));
-		assertThat(reg.testFlag(N), is(true)); // always
 		// TODO check that C is unaffected
 	}
 	
@@ -411,7 +393,6 @@ public class ALUTest {
 		alu.rlca();
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(Flag.H), is(false)); // always
-		assertThat(reg.testFlag(Flag.N), is(false)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
 		// TODO check that S, Z and PV are unaffected
 	}
@@ -429,7 +410,6 @@ public class ALUTest {
 		alu.rrca();
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(Flag.H), is(false)); // always
-		assertThat(reg.testFlag(Flag.N), is(false)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
 		// TODO check that S, Z and PV are unaffected
 	}
@@ -448,7 +428,6 @@ public class ALUTest {
 		alu.rla();
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(Flag.H), is(false)); // always
-		assertThat(reg.testFlag(Flag.N), is(false)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
 		// TODO check that S, Z and PV are unaffected
 	}
@@ -467,7 +446,6 @@ public class ALUTest {
 		alu.rra();
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(Flag.H), is(false)); // always
-		assertThat(reg.testFlag(Flag.N), is(false)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
 		// TODO check that S, Z and PV are unaffected
 	}

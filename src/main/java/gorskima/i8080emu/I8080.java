@@ -571,7 +571,6 @@ public class I8080 {
 			boolean c = registers.testFlag(Flag.C);
 			registers.setFlag(Flag.C, !c);
 			registers.setFlag(Flag.H, c);
-			registers.setFlag(Flag.N, false);
 			break;
 		}
 		
@@ -579,7 +578,6 @@ public class I8080 {
 		case 0x37: {
 			registers.setFlag(Flag.C, true);
 			registers.setFlag(Flag.H, false);
-			registers.setFlag(Flag.N, false);
 			break;
 		}
 

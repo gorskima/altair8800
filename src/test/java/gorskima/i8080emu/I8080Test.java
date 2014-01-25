@@ -333,23 +333,19 @@ public class I8080Test {
 	@Test
 	public void test_CCF() {
 		reg.setFlag(Flag.C, true);
-		reg.setFlag(Flag.N, true);
 		mem.writeWord8(0, 0x3F); // CCF
 		cpu.step();
 		assertThat(reg.testFlag(Flag.C), is(false));
 		assertThat(reg.testFlag(Flag.H), is(true));
-		assertThat(reg.testFlag(Flag.N), is(false));
 	}
 	
 	@Test
 	public void test_SCF() {
 		reg.setFlag(Flag.C, false);
-		reg.setFlag(Flag.N, true);
 		mem.writeWord8(0, 0x37); // SCF
 		cpu.step();
 		assertThat(reg.testFlag(Flag.C), is(true));
 		assertThat(reg.testFlag(Flag.H), is(false));
-		assertThat(reg.testFlag(Flag.N), is(false));
 	}
 	
 	@Test
