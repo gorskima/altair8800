@@ -1,8 +1,10 @@
-package gorskima.z80emu;
+package gorskima.i8080emu;
 
-import static gorskima.z80emu.CpuRunner.run;
+import static gorskima.i8080emu.CpuRunner.run;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import gorskima.i8080emu.Register;
+import gorskima.i8080emu.Z80;
 
 import org.junit.Test;
 

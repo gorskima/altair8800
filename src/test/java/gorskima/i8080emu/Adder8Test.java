@@ -1,7 +1,8 @@
-package gorskima.z80emu;
+package gorskima.i8080emu;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.junit.Assert.assertEquals;
+import gorskima.i8080emu.Adder;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 

@@ -1,25 +1,28 @@
-package gorskima.z80emu;
+package gorskima.i8080emu;
 
-import static gorskima.z80emu.Decoder.RegisterType.dd;
-import static gorskima.z80emu.Decoder.RegisterType.pp;
-import static gorskima.z80emu.Decoder.RegisterType.qq;
-import static gorskima.z80emu.Decoder.RegisterType.rr;
-import static gorskima.z80emu.Register.A;
-import static gorskima.z80emu.Register.AF;
-import static gorskima.z80emu.Register.B;
-import static gorskima.z80emu.Register.BC;
-import static gorskima.z80emu.Register.C;
-import static gorskima.z80emu.Register.D;
-import static gorskima.z80emu.Register.DE;
-import static gorskima.z80emu.Register.E;
-import static gorskima.z80emu.Register.H;
-import static gorskima.z80emu.Register.HL;
-import static gorskima.z80emu.Register.IX;
-import static gorskima.z80emu.Register.IY;
-import static gorskima.z80emu.Register.L;
-import static gorskima.z80emu.Register.SP;
+import static gorskima.i8080emu.Decoder.RegisterType.dd;
+import static gorskima.i8080emu.Decoder.RegisterType.pp;
+import static gorskima.i8080emu.Decoder.RegisterType.qq;
+import static gorskima.i8080emu.Decoder.RegisterType.rr;
+import static gorskima.i8080emu.Register.A;
+import static gorskima.i8080emu.Register.AF;
+import static gorskima.i8080emu.Register.B;
+import static gorskima.i8080emu.Register.BC;
+import static gorskima.i8080emu.Register.C;
+import static gorskima.i8080emu.Register.D;
+import static gorskima.i8080emu.Register.DE;
+import static gorskima.i8080emu.Register.E;
+import static gorskima.i8080emu.Register.H;
+import static gorskima.i8080emu.Register.HL;
+import static gorskima.i8080emu.Register.IX;
+import static gorskima.i8080emu.Register.IY;
+import static gorskima.i8080emu.Register.L;
+import static gorskima.i8080emu.Register.SP;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import gorskima.i8080emu.Condition;
+import gorskima.i8080emu.Decoder;
+import gorskima.i8080emu.Flag;
 
 import org.junit.Test;
 

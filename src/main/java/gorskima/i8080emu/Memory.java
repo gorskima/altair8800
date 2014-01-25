@@ -1,4 +1,4 @@
-package gorskima.z80emu;
+package gorskima.i8080emu;
 
 import com.google.common.base.Preconditions;
 

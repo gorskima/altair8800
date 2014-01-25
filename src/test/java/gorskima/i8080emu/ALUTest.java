@@ -1,15 +1,18 @@
-package gorskima.z80emu;
+package gorskima.i8080emu;
 
-import static gorskima.z80emu.Flag.N;
-import static gorskima.z80emu.Flag.PV;
-import static gorskima.z80emu.Flag.S;
-import static gorskima.z80emu.Flag.Z;
-import static gorskima.z80emu.Register.A;
-import static gorskima.z80emu.Register.BC;
-import static gorskima.z80emu.Register.HL;
+import static gorskima.i8080emu.Flag.N;
+import static gorskima.i8080emu.Flag.PV;
+import static gorskima.i8080emu.Flag.S;
+import static gorskima.i8080emu.Flag.Z;
+import static gorskima.i8080emu.Register.A;
+import static gorskima.i8080emu.Register.BC;
+import static gorskima.i8080emu.Register.HL;
 import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import gorskima.i8080emu.ALU;
+import gorskima.i8080emu.Flag;
+import gorskima.i8080emu.Registers;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 

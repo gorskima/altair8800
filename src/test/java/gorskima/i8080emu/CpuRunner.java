@@ -1,4 +1,8 @@
-package gorskima.z80emu;
+package gorskima.i8080emu;
+
+import gorskima.i8080emu.Memory;
+import gorskima.i8080emu.Registers;
+import gorskima.i8080emu.Z80;
 
 import java.io.IOException;
 import java.net.URL;

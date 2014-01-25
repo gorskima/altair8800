@@ -1,6 +1,6 @@
-package gorskima.z80emu;
+package gorskima.i8080emu;
 
-import gorskima.z80emu.Decoder.RegisterType;
+import gorskima.i8080emu.Decoder.RegisterType;
 
 public class Z80 {
 	

@@ -1,8 +1,9 @@
-package gorskima.z80emu;
+package gorskima.i8080emu;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
+import gorskima.i8080emu.Adder;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 

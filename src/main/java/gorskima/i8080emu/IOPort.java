@@ -1,4 +1,4 @@
-package gorskima.z80emu;
+package gorskima.i8080emu;
 
 public interface IOPort {
 
