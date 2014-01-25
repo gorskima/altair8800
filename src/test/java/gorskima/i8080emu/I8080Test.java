@@ -29,15 +29,15 @@ import gorskima.i8080emu.Flag;
 import gorskima.i8080emu.IOPort;
 import gorskima.i8080emu.Memory;
 import gorskima.i8080emu.Registers;
-import gorskima.i8080emu.Z80;
+import gorskima.i8080emu.I8080;
 
 import org.junit.Test;
 
-public class Z80Test {
+public class I8080Test {
 
 	private Registers reg = new Registers();
 	private Memory mem = new Memory();
-	private Z80 cpu = new Z80(reg, mem);
+	private I8080 cpu = new I8080(reg, mem);
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testAttachingDeviceWithTooBigPortId() {

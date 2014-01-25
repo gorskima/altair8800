@@ -2,7 +2,7 @@ package gorskima.i8080emu;
 
 import gorskima.i8080emu.Decoder.RegisterType;
 
-public class Z80 {
+public class I8080 {
 	
 	private static final int IO_PORTS = 256;
 
@@ -15,7 +15,7 @@ public class Z80 {
 	private boolean halt = false;
 	
 	// TODO add new constructor without registers
-	public Z80(final Registers registers, final Memory memory) {
+	public I8080(final Registers registers, final Memory memory) {
 		this.registers = registers;
 		this.memory = memory;
 		this.alu = new ALU(registers);
