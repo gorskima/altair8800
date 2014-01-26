@@ -15,8 +15,6 @@ import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.common.base.Preconditions;
-
 @RunWith(JUnitParamsRunner.class)
 public class ALUTest {
 
@@ -184,9 +182,9 @@ public class ALUTest {
 	private Object[] parametersForTestAnd() {
 		return $(
 			$(70, 200, 64, false, false, false),
-			$(b("00001111"), b("11001100"), b("00001100"), false, false, true),
-			$(b("11100000"), b("00010101"), b("00000000"), false, true, true),
-			$(b("11000011"), b("10001000"), b("10000000"), true, false, false));
+			$(0b00001111, 0b11001100, 0b00001100, false, false, true),
+			$(0b11100000, 0b00010101, 0b00000000, false, true, true),
+			$(0b11000011, 0b10001000, 0b10000000, true, false, false));
 	}
 	
 	@Test
@@ -207,9 +205,9 @@ public class ALUTest {
 	private Object[] parametersForTestOr() {
 		return $(
 			$(70, 200, 206, true, false, false),
-			$(b("11000000"), b("10010000"), b("11010000"), true, false, false),
-			$(b("00001111"), b("11110000"), b("11111111"), true, false, true),
-			$(b("00000000"), b("00000000"), b("00000000"), false, true, true));
+			$(0b11000000, 0b10010000, 0b11010000, true, false, false),
+			$(0b00001111, 0b11110000, 0b11111111, true, false, true),
+			$(0b00000000, 0b00000000, 0b00000000, false, true, true));
 	}
 
 	@Test
@@ -230,9 +228,9 @@ public class ALUTest {
 	private Object[] parametersForTestXor() {
 		return $(
 			$(70, 200, 142, true, false, true),
-			$(b("00100100"), b("10111100"), b("10011000"), true, false, false),
-			$(b("00001111"), b("11110000"), b("11111111"), true, false, true),
-			$(b("00000000"), b("00000000"), b("00000000"), false, true, true));
+			$(0b00100100, 0b10111100, 0b10011000, true, false, false),
+			$(0b00001111, 0b11110000, 0b11111111, true, false, true),
+			$(0b00000000, 0b00000000, 0b00000000, false, true, true));
 	}
 
 	@Test
@@ -334,8 +332,8 @@ public class ALUTest {
 	
 	private Object[] parametersForTestRlca() {
 		return $(
-			$(b("10000001"), b("00000011"), true),
-			$(b("00000011"), b("00000110"), false));
+			$(0b10000001, 0b00000011, true),
+			$(0b00000011, 0b00000110, false));
 	}
 	
 	@Test
@@ -351,8 +349,8 @@ public class ALUTest {
 	
 	private Object[] parametersForTestRrca() {
 		return $(
-			$(b("00000010"), b("00000001"), false),
-			$(b("00001101"), b("10000110"), true));
+			$(0b00000010, 0b00000001, false),
+			$(0b00001101, 0b10000110, true));
 	}
 	
 	@Test
@@ -369,8 +367,8 @@ public class ALUTest {
 	
 	private Object[] parametersForTestRla() {
 		return $(
-			$(b("10000101"), false, b("00001010"), true),
-			$(b("00001010"), true, b("00010101"), false));
+			$(0b10000101, false, 0b00001010, true),
+			$(0b00001010, true, 0b00010101, false));
 	}
 	
 	@Test
@@ -387,20 +385,8 @@ public class ALUTest {
 	
 	private Object[] parametersForTestRra() {
 		return $(
-			$(b("00000110"), true, b("10000011"), false),
-			$(b("10000011"), false, b("01000001"), true));
+			$(0b00000110, true, 0b10000011, false),
+			$(0b10000011, false, 0b01000001, true));
 	}
 
-	private static int b(final String bits) {
-		Preconditions.checkArgument(bits.length() == 8);
-		int b = 0;
-		for (byte c : bits.getBytes()) {
-			b <<= 1;
-			if (c == '1') {
-				b |= 0x01;
-			}
-		}
-		return b;
-	}
-	
 }
