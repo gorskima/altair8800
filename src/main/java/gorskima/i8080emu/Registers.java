@@ -7,11 +7,7 @@ import com.google.common.base.Preconditions;
 
 public class Registers {
 
-	private static final int REG_OFFSET = 8;
-
-	private int[] mem = new int[26];
-	private boolean exSwitch = false;
-	private boolean exxSwitch = false;
+	private int[] mem = new int[12];
 
 	public int getRegister(final Register r) {
 		if (r.size == 1) {
@@ -30,18 +26,18 @@ public class Registers {
 	}
 
 	private int getRegister8(final Register r) {
-		int addr = calculateAddr(r);
+		int addr = r.offset;
 		return mem[addr];
 	}
 
 	private void setRegister8(final Register r, final int value) {
 		Preconditions.checkArgument((value & 0xFFFFFF00) == 0, "Value may use only 1 least significant byte");
-		int addr = calculateAddr(r);
+		int addr = r.offset;
 		mem[addr] = value;
 	}
 
 	private int getRegister16(final Register r) {
-		int addr = calculateAddr(r);
+		int addr = r.offset;
 		int h = mem[addr];
 		int l = mem[addr + 1];
 		return ((h << 8) + l);
@@ -49,7 +45,7 @@ public class Registers {
 
 	private void setRegister16(final Register r, final int value) {
 		Preconditions.checkArgument((value & 0xFFFF0000) == 0, "Value may use only 2 least significant bytes");
-		int addr = calculateAddr(r);
+		int addr = r.offset;
 		int h = value >> 8;
 		int l = value & 0xFF;
 		mem[addr] = h;
@@ -73,27 +69,6 @@ public class Registers {
 			setRegister8(F, f | flag.mask);
 		} else {
 			setRegister8(F, f & ~flag.mask);
-		}
-	}
-
-	private int calculateAddr(final Register r) {
-		switch (r) {
-		case A:
-		case F:
-		case AF:
-			return r.offset + (exSwitch ? 1 : 0) * REG_OFFSET;
-		case B:
-		case C:
-		case D:
-		case E:
-		case H:
-		case L:
-		case BC:
-		case DE:
-		case HL:
-			return r.offset + (exxSwitch ? 1 : 0) * REG_OFFSET;
-		default:
-			return r.offset;
 		}
 	}
 
