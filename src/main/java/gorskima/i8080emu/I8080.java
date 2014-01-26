@@ -694,61 +694,6 @@ public class I8080 {
 			break;
 		}
 		
-		// JR e
-		case 0x18: {
-			int e = fetchWord8();
-			int pc = registers.getRegister(Register.PC);
-			int newPC = displace(pc, e);
-			registers.setRegister(Register.PC, newPC);
-			break;
-		}
-		
-		// consider implementing the four below in a generic way
-		
-		// JR C,e
-		case 0x38: {
-			int e = fetchWord8();
-			if (registers.testFlag(Flag.C)) {
-				int pc = registers.getRegister(Register.PC);
-				int newPC = displace(pc, e);
-				registers.setRegister(Register.PC, newPC);
-			}
-			break;
-		}
-		
-		// JR NC,e
-		case 0x30: {
-			int e = fetchWord8();
-			if (!registers.testFlag(Flag.C)) {
-				int pc = registers.getRegister(Register.PC);
-				int newPC = displace(pc, e);
-				registers.setRegister(Register.PC, newPC);
-			}
-			break;
-		}
-		
-		// JR Z,e
-		case 0x28: {
-			int e = fetchWord8();
-			if (registers.testFlag(Flag.Z)) {
-				int pc = registers.getRegister(Register.PC);
-				int newPC = displace(pc, e);
-				registers.setRegister(Register.PC, newPC);
-			}
-			break;
-		}
-		
-		// JR NZ,e
-		case 0x20: {
-			int e = fetchWord8();
-			if (!registers.testFlag(Flag.Z)) {
-				int pc = registers.getRegister(Register.PC);
-				int newPC = displace(pc, e);
-				registers.setRegister(Register.PC, newPC);
-			}
-			break;
-		}
-		
 		// JP (HL)
 		case 0xE9: {
 			int addr = registers.getRegister(Register.HL);
@@ -756,23 +701,6 @@ public class I8080 {
 			break;
 		}
 		
-		// DJNZ e
-		// FIXME find out a nicer implementation ;)
-		case 0x10: {
-			int e = fetchWord8();
-			
-			int B = registers.getRegister(Register.B);
-			int newB = (B - 1) & 0xFF;
-			registers.setRegister(Register.B, newB);
-			
-			if (newB != 0) {
-				int PC = registers.getRegister(Register.PC);
-				int newPC = displace(PC, e);
-				registers.setRegister(Register.PC, newPC);
-			}
-			break;
-		}
-
 		/*
 		 * Call and return group
 		 */
@@ -880,10 +808,6 @@ public class I8080 {
 		registers.incPC();
 		registers.incPC();
 		return word;
-	}
-
-	private int displace(final int addr, final int d) {
-		return addr + (byte) d;
 	}
 
 	private boolean isConditionMet(final Condition cond) {
