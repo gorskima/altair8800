@@ -1,6 +1,6 @@
 package gorskima.i8080emu;
 
-import static gorskima.i8080emu.Flag.PV;
+import static gorskima.i8080emu.Flag.P;
 import static gorskima.i8080emu.Flag.S;
 import static gorskima.i8080emu.Flag.Z;
 import static gorskima.i8080emu.Register.A;
@@ -26,7 +26,7 @@ public class ALUTest {
 	@Test
 	@Parameters
 	public void testAdd(final int op1, final int op2, final int result,
-			final boolean s, final boolean z, final boolean h, final boolean pv, final boolean c) {
+			final boolean s, final boolean z, final boolean h, final boolean p, final boolean c) {
 		
 		reg.setRegister(A, op1);
 		alu.add(op2);
@@ -34,7 +34,7 @@ public class ALUTest {
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
-		assertThat(reg.testFlag(PV), is(pv));
+		assertThat(reg.testFlag(P), is(p));
 		assertThat(reg.testFlag(Flag.C), is(c));
 	}
 	
@@ -46,7 +46,7 @@ public class ALUTest {
 	@Test
 	@Parameters
 	public void testAdc(final int op1, final boolean carry, final int op2, final int result,
-			final boolean s, final boolean z, final boolean h, final boolean pv, final boolean c) {
+			final boolean s, final boolean z, final boolean h, final boolean p, final boolean c) {
 		
 		reg.setRegister(A, op1);
 		reg.setFlag(Flag.C, carry);
@@ -55,7 +55,7 @@ public class ALUTest {
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
-		assertThat(reg.testFlag(PV), is(pv));
+		assertThat(reg.testFlag(P), is(p));
 		assertThat(reg.testFlag(Flag.C), is(c));
 	}
 	
@@ -67,7 +67,7 @@ public class ALUTest {
 	@Test
 	@Parameters
 	public void testSub(final int op1, final int op2, final int result,
-			final boolean s, final boolean z, final boolean h, final boolean pv, final boolean c) {
+			final boolean s, final boolean z, final boolean h, final boolean p, final boolean c) {
 		
 		reg.setRegister(A, op1);
 		alu.sub(op2);
@@ -75,7 +75,7 @@ public class ALUTest {
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
-		assertThat(reg.testFlag(PV), is(pv));
+		assertThat(reg.testFlag(P), is(p));
 		assertThat(reg.testFlag(Flag.C), is(c));
 	}
 	
@@ -87,7 +87,7 @@ public class ALUTest {
 	@Test
 	@Parameters
 	public void testSbc(final int op1, final boolean carry, final int op2, final int result,
-			final boolean s, final boolean z, final boolean h, final boolean pv, final boolean c) {
+			final boolean s, final boolean z, final boolean h, final boolean p, final boolean c) {
 		
 		reg.setRegister(A, op1);
 		reg.setFlag(Flag.C, carry);
@@ -96,7 +96,7 @@ public class ALUTest {
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
-		assertThat(reg.testFlag(PV), is(pv));
+		assertThat(reg.testFlag(P), is(p));
 		assertThat(reg.testFlag(Flag.C), is(c));
 	}
 	
@@ -108,7 +108,7 @@ public class ALUTest {
 	@Test
 	@Parameters
 	public void testInc(final int op, final int result,
-			final boolean s, final boolean z, final boolean h, final boolean pv) {
+			final boolean s, final boolean z, final boolean h, final boolean p) {
 		
 		reg.setRegister(A, op);
 		alu.inc(A);
@@ -116,7 +116,7 @@ public class ALUTest {
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
-		assertThat(reg.testFlag(PV), is(pv));
+		assertThat(reg.testFlag(P), is(p));
 		// TODO check that C is unaffected
 	}
 	
@@ -128,7 +128,7 @@ public class ALUTest {
 	@Test
 	@Parameters
 	public void testDec(final int op, final int result,
-			final boolean s, final boolean z, final boolean h, final boolean pv) {
+			final boolean s, final boolean z, final boolean h, final boolean p) {
 		
 		reg.setRegister(A, op);
 		alu.dec(A);
@@ -136,7 +136,7 @@ public class ALUTest {
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
-		assertThat(reg.testFlag(PV), is(pv));
+		assertThat(reg.testFlag(P), is(p));
 		// TODO check that C is unaffected
 	}
 
@@ -148,7 +148,7 @@ public class ALUTest {
 	@Test
 	@Parameters
 	public void testCp(final int op1, final int op2,
-			final boolean s, final boolean z, final boolean h, final boolean pv, final boolean c) {
+			final boolean s, final boolean z, final boolean h, final boolean p, final boolean c) {
 		
 		reg.setRegister(A, op1);
 		alu.cp(op2);
@@ -156,7 +156,7 @@ public class ALUTest {
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
-		assertThat(reg.testFlag(PV), is(pv));
+		assertThat(reg.testFlag(P), is(p));
 		assertThat(reg.testFlag(Flag.C), is(c));
 	}
 	
@@ -169,7 +169,7 @@ public class ALUTest {
 	@Test
 	@Parameters
 	public void testAnd(final int op1, final int op2, final int result,
-			final boolean s, final boolean z, final boolean pv) {
+			final boolean s, final boolean z, final boolean p) {
 		
 		reg.setRegister(A, op1);
 		alu.and(op2);
@@ -177,7 +177,7 @@ public class ALUTest {
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(true)); // always
-		assertThat(reg.testFlag(PV), is(pv));
+		assertThat(reg.testFlag(P), is(p));
 		assertThat(reg.testFlag(Flag.C), is(false)); // always
 	}
 
@@ -192,7 +192,7 @@ public class ALUTest {
 	@Test
 	@Parameters
 	public void testOr(final int op1, final int op2, final int result,
-			final boolean s, final boolean z, final boolean pv) {
+			final boolean s, final boolean z, final boolean p) {
 		
 		reg.setRegister(A, op1);
 		alu.or(op2);
@@ -200,7 +200,7 @@ public class ALUTest {
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(false)); // always
-		assertThat(reg.testFlag(PV), is(pv));
+		assertThat(reg.testFlag(P), is(p));
 		assertThat(reg.testFlag(Flag.C), is(false)); // always
 	}
 	
@@ -215,7 +215,7 @@ public class ALUTest {
 	@Test
 	@Parameters
 	public void testXor(final int op1, final int op2, final int result,
-			final boolean s, final boolean z, final boolean pv) {
+			final boolean s, final boolean z, final boolean p) {
 		
 		reg.setRegister(A, op1);
 		alu.xor(op2);
@@ -223,7 +223,7 @@ public class ALUTest {
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(false)); // always
-		assertThat(reg.testFlag(PV), is(pv));
+		assertThat(reg.testFlag(P), is(p));
 		assertThat(reg.testFlag(Flag.C), is(false)); // always
 	}
 	
@@ -242,7 +242,7 @@ public class ALUTest {
 		alu.cpl();
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(Flag.H), is(true)); // always
-		// TODO check that S, Z, PV and C are unaffected
+		// TODO check that S, Z, P and C are unaffected
 	}
 	
 	private Object[] parametersForTestCpl() {
@@ -261,7 +261,7 @@ public class ALUTest {
 		assertThat(reg.getRegister(HL), is(result));
 		assertThat(reg.testFlag(Flag.C), is(c));
 		assertThat(reg.testFlag(Flag.H), is(h));
-		// TODO check that S, Z and PV are unaffected
+		// TODO check that S, Z and P are unaffected
 	}
 	
 	private Object[] parametersForTestAdd16() {
@@ -272,14 +272,14 @@ public class ALUTest {
 	@Test
 	@Parameters
 	public void testIncExtern(final int op, final int result,
-			final boolean s, final boolean z, final boolean h, final boolean pv) {
+			final boolean s, final boolean z, final boolean h, final boolean p) {
 		
 		int incremented = alu.incExtern(op);
 		assertThat(incremented, is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
-		assertThat(reg.testFlag(PV), is(pv));
+		assertThat(reg.testFlag(P), is(p));
 		// TODO check that C is unaffected
 	}
 	
@@ -291,14 +291,14 @@ public class ALUTest {
 	@Test
 	@Parameters
 	public void testDecExtern(final int op, final int result,
-			final boolean s, final boolean z, final boolean h, final boolean pv) {
+			final boolean s, final boolean z, final boolean h, final boolean p) {
 		
 		int decremented = alu.decExtern(op);
 		assertThat(decremented, is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
-		assertThat(reg.testFlag(PV), is(pv));
+		assertThat(reg.testFlag(P), is(p));
 		// TODO check that C is unaffected
 	}
 	
@@ -329,7 +329,7 @@ public class ALUTest {
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(Flag.H), is(false)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
-		// TODO check that S, Z and PV are unaffected
+		// TODO check that S, Z and P are unaffected
 	}
 	
 	private Object[] parametersForTestRlca() {
@@ -346,7 +346,7 @@ public class ALUTest {
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(Flag.H), is(false)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
-		// TODO check that S, Z and PV are unaffected
+		// TODO check that S, Z and P are unaffected
 	}
 	
 	private Object[] parametersForTestRrca() {
@@ -364,7 +364,7 @@ public class ALUTest {
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(Flag.H), is(false)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
-		// TODO check that S, Z and PV are unaffected
+		// TODO check that S, Z and P are unaffected
 	}
 	
 	private Object[] parametersForTestRla() {
@@ -382,7 +382,7 @@ public class ALUTest {
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(Flag.H), is(false)); // always
 		assertThat(reg.testFlag(Flag.C), is(c));
-		// TODO check that S, Z and PV are unaffected
+		// TODO check that S, Z and P are unaffected
 	}
 	
 	private Object[] parametersForTestRra() {

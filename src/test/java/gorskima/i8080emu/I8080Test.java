@@ -1,6 +1,6 @@
 package gorskima.i8080emu;
 
-import static gorskima.i8080emu.Flag.PV;
+import static gorskima.i8080emu.Flag.P;
 import static gorskima.i8080emu.Flag.Z;
 import static gorskima.i8080emu.Register.A;
 import static gorskima.i8080emu.Register.B;
@@ -367,7 +367,7 @@ public class I8080Test {
 	@Test
 	public void test_CALL_cc_nn() {
 		reg.setRegister(SP, 0xFFFF);
-		reg.setFlag(PV, true);
+		reg.setFlag(P, true);
 		mem.writeWord8(0, 0xEC); // CC PE,20000
 		mem.writeWord16(1, 20000);
 		cpu.step();

@@ -75,8 +75,8 @@ public class DecoderTest {
 		assertCondition(decoder.decodeCondition(0x08), Flag.Z, true);
 		assertCondition(decoder.decodeCondition(0x10), Flag.C, false);
 		assertCondition(decoder.decodeCondition(0x18), Flag.C, true);
-		assertCondition(decoder.decodeCondition(0x20), Flag.PV, false);
-		assertCondition(decoder.decodeCondition(0x28), Flag.PV, true);
+		assertCondition(decoder.decodeCondition(0x20), Flag.P, false);
+		assertCondition(decoder.decodeCondition(0x28), Flag.P, true);
 		assertCondition(decoder.decodeCondition(0x30), Flag.S, false);
 		assertCondition(decoder.decodeCondition(0x38), Flag.S, true);
 	}

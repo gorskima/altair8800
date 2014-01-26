@@ -32,7 +32,7 @@ public class Decoder {
 			.put(RegisterType.qq, qq).build();
 
 		flagMap = ImmutableMap.<Integer, Flag> builder()
-			.put(0, Flag.Z).put(1, Flag.C).put(2, Flag.PV).put(3, Flag.S)
+			.put(0, Flag.Z).put(1, Flag.C).put(2, Flag.P).put(3, Flag.S)
 			.build();
 	}
 
