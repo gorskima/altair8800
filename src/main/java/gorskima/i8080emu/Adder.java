@@ -65,8 +65,4 @@ public class Adder {
 		return !isHalfCarry();
 	}
 
-	public boolean isOverflow() {
-		return carries[size - 1] ^ carries[size - 2];
-	}
-
 }

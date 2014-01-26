@@ -2,7 +2,6 @@ package gorskima.i8080emu;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.junit.Assert.assertEquals;
-import gorskima.i8080emu.Adder;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
@@ -77,40 +76,6 @@ public class Adder8Test {
 
 			$(128, 128, 0, 0, 0),
 			$(128, 128, 1, 255, 1));
-	}
-
-	@Test
-	@Parameters
-	public void testAddWithOverflow(final int op1, final int op2, final int carryIn, final int expectedOverflow) {
-		Adder adder = Adder.newAdder8();
-		adder.add(op1, op2, carryIn);
-		int actualOverflow = adder.isOverflow() ? 1 : 0;
-		assertEquals("Add overflow mismatch", expectedOverflow, actualOverflow);
-	}
-	
-	private Object[] parametersForTestAddWithOverflow() {
-		return $(
-			$(1, 1, 0, 0),
-			$(1, -1, 0, 0),
-			$(127, 1, 0, 1),
-			$(-128, 1, 0, 0),
-			$(-128, -1, 0, 1));
-	}
-
-	@Test
-	@Parameters
-	public void testSubWithOverflow(final int op1, final int op2, final int carryIn, final int expectedOverflow) {
-		Adder adder = Adder.newAdder8();
-		adder.sub(op1, op2, carryIn);
-		int actualOverflow = adder.isOverflow() ? 1 : 0;
-		assertEquals("Sub overflow mismatch", expectedOverflow, actualOverflow);
-	}
-	
-	private Object[] parametersForTestSubWithOverflow() {
-		return $(
-			$(0, 1, 0, 0),
-			$(-128, 1, 0, 1),
-			$(127, -1, 0, 1));
 	}
 
 	@Test

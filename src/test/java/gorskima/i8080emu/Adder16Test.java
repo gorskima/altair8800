@@ -2,8 +2,7 @@ package gorskima.i8080emu;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
-import gorskima.i8080emu.Adder;
+import static org.junit.Assert.assertThat;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
@@ -92,42 +91,6 @@ public class Adder16Test {
 			$(0, 0, 0, 0, 0),
 			$(4096, 0, 0, 4096, 0),
 			$(4096, 1, 0, 4095, 1));
-	}
-
-	@Test
-	@Parameters
-	public void testAddWithOverflow(final int op1, final int op2, final int carry, final int expectedResult,
-			final int expectedOverflow) {
-		
-		Adder adder = Adder.newAdder16();
-		int result = adder.add(op1, op2, carry);
-		assertThat(result, is(expectedResult));
-		assertThat(adder.isOverflow(), is(expectedOverflow == 1));
-	}
-	
-	private Object[] parametersForTestAddWithOverflow() {
-		return $(
-			$(32677, 0, 0, 32677, 0),
-			$(32767, 1, 0, 32768, 1),
-			$(30000, 20000, 0, 50000, 1),
-			$(65535, 2, 0, 1, 0));
-	}
-
-	@Test
-	@Parameters
-	public void testSubWithOverflow(final int op1, final int op2, final int carry, final int expectedResult,
-			final int expectedOverflow) {
-		
-		Adder adder = Adder.newAdder16();
-		int result = adder.sub(op1, op2, carry);
-		assertThat(result, is(expectedResult));
-		assertThat(adder.isOverflow(), is(expectedOverflow == 1));
-	}
-	
-	private Object[] parametersForTestSubWithOverflow() {
-		return $(
-			$(0, 0, 0, 0, 0),
-			$(32768, 1, 0, 32767, 1));
 	}
 
 }
