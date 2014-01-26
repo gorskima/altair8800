@@ -661,12 +661,6 @@ public class I8080 {
 		}
 		
 		/*
-		 * Bit Set, Reset, and Test Group
-		 */
-		
-		// TODO implement all (Z80-only)
-
-		/*
 		 * Jump group
 		 */
 
