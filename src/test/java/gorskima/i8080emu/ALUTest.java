@@ -9,9 +9,6 @@ import static gorskima.i8080emu.Register.HL;
 import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import gorskima.i8080emu.ALU;
-import gorskima.i8080emu.Flag;
-import gorskima.i8080emu.Registers;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
@@ -171,26 +168,6 @@ public class ALUTest {
 
 	@Test
 	@Parameters
-	public void testNeg(final int op, final int result,
-			final boolean s, final boolean z, final boolean h, final boolean pv, final boolean c) {
-		
-		reg.setRegister(A, op);
-		alu.neg();
-		assertThat(reg.getRegister(A), is(result));
-		assertThat(reg.testFlag(S), is(s));
-		assertThat(reg.testFlag(Z), is(z));
-		assertThat(reg.testFlag(Flag.H), is(h));
-		assertThat(reg.testFlag(PV), is(pv));
-		assertThat(reg.testFlag(Flag.C), is(c));
-	}
-	
-	private Object[] parametersForTestNeg() {
-		return $(
-			$(7, 249, true, false, true, false, true));
-	}
-
-	@Test
-	@Parameters
 	public void testAnd(final int op1, final int op2, final int result,
 			final boolean s, final boolean z, final boolean pv) {
 		
@@ -290,48 +267,6 @@ public class ALUTest {
 	private Object[] parametersForTestAdd16() {
 		return $(
 			$(40000, 30000, 4464, true, true));
-	}
-
-	@Test
-	@Parameters
-	public void testAdc16(final int op1, final boolean carry, final int op2, final int result,
-			final boolean s, final boolean z, final boolean h, final boolean pv, final boolean c) {
-		
-		reg.setRegister(HL, op1);
-		reg.setFlag(Flag.C, carry);
-		alu.adc16(op2);
-		assertThat(reg.getRegister(HL), is(result));
-		assertThat(reg.testFlag(Flag.S), is(s));
-		assertThat(reg.testFlag(Flag.Z), is(z));
-		assertThat(reg.testFlag(Flag.H), is(h));
-		assertThat(reg.testFlag(Flag.PV), is(pv));
-		assertThat(reg.testFlag(Flag.C), is(c));
-	}
-	
-	private Object[] parametersForTestAdc16() {
-		return $(
-			$(30000, true, 35538, 3, false, false, true, false, true));
-	}
-	
-	@Test
-	@Parameters
-	public void testSbc16(final int op1, final boolean carry, final int op2, final int result,
-			final boolean s, final boolean z, final boolean h, final boolean pv, final boolean c) {
-		
-		reg.setRegister(HL, op1);
-		reg.setFlag(Flag.C, carry);
-		alu.sbc16(op2);
-		assertThat(reg.getRegister(HL), is(result));
-		assertThat(reg.testFlag(Flag.S), is(s));
-		assertThat(reg.testFlag(Flag.Z), is(z));
-		assertThat(reg.testFlag(Flag.H), is(h));
-		assertThat(reg.testFlag(Flag.PV), is(pv));
-		assertThat(reg.testFlag(Flag.C), is(c));
-	}
-	
-	private Object[] parametersForTestSbc16() {
-		return $(
-			$(40000, true, 20000, 19999, false, false, true, true, false));
 	}
 	
 	@Test
