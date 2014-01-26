@@ -1,0 +1,45 @@
+	LD SP,65535
+	
+	LD A,5
+	CALL factorial
+	
+	HALT
+
+factorial:
+	LD C,A
+	LD A,1
+
+	INC C		; TODO find better way to test counter
+	DEC C
+
+.factorial_loop
+	JP Z,factorial_done
+	LD B,A		; save for later
+	LD A,C
+	PUSH BC
+	CALL mul8
+	POP BC
+	DEC C
+
+	JP factorial_loop
+
+.factorial_done
+	RET
+
+mul8:
+	LD C,A
+	LD A,0
+
+	INC C 		; TODO find better way to test counter
+	DEC C
+
+.mul8_loop
+	JP Z,mul8_done
+	ADD A,B
+	DEC C
+	JP mul8_loop
+
+.mul8_done
+	RET
+
+
