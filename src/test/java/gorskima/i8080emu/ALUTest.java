@@ -40,7 +40,7 @@ public class ALUTest {
 	
 	private Object[] parametersForTestAdd() {
 		return $(
-			$(102, 38, 140, true, false, false, true, false));
+			$(102, 38, 140, true, false, false, false, false));
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class ALUTest {
 	
 	private Object[] parametersForTestAdc() {
 		return $(
-			$(75, true, 200, 20, false, false, true, false, true));
+			$(75, true, 200, 20, false, false, true, true, true));
 	}
 
 	@Test
@@ -122,7 +122,7 @@ public class ALUTest {
 	
 	private Object[] parametersForTestInc() {
 		return $(
-			$(255, 0, false, true, true, false));
+			$(255, 0, false, true, true, true));
 	}
 
 	@Test
@@ -142,7 +142,7 @@ public class ALUTest {
 
 	private Object[] parametersForTestDec() {
 		return $(
-			$(0, 255, true, false, true, false));
+			$(0, 255, true, false, true, true));
 	}
 	
 	@Test
@@ -163,7 +163,7 @@ public class ALUTest {
 	private Object[] parametersForTestCp() {
 		return $(
 			$(7, 5, false, false, false, false, false),
-			$(8, 8, false, true, false, false, false));
+			$(8, 8, false, true, false, true, false));
 	}
 
 	@Test
@@ -285,7 +285,7 @@ public class ALUTest {
 	
 	private Object[] parametersForTestIncExtern() {
 		return $(
-			$(8, 9, false, false, false, false));
+			$(8, 9, false, false, false, true));
 	}
 	
 	@Test
@@ -304,7 +304,7 @@ public class ALUTest {
 	
 	private Object[] parametersForTestDecExtern() {
 		return $(
-			$(128, 127, false, false, true, true));
+			$(128, 127, false, false, true, false));
 	}
 	
 	@Test

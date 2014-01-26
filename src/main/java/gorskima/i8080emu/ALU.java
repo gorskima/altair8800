@@ -67,7 +67,7 @@ public class ALU {
 		registers.setFlag(Flag.S, getSign8(result));
 		registers.setFlag(Flag.Z, isZero(result));
 		registers.setFlag(Flag.H, adder.isHalfCarry());
-		registers.setFlag(Flag.PV, adder.isOverflow());
+		registers.setFlag(Flag.PV, getParity(result));
 		registers.setFlag(Flag.C, adder.isCarry());
 	}
 
@@ -75,7 +75,7 @@ public class ALU {
 		registers.setFlag(Flag.S, getSign8(result));
 		registers.setFlag(Flag.Z, isZero(result));
 		registers.setFlag(Flag.H, adder.isHalfBorrow());
-		registers.setFlag(Flag.PV, adder.isOverflow());
+		registers.setFlag(Flag.PV, getParity(result));
 		registers.setFlag(Flag.C, adder.isBorrow());
 	}
 
@@ -83,14 +83,14 @@ public class ALU {
 		registers.setFlag(Flag.S, getSign8(result));
 		registers.setFlag(Flag.Z, isZero(result));
 		registers.setFlag(Flag.H, adder.isHalfCarry());
-		registers.setFlag(Flag.PV, adder.isOverflow());
+		registers.setFlag(Flag.PV, getParity(result));
 	}
 
 	private void setDecrementFlags(final Adder adder, final int result) {
 		registers.setFlag(Flag.S, getSign8(result));
 		registers.setFlag(Flag.Z, isZero(result));
 		registers.setFlag(Flag.H, adder.isHalfBorrow());
-		registers.setFlag(Flag.PV, adder.isOverflow());
+		registers.setFlag(Flag.PV, getParity(result));
 	}
 
 	public void and(final int op2) {
