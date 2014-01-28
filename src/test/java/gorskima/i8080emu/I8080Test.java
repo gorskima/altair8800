@@ -676,7 +676,7 @@ public class I8080Test {
 		IOPort port = mock(IOPort.class);
 		stub(port.read()).toReturn(7);
 		cpu.attachDevice(100, port);
-		mem.writeWord8(0, 0xDB);
+		mem.writeWord8(0, 0xDB); // IN A,(100)
 		mem.writeWord8(1, 100);
 		cpu.step();
 		verify(port).read();
@@ -688,7 +688,7 @@ public class I8080Test {
 		IOPort port = mock(IOPort.class);
 		cpu.attachDevice(50, port);
 		reg.setRegister(A, 123);
-		mem.writeWord8(0, 0xD3);
+		mem.writeWord8(0, 0xD3); // OUT (50),A
 		mem.writeWord8(1, 50);
 		cpu.step();
 		verify(port).write(123);
