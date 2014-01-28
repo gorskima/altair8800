@@ -778,8 +778,6 @@ public class I8080 {
 			break;
 		}
 		
-		// TODO implement IN r,(C)
-
 		// OUT (n),A
 		case 0xD3: {
 			int portId = fetchWord8();
