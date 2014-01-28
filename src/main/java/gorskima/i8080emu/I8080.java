@@ -558,7 +558,11 @@ public class I8080 {
 		 * General purpose arithmetic and CPU control
 		 */
 		
-		// TODO implement DAA
+		// DAA
+		case 0x27: {
+			alu.daa();
+			break;
+		}
 
 		// CPL
 		case 0x2F: {

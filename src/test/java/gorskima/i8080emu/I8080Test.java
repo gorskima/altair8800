@@ -694,4 +694,12 @@ public class I8080Test {
 		verify(port).write(123);
 	}
 	
+	@Test
+	public void test_DAA() {
+		reg.setRegister(A, 0b00111011); // result of BCD 13 + 28
+		mem.writeWord8(0, 0x27); // DAA
+		cpu.step();
+		assertThat(reg.getRegister(A), is(0b01000001)); // BCD 41
+	}
+	
 }

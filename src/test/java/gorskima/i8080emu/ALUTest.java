@@ -388,5 +388,31 @@ public class ALUTest {
 			$(0b00000110, true, 0b10000011, false),
 			$(0b10000011, false, 0b01000001, true));
 	}
+	
+	@Test
+	@Parameters
+	public void testDaa(final int op, final int result, boolean s, boolean z, boolean h, boolean p, boolean c) {
+		reg.setRegister(A, op);
+		alu.daa();
+		assertThat(reg.getRegister(A), is(result));
+		assertThat(reg.testFlag(Flag.S), is(s));
+		assertThat(reg.testFlag(Flag.Z), is(z));
+		assertThat(reg.testFlag(Flag.H), is(h));
+		assertThat(reg.testFlag(Flag.P), is(p));
+		assertThat(reg.testFlag(Flag.C), is(c));
+	}
+	
+	private Object[] parametersForTestDaa() {
+		return $(
+			$(0b00000000, 0b00000000, false, true, false, true, false), // 0
+			$(0b10000000, 0b10000000, true, false, false, false, false), // 80
+			$(0b00010001, 0b00010001, false, false, false, true, false), // 11
+			$(0b00001001, 0b00001001, false, false, false, true, false), // 9
+			$(0b00001010, 0b00010000, false, false, true, false, false), // 10
+			$(0b10011010, 0b00000000, false, true, true, true, true), // 100
+			$(0b10110000, 0b00010000, false, false, false, false, true), // 110
+			$(0b10111011, 0b00100001, false, false, true, true, true), // 121
+			$(0b00111011, 0b01000001, false, false, true, true, false));// 41
+	}
 
 }

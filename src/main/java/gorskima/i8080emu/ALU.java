@@ -258,4 +258,24 @@ public class ALU {
 		return registers.testFlag(Flag.C) ? 1 : 0;
 	}
 
+	public void daa() {
+		// TODO it works, not make it pre
+		int result = registers.getRegister(Register.A);
+		if ((result & 0x0F) > 9) {
+			Adder adder = Adder.newAdder8();
+			result = adder.add(result, 0x06, 0);
+			registers.setFlag(Flag.H, adder.isHalfCarry());
+		}
+		if (((result >>> 4) & 0x0F) > 9) {
+			Adder adder = Adder.newAdder8();
+			result = adder.add(result, 0x60, 0);
+			registers.setFlag(Flag.C, adder.isCarry());
+		}
+		
+		registers.setRegister(Register.A, result);
+		registers.setFlag(Flag.S, getSign8(result));
+		registers.setFlag(Flag.Z, isZero(result));
+		registers.setFlag(Flag.P, getParity(result));
+	}
+
 }
