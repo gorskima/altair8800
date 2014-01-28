@@ -259,7 +259,7 @@ public class ALU {
 	}
 
 	public void daa() {
-		// TODO it works, not make it pre
+		// TODO it works, not make it pretty
 		int result = registers.getRegister(Register.A);
 		if ((result & 0x0F) > 9) {
 			Adder adder = Adder.newAdder8();
