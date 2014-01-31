@@ -13,6 +13,7 @@ public class I8080 {
 	private final IOPort ioPorts[] = new IOPort[IO_PORTS];
 
 	private boolean halt = false;
+	private boolean interruptsEnabled = false;
 	
 	// TODO add new constructor without registers
 	public I8080(final Registers registers, final Memory memory) {
@@ -597,9 +598,17 @@ public class I8080 {
 			break;
 		}
 		
-		// TODO implement DI
+		// DI
+		case 0xF3: {
+			interruptsEnabled = false;
+			break;
+		}
 		
-		// TODO implement EI
+		// EI
+		case 0xFB: {
+			interruptsEnabled = true;
+			break;
+		}
 		
 		/*
 		 * 16-Bit Arithmetic Group
@@ -832,6 +841,10 @@ public class I8080 {
 
 	public Registers getRegisters() {
 		return registers;
+	}
+	
+	public boolean isInterruptsEnabled() {
+		return interruptsEnabled;
 	}
 
 	public boolean isHalt() {

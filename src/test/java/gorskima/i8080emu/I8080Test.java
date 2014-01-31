@@ -702,4 +702,20 @@ public class I8080Test {
 		assertThat(reg.getRegister(A), is(0b01000001)); // BCD 41
 	}
 	
+	@Test
+	public void test_EI() {
+		mem.writeWord8(0, 0xFB); // EI
+		cpu.step();
+		assertThat(cpu.isInterruptsEnabled(), is(true));
+	}
+	
+	@Test
+	public void test_DI() {
+		mem.writeWord8(0, 0xFB); // EI
+		mem.writeWord8(1, 0xF3); // DI
+		cpu.step();
+		cpu.step();
+		assertThat(cpu.isInterruptsEnabled(), is(false));
+	}
+	
 }
