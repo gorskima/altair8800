@@ -29,6 +29,10 @@ public class CpuRunner {
 		
 		return cpu;
 	}
+	
+	public void interrupt(int opCode) {
+		cpu.interrupt(opCode);
+	}
 
 	public static CpuRunner runWithRunner(String programPath) {
 		final I8080 cpu = initCpu(programPath);
