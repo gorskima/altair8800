@@ -602,6 +602,7 @@ public class I8080 {
 
 		// HALT
 		case 0x76: {
+			// TODO implement "unhalting" on int, reset etc.
 			halt = true;
 			break;
 		}
