@@ -14,6 +14,11 @@ public class I8080 {
 
 	private boolean halt = false;
 	private boolean interruptsEnabled = false;
+	private int interruptHandler;
+
+	private boolean interruptAwaiting;
+
+	private boolean interruptAccepted;
 	
 	// TODO add new constructor without registers
 	public I8080(final Registers registers, final Memory memory) {
@@ -30,7 +35,7 @@ public class I8080 {
 	}
 
 	public void step() {
-		int opCode = fetchWord8();
+		int opCode = fetchOpCode();
 		switch (opCode) {
 
 		/*
@@ -798,6 +803,18 @@ public class I8080 {
 		default:
 			handleUnsupportedOpCode(opCode);
 		}
+		
+		if (interruptsEnabled && interruptAwaiting && opCode != 0xF3 && opCode != 0xFB) {
+			interruptsEnabled = false;
+			interruptAccepted = true;
+			interruptAwaiting = false;
+		} else if (interruptAccepted) {
+			interruptAccepted = false;
+		}
+	}
+
+	private int fetchOpCode() {
+		return interruptAccepted ? interruptHandler : fetchWord8();
 	}
 
 	private int fetchWord8() {
@@ -849,6 +866,13 @@ public class I8080 {
 
 	public boolean isHalt() {
 		return halt;
+	}
+
+	public void interrupt(int opCode) {
+//		if (interruptsEnabled) {
+			interruptHandler = opCode;
+			interruptAwaiting = true;
+//		}
 	}
 
 }
