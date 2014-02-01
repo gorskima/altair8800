@@ -14,6 +14,11 @@ public class I8080 {
 
 	private boolean halt = false;
 	
+	private boolean interruptsEnabled = false; // INTE
+	private boolean interruptAwaiting = false; // INT
+	private boolean interruptAccepted = false; // INTA
+	private int interruptOpCode;
+	
 	// TODO add new constructor without registers
 	public I8080(final Registers registers, final Memory memory) {
 		this.registers = registers;
@@ -27,9 +32,13 @@ public class I8080 {
 		}
 		this.ioPorts[portId] = device;
 	}
-
+	
 	public void step() {
-		int opCode = fetchWord8();
+		int opCode = fetchOpCode();
+		executeSingleInstruction(opCode);
+		checkInterrupts(opCode);
+	}
+	private void executeSingleInstruction(int opCode) {
 		switch (opCode) {
 
 		/*
@@ -593,13 +602,22 @@ public class I8080 {
 
 		// HALT
 		case 0x76: {
+			// TODO implement "unhalting" on int, reset etc.
 			halt = true;
 			break;
 		}
 		
-		// TODO implement DI
+		// DI
+		case 0xF3: {
+			interruptsEnabled = false;
+			break;
+		}
 		
-		// TODO implement EI
+		// EI
+		case 0xFB: {
+			interruptsEnabled = true;
+			break;
+		}
 		
 		/*
 		 * 16-Bit Arithmetic Group
@@ -791,6 +809,23 @@ public class I8080 {
 		}
 	}
 
+	private void checkInterrupts(int opCode) {
+		if (interruptsEnabled && interruptAwaiting && !isEIorDI(opCode)) {
+			interruptsEnabled = false;
+			interruptAwaiting = false;
+			interruptAccepted = true;
+		} else if (interruptAccepted) {
+			interruptAccepted = false;
+		}
+	}
+	private boolean isEIorDI(int opCode) {
+		return opCode == 0xFB || opCode == 0xF3;
+	}
+
+	private int fetchOpCode() {
+		return interruptAccepted ? interruptOpCode : fetchWord8();
+	}
+
 	private int fetchWord8() {
 		int pc = registers.getRegister(Register.PC);
 		int word = memory.readWord8(pc);
@@ -833,9 +868,18 @@ public class I8080 {
 	public Registers getRegisters() {
 		return registers;
 	}
+	
+	public boolean isInterruptsEnabled() {
+		return interruptsEnabled;
+	}
 
 	public boolean isHalt() {
 		return halt;
+	}
+
+	public void interrupt(int opCode) {
+		interruptOpCode = opCode;
+		interruptAwaiting = true;
 	}
 
 }

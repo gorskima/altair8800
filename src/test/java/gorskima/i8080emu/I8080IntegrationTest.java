@@ -1,10 +1,9 @@
 package gorskima.i8080emu;
 
 import static gorskima.i8080emu.CpuRunner.run;
+import static gorskima.i8080emu.CpuRunner.runWithRunner;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import gorskima.i8080emu.Register;
-import gorskima.i8080emu.I8080;
 
 import org.junit.Test;
 
@@ -44,6 +43,22 @@ public class I8080IntegrationTest {
 	public void testMul8withStackFrame() {
 		I8080 cpu = run("mul8/code.bin");
 		assertThat(cpu.getRegisters().getRegister(Register.A), is(63));
+	}
+	
+	// TODO find some nicer way to test interrupts with multiple threads
+	@Test
+	public void testInterrupts() throws InterruptedException {
+		CpuRunner runner = runWithRunner("interrupts/int.bin");
+		
+		Thread.sleep(10);
+		runner.interrupt(0xCF); // RST 1
+		Thread.sleep(10);
+		runner.interrupt(0xCF); // RST 1
+		Thread.sleep(10);
+		runner.interrupt(0xCF); // RST 1 
+		
+		I8080 cpu = runner.getCpu();
+		assertThat(cpu.getRegisters().getRegister(Register.A), is(3));
 	}
 
 }

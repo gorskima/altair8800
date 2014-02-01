@@ -702,4 +702,99 @@ public class I8080Test {
 		assertThat(reg.getRegister(A), is(0b01000001)); // BCD 41
 	}
 	
+	@Test
+	public void test_EI() {
+		mem.writeWord8(0, 0xFB); // EI
+		cpu.step();
+		assertThat(cpu.isInterruptsEnabled(), is(true));
+	}
+	
+	@Test
+	public void test_DI() {
+		mem.writeWord8(0, 0xFB); // EI
+		mem.writeWord8(1, 0xF3); // DI
+		cpu.step();
+		cpu.step();
+		assertThat(cpu.isInterruptsEnabled(), is(false));
+	}
+	
+	@Test
+	public void testInterruptWhenDisabled() {
+		cpu.interrupt(0x0100);
+		cpu.step(); // NOP
+		cpu.step(); // NOP
+		
+		assertThat(reg.getRegister(PC), is(0x0002));
+	}
+	
+	@Test
+	public void testInterruptWontInterrupt_DI() {
+		mem.writeWord8(0, 0xFB); // EI
+		mem.writeWord8(1, 0x00); // NOP
+		mem.writeWord8(2, 0xF3); // DI
+		mem.writeWord8(3, 0x00); // NOP
+		
+		cpu.step(); // EI
+		cpu.step(); // NOP
+		cpu.interrupt(0xFF);
+		cpu.step(); // DI
+		cpu.step(); // NOP
+		
+		assertThat(reg.getRegister(PC), is(0x0004));
+	}
+	
+	@Test
+	public void testInterruptWontInterrupt_EI() {
+		reg.setRegister(SP, 0xFFFF);
+		reg.setRegister(A, 0);
+		mem.writeWord8(0, 0x00); // NOP
+		mem.writeWord8(1, 0xFB); // EI
+		mem.writeWord8(2, 0x3C); // INR A 
+		mem.writeWord8(3, 0x3C); // INR A
+		
+		cpu.step(); // NOP
+		cpu.interrupt(0xFF);
+		cpu.step(); // EI
+		cpu.step(); // INR A
+		cpu.step(); // interrupt cycle #1
+		
+		assertThat(reg.getRegister(PC), is(0x0038));
+		assertThat(reg.getRegister(A), is(1));
+	}
+	
+	@Test
+	public void testSimpleInterrupt() {
+		reg.setRegister(SP, 0xFFFF);
+		reg.setRegister(A, 0x00);
+		mem.writeWord8(0, 0xFB); // EI
+		mem.writeWord8(1, 0x00); // NOP
+		mem.writeWord8(2, 0x00); // NOP
+		mem.writeWord8(0x38, 0x3C); // INR A - interrupt handler
+		mem.writeWord8(0x39, 0xC9); // RET - end of interrupt handler
+		
+		cpu.step(); // EI
+		cpu.interrupt(0xFF); // RST 7
+		cpu.step(); // NOP
+		cpu.step(); // interrupt cycle #1
+		
+		assertThat(cpu.isInterruptsEnabled(), is(false));
+		assertThat(reg.getRegister(PC), is(0x0038));
+		assertThat(reg.getRegister(A), is(0));
+		
+		cpu.step(); // interrupt cycle #2
+		
+		assertThat(cpu.isInterruptsEnabled(), is(false));
+		assertThat(reg.getRegister(PC), is(0x0039));
+		assertThat(reg.getRegister(A), is(1));
+		
+		cpu.step(); // RET
+		
+		assertThat(reg.getRegister(PC), is(2));
+		
+		cpu.step(); // NOP
+		
+		assertThat(reg.getRegister(PC), is(3));
+		assertThat(cpu.isInterruptsEnabled(), is(false));
+	}
+	
 }
