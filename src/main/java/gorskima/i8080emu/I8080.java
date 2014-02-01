@@ -13,12 +13,11 @@ public class I8080 {
 	private final IOPort ioPorts[] = new IOPort[IO_PORTS];
 
 	private boolean halt = false;
-	private boolean interruptsEnabled = false;
-	private int interruptHandler;
-
-	private boolean interruptAwaiting;
-
-	private boolean interruptAccepted;
+	
+	private boolean interruptsEnabled = false; // INTE
+	private boolean interruptAwaiting = false; // INT
+	private boolean interruptAccepted = false; // INTA
+	private int interruptOpCode;
 	
 	// TODO add new constructor without registers
 	public I8080(final Registers registers, final Memory memory) {
@@ -33,9 +32,13 @@ public class I8080 {
 		}
 		this.ioPorts[portId] = device;
 	}
-
+	
 	public void step() {
 		int opCode = fetchOpCode();
+		executeSingleInstruction(opCode);
+		checkInterrupts(opCode);
+	}
+	private void executeSingleInstruction(int opCode) {
 		switch (opCode) {
 
 		/*
@@ -803,18 +806,23 @@ public class I8080 {
 		default:
 			handleUnsupportedOpCode(opCode);
 		}
-		
-		if (interruptsEnabled && interruptAwaiting && opCode != 0xF3 && opCode != 0xFB) {
+	}
+
+	private void checkInterrupts(int opCode) {
+		if (interruptsEnabled && interruptAwaiting && !isEIorDI(opCode)) {
 			interruptsEnabled = false;
-			interruptAccepted = true;
 			interruptAwaiting = false;
+			interruptAccepted = true;
 		} else if (interruptAccepted) {
 			interruptAccepted = false;
 		}
 	}
+	private boolean isEIorDI(int opCode) {
+		return opCode == 0xFB || opCode == 0xF3;
+	}
 
 	private int fetchOpCode() {
-		return interruptAccepted ? interruptHandler : fetchWord8();
+		return interruptAccepted ? interruptOpCode : fetchWord8();
 	}
 
 	private int fetchWord8() {
@@ -869,10 +877,8 @@ public class I8080 {
 	}
 
 	public void interrupt(int opCode) {
-//		if (interruptsEnabled) {
-			interruptHandler = opCode;
-			interruptAwaiting = true;
-//		}
+		interruptOpCode = opCode;
+		interruptAwaiting = true;
 	}
 
 }
