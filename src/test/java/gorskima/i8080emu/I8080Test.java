@@ -836,7 +836,7 @@ public class I8080Test {
 	@Test
 	public void test_JP_cc_nn_conditionNotFulfilled() {
 		reg.setFlag(Z, true);
-		mem.writeWord8(0, 0x3A); // JP NZ,3000
+		mem.writeWord8(0, 0xC2); // JP NZ,3000
 		mem.writeWord16(1, 3000);
 
         cpu.step();
