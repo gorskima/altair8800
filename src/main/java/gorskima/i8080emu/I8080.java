@@ -18,8 +18,9 @@ public class I8080 {
 	private boolean interruptAwaiting = false; // INT
 	private boolean interruptAccepted = false; // INTA
 	private int interruptOpCode;
-	
-	// TODO add new constructor without registers
+    private int cycles;
+
+    // TODO add new constructor without registers
 	public I8080(final Registers registers, final Memory memory) {
 		this.registers = registers;
 		this.memory = memory;
@@ -35,10 +36,10 @@ public class I8080 {
 	
 	public void step() {
 		int opCode = fetchOpCode();
-		executeSingleInstruction(opCode);
+		cycles += executeSingleInstruction(opCode);
 		checkInterrupts(opCode);
 	}
-	private void executeSingleInstruction(int opCode) {
+	private int executeSingleInstruction(int opCode) {
 		switch (opCode) {
 
 		/*
@@ -99,7 +100,7 @@ public class I8080 {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			int n = registers.getRegister(srcReg);
 			registers.setRegister(destReg, n);
-			break;
+			return 5;
 		}
 
 		// LD r,n
@@ -113,7 +114,7 @@ public class I8080 {
 			int n = fetchWord8();
 			Register destReg = decoder.decodeUpperR(opCode);
 			registers.setRegister(destReg, n);
-			break;
+			return 7;
 		}
 
 		// LD r,(HL)
@@ -128,7 +129,7 @@ public class I8080 {
 			int n = memory.readWord8(addr);
 			Register destReg = decoder.decodeUpperR(opCode);
 			registers.setRegister(destReg, n);
-			break;
+			return 7;
 		}
 
 		// LD (HL),r
@@ -143,7 +144,7 @@ public class I8080 {
 			int n = registers.getRegister(srcReg);
 			int addr = registers.getRegister(Register.HL);
 			memory.writeWord8(addr, n);
-			break;
+			return 7;
 		}
 
 		// LD (HL),n
@@ -151,7 +152,7 @@ public class I8080 {
 			int n = fetchWord8();
 			int addr = registers.getRegister(Register.HL);
 			memory.writeWord8(addr, n);
-			break;
+			return 10;
 		}
 
 		// LD A,(BC)
@@ -159,7 +160,7 @@ public class I8080 {
 			int addr = registers.getRegister(Register.BC);
 			int n = memory.readWord8(addr);
 			registers.setRegister(Register.A, n);
-			break;
+			return 7;
 		}
 
 		// LD A,(DE)
@@ -167,7 +168,7 @@ public class I8080 {
 			int addr = registers.getRegister(Register.DE);
 			int n = memory.readWord8(addr);
 			registers.setRegister(Register.A, n);
-			break;
+			return 7;
 		}
 
 		// LD A,(nn)
@@ -175,7 +176,7 @@ public class I8080 {
 			int addr = fetchWord16();
 			int n = memory.readWord8(addr);
 			registers.setRegister(Register.A, n);
-			break;
+			return 13;
 		}
 
 		// LD (BC),A
@@ -183,7 +184,7 @@ public class I8080 {
 			int addr = registers.getRegister(Register.BC);
 			int n = registers.getRegister(Register.A);
 			memory.writeWord8(addr, n);
-			break;
+			return 7;
 		}
 
 		// LD (DE),A
@@ -191,7 +192,7 @@ public class I8080 {
 			int addr = registers.getRegister(Register.DE);
 			int n = registers.getRegister(Register.A);
 			memory.writeWord8(addr, n);
-			break;
+			return 7;
 		}
 
 		// LD (nn),A
@@ -199,7 +200,7 @@ public class I8080 {
 			int addr = fetchWord16();
 			int n = registers.getRegister(Register.A);
 			memory.writeWord8(addr, n);
-			break;
+			return 13;
 		}
 
 		/*
@@ -214,7 +215,7 @@ public class I8080 {
 			int nn = fetchWord16();
 			Register destReg = decoder.decodeRegister(RegisterType.dd, opCode);
 			registers.setRegister(destReg, nn);
-			break;
+			return 10;
 		}
 
 		// LD HL,(nn)
@@ -222,7 +223,7 @@ public class I8080 {
 			int addr = fetchWord16();
 			int nn = memory.readWord16(addr);
 			registers.setRegister(Register.HL, nn);
-			break;
+			return 16;
 		}
 
 		// LD (nn),HL
@@ -230,14 +231,14 @@ public class I8080 {
 			int addr = fetchWord16();
 			int nn = registers.getRegister(Register.HL);
 			memory.writeWord16(addr, nn);
-			break;
+			return 16;
 		}
 
 		// LD SP,HL
 		case 0xF9: {
 			int nn = registers.getRegister(Register.HL);
 			registers.setRegister(Register.SP, nn);
-			break;
+			return 5;
 		}
 
 		// PUSH qq
@@ -247,7 +248,7 @@ public class I8080 {
 		case 0xF5: {
 			Register srcReg = decoder.decodeRegister(RegisterType.qq, opCode);
 			pushOnStack(registers.getRegister(srcReg));
-			break;
+			return 11;
 		}
 
 		// POP qq
@@ -257,7 +258,7 @@ public class I8080 {
 		case 0xF1: {
 			Register dstReg = decoder.decodeRegister(RegisterType.qq, opCode);
 			registers.setRegister(dstReg, popFromStack());
-			break;
+			return 10;
 		}
 		
 		/*
@@ -270,7 +271,7 @@ public class I8080 {
 			int hl = registers.getRegister(Register.HL);
 			registers.setRegister(Register.DE, hl);
 			registers.setRegister(Register.HL, de);
-			break;
+			return 5;
 		}
 		
 		// EX (SP),HL
@@ -280,7 +281,7 @@ public class I8080 {
 			int nn = memory.readWord16(sp);
 			registers.setRegister(Register.HL, nn);
 			memory.writeWord16(sp, hl);
-			break;
+			return 18;
 		}
 
 		/*
@@ -298,14 +299,14 @@ public class I8080 {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			int n = registers.getRegister(srcReg);
 			alu.add(n);
-			break;
+			return 4;
 		}
 
 		// ADD A,n
 		case 0xC6: {
 			int n = fetchWord8();
 			alu.add(n);
-			break;
+			return 7;
 		}
 
 		// ADD A,(HL)
@@ -313,7 +314,7 @@ public class I8080 {
 			int addr = registers.getRegister(Register.HL);
 			int n = memory.readWord8(addr);
 			alu.add(n);
-			break;
+			return 7;
 		}
 		
 		// ADC A,r
@@ -327,14 +328,14 @@ public class I8080 {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			int n = registers.getRegister(srcReg);
 			alu.adc(n);
-			break;
+			return 4;
 		}
 
 		// ADC A,n
 		case 0xCE: {
 			int n = fetchWord8();
 			alu.adc(n);
-			break;
+			return 7;
 		}
 		
 		// ADD A,(HL)
@@ -342,7 +343,7 @@ public class I8080 {
 			int addr = registers.getRegister(Register.HL);
 			int n = memory.readWord8(addr);
 			alu.adc(n);
-			break;
+			return 7;
 		}
 		
 		// SUB r
@@ -356,14 +357,14 @@ public class I8080 {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			int n = registers.getRegister(srcReg);
 			alu.sub(n);
-			break;
+			return 4;
 		}
 
 		// SUB n
 		case 0xD6: {
 			int n = fetchWord8();
 			alu.sub(n);
-			break;
+			return 7;
 		}
 		
 		// SUB (HL)
@@ -371,7 +372,7 @@ public class I8080 {
 			int addr = registers.getRegister(Register.HL);
 			int n = memory.readWord8(addr);
 			alu.sub(n);
-			break;
+			return 7;
 		}
 		
 		// SBC A,r
@@ -385,14 +386,14 @@ public class I8080 {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			int n = registers.getRegister(srcReg);
 			alu.sbc(n);
-			break;
+			return 4;
 		}
 
 		// SBC A,n
 		case 0xDE: {
 			int n = fetchWord8();
 			alu.sbc(n);
-			break;
+			return 7;
 		}
 		
 		// SBC A,(HL)
@@ -400,7 +401,7 @@ public class I8080 {
 			int addr = registers.getRegister(Register.HL);
 			int n = memory.readWord8(addr);
 			alu.sbc(n);
-			break;
+			return 7;
 		}
 		
 		// AND r
@@ -414,14 +415,14 @@ public class I8080 {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			int n = registers.getRegister(srcReg);
 			alu.and(n);
-			break;
+			return 4;
 		}
 
 		// AND n
 		case 0xE6: {
 			int n = fetchWord8();
 			alu.and(n);
-			break;
+			return 7;
 		}
 		
 		// AND (HL)
@@ -429,7 +430,7 @@ public class I8080 {
 			int addr = registers.getRegister(Register.HL);
 			int n = memory.readWord8(addr);
 			alu.and(n);
-			break;
+			return 7;
 		}
 
 		// OR r
@@ -443,14 +444,14 @@ public class I8080 {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			int n = registers.getRegister(srcReg);
 			alu.or(n);
-			break;
+			return 4;
 		}
 
 		// OR n
 		case 0xF6: {
 			int n = fetchWord8();
 			alu.or(n);
-			break;
+			return 7;
 		}
 		
 		// OR (HL)
@@ -458,7 +459,7 @@ public class I8080 {
 			int addr = registers.getRegister(Register.HL);
 			int n = memory.readWord8(addr);
 			alu.or(n);
-			break;
+			return 7;
 		}
 		
 		// XOR r
@@ -472,14 +473,14 @@ public class I8080 {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			int n = registers.getRegister(srcReg);
 			alu.xor(n);
-			break;
+			return 4;
 		}
 
 		// XOR n
 		case 0xEE: {
 			int n = fetchWord8();
 			alu.xor(n);
-			break;
+			return 7;
 		}
 		
 		// XOR (HL)
@@ -487,7 +488,7 @@ public class I8080 {
 			int addr = registers.getRegister(Register.HL);
 			int n = memory.readWord8(addr);
 			alu.xor(n);
-			break;
+			return 7;
 		}
 
 		// CP r
@@ -501,14 +502,14 @@ public class I8080 {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			int n = registers.getRegister(srcReg);
 			alu.cp(n);
-			break;
+			return 4;
 		}
 		
 		// CP n
 		case 0xFE: {
 			int n = fetchWord8();
 			alu.cp(n);
-			break;
+			return 7;
 		}
 		
 		// CP (HL)
@@ -516,7 +517,7 @@ public class I8080 {
 			int addr = registers.getRegister(Register.HL);
 			int n = memory.readWord8(addr);
 			alu.cp(n);
-			break;
+			return 7;
 		}
 
 		// INC r
@@ -529,7 +530,7 @@ public class I8080 {
 		case 0x3C: {
 			Register r = decoder.decodeUpperR(opCode);
 			alu.inc(r);
-			break;
+			return 5;
 		}
 
 		// INC (HL)
@@ -538,7 +539,7 @@ public class I8080 {
 			int oldValue = memory.readWord8(addr);
 			int newValue = alu.incExtern(oldValue);
 			memory.writeWord8(addr, newValue);
-			break;
+			return 10;
 		}
 
 		// DEC r
@@ -551,7 +552,7 @@ public class I8080 {
 		case 0x3D: {
 			Register r = decoder.decodeUpperR(opCode);
 			alu.dec(r);
-			break;
+			return 5;
 		}
 		
 		// DEC (HL)
@@ -560,7 +561,7 @@ public class I8080 {
 			int oldValue = memory.readWord8(addr);
 			int newValue = alu.decExtern(oldValue);
 			memory.writeWord8(addr, newValue);
-			break;
+			return 10;
 		}
 
 		/*
@@ -570,13 +571,13 @@ public class I8080 {
 		// DAA
 		case 0x27: {
 			alu.daa();
-			break;
+			return 4;
 		}
 
 		// CPL
 		case 0x2F: {
 			alu.cpl();
-			break;
+			return 4;
 		}
 		
 		// CCF
@@ -584,39 +585,39 @@ public class I8080 {
 			boolean c = registers.testFlag(Flag.C);
 			registers.setFlag(Flag.C, !c);
 			registers.setFlag(Flag.H, c);
-			break;
+			return 4;
 		}
 		
 		// SCF
 		case 0x37: {
 			registers.setFlag(Flag.C, true);
 			registers.setFlag(Flag.H, false);
-			break;
+			return 4;
 		}
 
 		// NOP
 		case 0x00: {
 			// do nothing :)
-			break;
+			return 4;
 		}
 
 		// HALT
 		case 0x76: {
 			// TODO implement "unhalting" on int, reset etc.
 			halt = true;
-			break;
+			return 7;
 		}
 		
 		// DI
 		case 0xF3: {
 			interruptsEnabled = false;
-			break;
+			return 4;
 		}
 		
 		// EI
 		case 0xFB: {
 			interruptsEnabled = true;
-			break;
+			return 4;
 		}
 		
 		/*
@@ -631,7 +632,7 @@ public class I8080 {
 			Register reg = decoder.decodeRegister(RegisterType.ss, opCode);
 			int value = registers.getRegister(reg);
 			alu.add16(value);
-			break;
+			return 10;
 		}
 		
 		// INC ss
@@ -641,7 +642,7 @@ public class I8080 {
 		case 0x33: {
 			Register reg = decoder.decodeRegister(RegisterType.ss, opCode);
 			alu.inc(reg);
-			break;
+			return 5;
 		}
 		
 		// DEC ss
@@ -651,7 +652,7 @@ public class I8080 {
 		case 0x3B: {
 			Register reg = decoder.decodeRegister(RegisterType.ss, opCode);
 			alu.dec(reg);
-			break;
+			return 5;
 		}
 		
 		/*
@@ -661,25 +662,25 @@ public class I8080 {
 		// RLCA
 		case 0x07: {
 			alu.rlca();
-			break;
+			return 4;
 		}
 		
 		// RLA
 		case 0x17: {
 			alu.rla();
-			break;
+			return 4;
 		}
 		
 		// RRCA
 		case 0x0F: {
 			alu.rrca();
-			break;
+			return 4;
 		}
 		
 		// RRA
 		case 0x1F: {
 			alu.rra();
-			break;
+			return 4;
 		}
 		
 		/*
@@ -690,7 +691,7 @@ public class I8080 {
 		case 0xC3: {
 			int nn = fetchWord16();
 			registers.setRegister(Register.PC, nn);
-			break;
+			return 10;
 		}
 
 		// JP cc,nn
@@ -707,14 +708,14 @@ public class I8080 {
 			if (isConditionMet(cond)) {
 				registers.setRegister(Register.PC, nn);
 			}
-			break;
+			return 10;
 		}
 		
 		// JP (HL)
 		case 0xE9: {
 			int addr = registers.getRegister(Register.HL);
 			registers.setRegister(Register.PC, addr);
-			break;
+			return 5;
 		}
 		
 		/*
@@ -726,7 +727,7 @@ public class I8080 {
 			int addr = fetchWord16();
 			pushOnStack(registers.getRegister(Register.PC));
 			registers.setRegister(Register.PC, addr);
-			break;
+			return 17;
 		}
 		
 		// CALL cc,nn
@@ -743,14 +744,15 @@ public class I8080 {
 			if (isConditionMet(condition)) {
 				pushOnStack(registers.getRegister(Register.PC));
 				registers.setRegister(Register.PC, addr);
+                return 17;
 			}
-			break;
+			return 11;
 		}
 
 		// RET
 		case 0xC9: {
 			registers.setRegister(Register.PC, popFromStack());
-			break;
+			return 10;
 		}
 		
 		// RET cc
@@ -765,8 +767,9 @@ public class I8080 {
 			Condition condition = decoder.decodeCondition(opCode);
 			if (isConditionMet(condition)) {
 				registers.setRegister(Register.PC, popFromStack());
+                return 11;
 			}
-			break;
+            return 5;
 		}
 		
 		// RST p
@@ -781,7 +784,7 @@ public class I8080 {
 			int addr = decoder.decodePage(opCode);
 			pushOnStack(registers.getRegister(Register.PC));
 			registers.setRegister(Register.PC, addr);
-			break;
+			return 11;
 		}
 
 		/*
@@ -791,9 +794,9 @@ public class I8080 {
 		// IN A,(n)
 		case 0xDB: {
 			int portId = fetchWord8();
-			int n = ioPorts[portId].read();
+			int n = ioPorts[portId] != null ? ioPorts[portId].read() : 0;
 			registers.setRegister(Register.A, n);
-			break;
+			return 10;
 		}
 		
 		// OUT (n),A
@@ -801,12 +804,14 @@ public class I8080 {
 			int portId = fetchWord8();
 			int n = registers.getRegister(Register.A);
 			ioPorts[portId].write(n);
-			break;
+			return 10;
 		}
 
 		default:
 			handleUnsupportedOpCode(opCode);
 		}
+
+        throw new IllegalStateException("Remove me after all instructions return cycles");
 	}
 
 	private void checkInterrupts(int opCode) {
@@ -882,4 +887,7 @@ public class I8080 {
 		interruptAwaiting = true;
 	}
 
+    public int getCycles() {
+        return cycles;
+    }
 }
