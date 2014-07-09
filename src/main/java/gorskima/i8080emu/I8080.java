@@ -264,7 +264,7 @@ public class I8080 {
 		/*
 		 * Exchange, Block Transfer, and Search Group
 		 */
-		
+
 		// EX DE,HL
 		case 0xEB: {
 			int de = registers.getRegister(Register.DE);
@@ -273,7 +273,7 @@ public class I8080 {
 			registers.setRegister(Register.HL, de);
 			return 5;
 		}
-		
+
 		// EX (SP),HL
 		case 0xE3: {
 			int hl = registers.getRegister(Register.HL);
@@ -316,7 +316,7 @@ public class I8080 {
 			alu.add(n);
 			return 7;
 		}
-		
+
 		// ADC A,r
 		case 0x88:
 		case 0x89:
@@ -337,7 +337,7 @@ public class I8080 {
 			alu.adc(n);
 			return 7;
 		}
-		
+
 		// ADD A,(HL)
 		case 0x8E: {
 			int addr = registers.getRegister(Register.HL);
@@ -345,7 +345,7 @@ public class I8080 {
 			alu.adc(n);
 			return 7;
 		}
-		
+
 		// SUB r
 		case 0x90:
 		case 0x91:
@@ -366,7 +366,7 @@ public class I8080 {
 			alu.sub(n);
 			return 7;
 		}
-		
+
 		// SUB (HL)
 		case 0x96: {
 			int addr = registers.getRegister(Register.HL);
@@ -374,7 +374,7 @@ public class I8080 {
 			alu.sub(n);
 			return 7;
 		}
-		
+
 		// SBC A,r
 		case 0x98:
 		case 0x99:
@@ -395,7 +395,7 @@ public class I8080 {
 			alu.sbc(n);
 			return 7;
 		}
-		
+
 		// SBC A,(HL)
 		case 0x9E: {
 			int addr = registers.getRegister(Register.HL);
@@ -403,7 +403,7 @@ public class I8080 {
 			alu.sbc(n);
 			return 7;
 		}
-		
+
 		// AND r
 		case 0xA0:
 		case 0xA1:
@@ -424,7 +424,7 @@ public class I8080 {
 			alu.and(n);
 			return 7;
 		}
-		
+
 		// AND (HL)
 		case 0xA6: {
 			int addr = registers.getRegister(Register.HL);
@@ -453,7 +453,7 @@ public class I8080 {
 			alu.or(n);
 			return 7;
 		}
-		
+
 		// OR (HL)
 		case 0xB6: {
 			int addr = registers.getRegister(Register.HL);
@@ -461,7 +461,7 @@ public class I8080 {
 			alu.or(n);
 			return 7;
 		}
-		
+
 		// XOR r
 		case 0xA8:
 		case 0xA9:
@@ -482,7 +482,7 @@ public class I8080 {
 			alu.xor(n);
 			return 7;
 		}
-		
+
 		// XOR (HL)
 		case 0xAE: {
 			int addr = registers.getRegister(Register.HL);
@@ -504,14 +504,14 @@ public class I8080 {
 			alu.cp(n);
 			return 4;
 		}
-		
+
 		// CP n
 		case 0xFE: {
 			int n = fetchWord8();
 			alu.cp(n);
 			return 7;
 		}
-		
+
 		// CP (HL)
 		case 0xBE: {
 			int addr = registers.getRegister(Register.HL);
@@ -554,7 +554,7 @@ public class I8080 {
 			alu.dec(r);
 			return 5;
 		}
-		
+
 		// DEC (HL)
 		case 0x35: {
 			int addr = registers.getRegister(Register.HL);
@@ -567,7 +567,7 @@ public class I8080 {
 		/*
 		 * General purpose arithmetic and CPU control
 		 */
-		
+
 		// DAA
 		case 0x27: {
 			alu.daa();
@@ -579,7 +579,7 @@ public class I8080 {
 			alu.cpl();
 			return 4;
 		}
-		
+
 		// CCF
 		case 0x3F: {
 			boolean c = registers.testFlag(Flag.C);
@@ -587,7 +587,7 @@ public class I8080 {
 			registers.setFlag(Flag.H, c);
 			return 4;
 		}
-		
+
 		// SCF
 		case 0x37: {
 			registers.setFlag(Flag.C, true);
@@ -607,13 +607,13 @@ public class I8080 {
 			halt = true;
 			return 7;
 		}
-		
+
 		// DI
 		case 0xF3: {
 			interruptsEnabled = false;
 			return 4;
 		}
-		
+
 		// EI
 		case 0xFB: {
 			interruptsEnabled = true;
@@ -623,7 +623,7 @@ public class I8080 {
 		/*
 		 * 16-Bit Arithmetic Group
 		 */
-		
+
 		// ADD HL,ss
 		case 0x09:
 		case 0x19:
@@ -634,7 +634,7 @@ public class I8080 {
 			alu.add16(value);
 			return 10;
 		}
-		
+
 		// INC ss
 		case 0x03:
 		case 0x13:
@@ -644,7 +644,7 @@ public class I8080 {
 			alu.inc(reg);
 			return 5;
 		}
-		
+
 		// DEC ss
 		case 0x0B:
 		case 0x1B:
@@ -658,25 +658,25 @@ public class I8080 {
 		/*
 		 * Rotate and Shift Grouop
 		 */
-		
+
 		// RLCA
 		case 0x07: {
 			alu.rlca();
 			return 4;
 		}
-		
+
 		// RLA
 		case 0x17: {
 			alu.rla();
 			return 4;
 		}
-		
+
 		// RRCA
 		case 0x0F: {
 			alu.rrca();
 			return 4;
 		}
-		
+
 		// RRA
 		case 0x1F: {
 			alu.rra();
@@ -710,7 +710,7 @@ public class I8080 {
 			}
 			return 10;
 		}
-		
+
 		// JP (HL)
 		case 0xE9: {
 			int addr = registers.getRegister(Register.HL);
@@ -729,7 +729,7 @@ public class I8080 {
 			registers.setRegister(Register.PC, addr);
 			return 17;
 		}
-		
+
 		// CALL cc,nn
 		case 0xC4:
 		case 0xCC:
@@ -754,7 +754,7 @@ public class I8080 {
 			registers.setRegister(Register.PC, popFromStack());
 			return 10;
 		}
-		
+
 		// RET cc
 		case 0xC0:
 		case 0xC8:
@@ -771,7 +771,7 @@ public class I8080 {
 			}
             return 5;
 		}
-		
+
 		// RST p
 		case 0xC7:
 		case 0xCF:
@@ -798,7 +798,7 @@ public class I8080 {
 			registers.setRegister(Register.A, n);
 			return 10;
 		}
-		
+
 		// OUT (n),A
 		case 0xD3: {
 			int portId = fetchWord8();
@@ -808,10 +808,8 @@ public class I8080 {
 		}
 
 		default:
-			handleUnsupportedOpCode(opCode);
+			throw new IllegalArgumentException(String.format("OpCode 0x%x not supported", opCode));
 		}
-
-        throw new IllegalStateException("Remove me after all instructions return cycles");
 	}
 
 	private void checkInterrupts(int opCode) {
@@ -860,10 +858,6 @@ public class I8080 {
 		int sp = registers.getRegister(Register.SP);
 		registers.setRegister(Register.SP, sp + 2);
 		return memory.readWord16(sp);
-	}
-
-	private void handleUnsupportedOpCode(final int opCode) {
-		throw new IllegalArgumentException(String.format("OpCode 0x%x not supported", opCode));
 	}
 
 	public Memory getMemory() {
