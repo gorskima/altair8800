@@ -18,7 +18,9 @@ public class I8080 {
 	private boolean interruptAwaiting = false; // INT
 	private boolean interruptAccepted = false; // INTA
 	private int interruptOpCode;
-    private int cycles;
+
+    // At 2 MHz it will overflow in 146 years, so let's ignore it for now ;)
+    private long cycles;
 
     // TODO add new constructor without registers
 	public I8080(final Registers registers, final Memory memory) {
@@ -881,7 +883,7 @@ public class I8080 {
 		interruptAwaiting = true;
 	}
 
-    public int getCycles() {
+    public long getCycles() {
         return cycles;
     }
 }
