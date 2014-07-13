@@ -1,11 +1,11 @@
-package gorskima.i8080emu;
+package gorskima.altair8800;
 
-import static gorskima.i8080emu.Flag.P;
-import static gorskima.i8080emu.Flag.S;
-import static gorskima.i8080emu.Flag.Z;
-import static gorskima.i8080emu.Register.A;
-import static gorskima.i8080emu.Register.BC;
-import static gorskima.i8080emu.Register.HL;
+import static gorskima.altair8800.Flag.P;
+import static gorskima.altair8800.Flag.S;
+import static gorskima.altair8800.Flag.Z;
+import static gorskima.altair8800.Register.A;
+import static gorskima.altair8800.Register.BC;
+import static gorskima.altair8800.Register.HL;
 import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

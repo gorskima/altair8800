@@ -1,4 +1,4 @@
-package gorskima.i8080emu;
+package gorskima.altair8800;
 
 import java.io.IOException;
 import java.net.URL;

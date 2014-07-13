@@ -1,4 +1,4 @@
-package gorskima.i8080emu;
+package gorskima.altair8800;
 
 public class Condition {
 

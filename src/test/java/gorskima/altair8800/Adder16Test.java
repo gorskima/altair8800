@@ -1,4 +1,4 @@
-package gorskima.i8080emu;
+package gorskima.altair8800;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.Matchers.is;

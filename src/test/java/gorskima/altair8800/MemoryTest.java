@@ -1,7 +1,6 @@
-package gorskima.i8080emu;
+package gorskima.altair8800;
 
 import static org.junit.Assert.assertEquals;
-import gorskima.i8080emu.Memory;
 
 import org.junit.Test;
 

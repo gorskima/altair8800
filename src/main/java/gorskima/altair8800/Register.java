@@ -1,4 +1,4 @@
-package gorskima.i8080emu;
+package gorskima.altair8800;
 
 public enum Register {
 	A(1,0), F(1,1), B(1,2), C(1,3), D(1,4), E(1,5), H(1,6), L(1,7),

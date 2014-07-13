@@ -1,6 +1,6 @@
-package gorskima.i8080emu;
+package gorskima.altair8800;
 
-import gorskima.i8080emu.Decoder.RegisterType;
+import gorskima.altair8800.Decoder.RegisterType;
 
 public class I8080 {
 	

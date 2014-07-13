@@ -1,7 +1,7 @@
-package gorskima.i8080emu;
+package gorskima.altair8800;
 
-import static gorskima.i8080emu.Register.F;
-import static gorskima.i8080emu.Register.PC;
+import static gorskima.altair8800.Register.F;
+import static gorskima.altair8800.Register.PC;
 
 import com.google.common.base.Preconditions;
 

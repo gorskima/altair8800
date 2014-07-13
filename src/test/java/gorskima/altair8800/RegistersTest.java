@@ -1,9 +1,6 @@
-package gorskima.i8080emu;
+package gorskima.altair8800;
 
 import static org.junit.Assert.assertEquals;
-import gorskima.i8080emu.Flag;
-import gorskima.i8080emu.Register;
-import gorskima.i8080emu.Registers;
 
 import org.junit.Before;
 import org.junit.Test;
