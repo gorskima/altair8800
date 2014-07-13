@@ -26,7 +26,7 @@ public class I8080Test {
 	private Registers reg = new Registers();
 	private Memory mem = new Memory();
 	private I8080 cpu = new I8080(reg, mem);
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testAttachingDeviceWithTooBigPortId() {
 		cpu.attachDevice(256, mock(IOPort.class));
@@ -40,7 +40,7 @@ public class I8080Test {
 		cpu.step();
 
         assertThat(reg.getRegister(A), is(58));
-        assertThat(cpu.getCycles(), is(5));
+        assertThat(cpu.getCycles(), is(5L));
 	}
 
 	@Test
@@ -51,7 +51,7 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(B), is(123));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(C), is(100));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
 
 	@Test
@@ -75,9 +75,9 @@ public class I8080Test {
         cpu.step();
 
 		assertThat(mem.readWord8(105), is(9));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_LD_HL_n() {
 		reg.setRegister(HL, 200);
@@ -85,7 +85,7 @@ public class I8080Test {
 		mem.writeWord8(1, 55);
 		cpu.step();
 		assertThat(mem.readWord8(200), is(55));
-        assertThat(cpu.getCycles(), is(10));
+        assertThat(cpu.getCycles(), is(10L));
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class I8080Test {
 		cpu.step();
 
         assertThat(reg.getRegister(A), is(33));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class I8080Test {
         cpu.step();
 
 		assertThat(reg.getRegister(A), is(123));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(7));
-        assertThat(cpu.getCycles(), is(13));
+        assertThat(cpu.getCycles(), is(13L));
 	}
 
 	@Test
@@ -133,7 +133,7 @@ public class I8080Test {
         cpu.step();
 
 		assertThat(mem.readWord8(13300), is(59));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
 
 	@Test
@@ -145,7 +145,7 @@ public class I8080Test {
         cpu.step();
 
 		assertThat(mem.readWord8(5000), is(17));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public class I8080Test {
         cpu.step();
 
         assertThat(mem.readWord8(43000), is(15));
-        assertThat(cpu.getCycles(), is(13));
+        assertThat(cpu.getCycles(), is(13L));
 	}
 
 	@Test
@@ -168,7 +168,7 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(DE), is(12345));
-        assertThat(cpu.getCycles(), is(10));
+        assertThat(cpu.getCycles(), is(10L));
 	}
 
 	@Test
@@ -180,7 +180,7 @@ public class I8080Test {
 		cpu.step();
 
         assertThat(reg.getRegister(HL), is(0x1234));
-        assertThat(cpu.getCycles(), is(16));
+        assertThat(cpu.getCycles(), is(16L));
 	}
 
 	@Test
@@ -192,7 +192,7 @@ public class I8080Test {
 		cpu.step();
 
         assertThat(mem.readWord16(0x0040), is(0x1520));
-        assertThat(cpu.getCycles(), is(16));
+        assertThat(cpu.getCycles(), is(16L));
 	}
 
 	@Test
@@ -203,7 +203,7 @@ public class I8080Test {
 		cpu.step();
 
         assertThat(reg.getRegister(SP), is(25000));
-        assertThat(cpu.getCycles(), is(5));
+        assertThat(cpu.getCycles(), is(5L));
 	}
 
 	@Test
@@ -217,7 +217,7 @@ public class I8080Test {
         assertThat(reg.getRegister(SP), is(0xFFFD));
 		assertThat(mem.readWord8(0xFFFD), is(0x77));
 		assertThat(mem.readWord8(0xFFFE), is(0x22));
-        assertThat(cpu.getCycles(), is(11));
+        assertThat(cpu.getCycles(), is(11L));
 	}
 
 	@Test
@@ -231,9 +231,9 @@ public class I8080Test {
 
 		assertThat(reg.getRegister(HL), is(0x1234));
 		assertThat(reg.getRegister(SP), is(0xFFF2));
-        assertThat(cpu.getCycles(), is(10));
+        assertThat(cpu.getCycles(), is(10L));
 	}
-	
+
 	@Test
 	public void test_ADD_HL_ss() {
 		reg.setRegister(HL, 10000);
@@ -242,9 +242,9 @@ public class I8080Test {
 		cpu.step();
 
         assertThat(reg.getRegister(HL), is(20000));
-        assertThat(cpu.getCycles(), is(10));
+        assertThat(cpu.getCycles(), is(10L));
 	}
-	
+
 	@Test
 	public void test_ADC_A_r() {
 		reg.setRegister(A, 50);
@@ -255,9 +255,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(71));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_ADC_A_HL() {
 		reg.setRegister(A, 200);
@@ -269,9 +269,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(255));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_SUB_HL() {
 		reg.setRegister(A, 100);
@@ -282,9 +282,9 @@ public class I8080Test {
 		cpu.step();
 
         assertThat(reg.getRegister(A), is(23));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_SBC_A_r() {
 		reg.setRegister(A, 51);
@@ -295,9 +295,9 @@ public class I8080Test {
 		cpu.step();
 
         assertThat(reg.getRegister(A), is(30));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_SBC_A_HL() {
 		reg.setRegister(A, 75);
@@ -309,9 +309,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(4));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_AND_r() {
 		reg.setRegister(A, 0x83);
@@ -321,7 +321,7 @@ public class I8080Test {
 		cpu.step();
 
         assertThat(reg.getRegister(A), is(0x01));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
 
 	@Test
@@ -334,9 +334,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(0x30));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_OR_HL() {
 		reg.setRegister(A, 0x70);
@@ -347,9 +347,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(0x75));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_XOR_r() {
 		reg.setRegister(A, 0xFF);
@@ -359,9 +359,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(0xF0));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_XOR_HL() {
 		reg.setRegister(A, 0x07);
@@ -372,9 +372,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(0x0E));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_CP_r() {
 		reg.setRegister(A, 125);
@@ -384,9 +384,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.testFlag(Flag.Z), is(true));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_CP_HL() {
 		reg.setRegister(A, 67);
@@ -397,9 +397,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.testFlag(Flag.Z), is(true));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_INC_HL() {
 		reg.setRegister(HL, 1000);
@@ -409,9 +409,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(mem.readWord8(1000), is(24));
-        assertThat(cpu.getCycles(), is(10));
+        assertThat(cpu.getCycles(), is(10L));
 	}
-	
+
 	@Test
 	public void test_DEC_HL() {
 		reg.setRegister(HL, 1000);
@@ -421,9 +421,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(mem.readWord8(1000), is(22));
-        assertThat(cpu.getCycles(), is(10));
+        assertThat(cpu.getCycles(), is(10L));
 	}
-	
+
 	@Test
 	public void test_CCF() {
 		reg.setFlag(Flag.C, true);
@@ -433,9 +433,9 @@ public class I8080Test {
 
         assertThat(reg.testFlag(Flag.C), is(false));
 		assertThat(reg.testFlag(Flag.H), is(true));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_SCF() {
 		reg.setFlag(Flag.C, false);
@@ -445,9 +445,9 @@ public class I8080Test {
 
         assertThat(reg.testFlag(Flag.C), is(true));
 		assertThat(reg.testFlag(Flag.H), is(false));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_INC_ss() {
 		reg.setRegister(DE, 25000);
@@ -456,9 +456,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(DE), is(25001));
-        assertThat(cpu.getCycles(), is(5));
+        assertThat(cpu.getCycles(), is(5L));
 	}
-	
+
 	@Test
 	public void test_DEC_ss() {
 		reg.setRegister(SP, 25000);
@@ -467,9 +467,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(SP), is(24999));
-        assertThat(cpu.getCycles(), is(5));
+        assertThat(cpu.getCycles(), is(5L));
 	}
-	
+
 	@Test
 	public void test_CALL_cc_nn() {
 		reg.setRegister(SP, 0xFFFF);
@@ -480,9 +480,9 @@ public class I8080Test {
 		assertThat(reg.getRegister(PC), is(20000));
 		assertThat(reg.getRegister(SP), is(0xFFFD));
 		assertThat(mem.readWord16(0xFFFD), is(3));
-        assertThat(cpu.getCycles(), is(17));
+        assertThat(cpu.getCycles(), is(17L));
 	}
-	
+
 	@Test
 	public void test_CALL_cc_nn_conditionNotFulfilled() {
 		reg.setRegister(SP, 0xFFFF);
@@ -494,9 +494,9 @@ public class I8080Test {
 
         assertThat(reg.getRegister(PC), is(3));
 		assertThat(reg.getRegister(SP), is(0xFFFF));
-        assertThat(cpu.getCycles(), is(11));
+        assertThat(cpu.getCycles(), is(11L));
 	}
-	
+
 	@Test
 	public void test_RET_cc() {
 		reg.setRegister(SP, 0xFFFD);
@@ -508,9 +508,9 @@ public class I8080Test {
 
         assertThat(reg.getRegister(PC), is(5000));
 		assertThat(reg.getRegister(SP), is(0xFFFF));
-        assertThat(cpu.getCycles(), is(11));
+        assertThat(cpu.getCycles(), is(11L));
 	}
-	
+
 	@Test
 	public void test_RET_cc_conditionNotFulfilled() {
 		reg.setRegister(SP, 0xFFFD);
@@ -522,9 +522,9 @@ public class I8080Test {
 
         assertThat(reg.getRegister(PC), is(1));
 		assertThat(reg.getRegister(SP), is(0xFFFD));
-        assertThat(cpu.getCycles(), is(5));
+        assertThat(cpu.getCycles(), is(5L));
 	}
-	
+
 	@Test
 	public void test_RST_p() {
 		mem.writeWord8(0, 0xEF); // RST 28h (RST 5)
@@ -535,9 +535,9 @@ public class I8080Test {
         assertThat(reg.getRegister(PC), is(0x28));
 		assertThat(reg.getRegister(SP), is(0xFFFD));
 		assertThat(mem.readWord16(0xFFFD), is(1));
-        assertThat(cpu.getCycles(), is(11));
+        assertThat(cpu.getCycles(), is(11L));
 	}
-	
+
 	@Test
 	public void test_JP_HL() {
 		reg.setRegister(HL, 1000);
@@ -546,9 +546,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(PC), is(1000));
-        assertThat(cpu.getCycles(), is(5));
+        assertThat(cpu.getCycles(), is(5L));
 	}
-	
+
 	@Test
 	public void test_RLCA() {
 		reg.setRegister(A, 0x83);
@@ -557,9 +557,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(0x07));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_RLA() {
 		reg.setRegister(A, 0x83);
@@ -568,9 +568,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(0x06));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_RRCA() {
 		reg.setRegister(A, 0x83);
@@ -579,9 +579,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(0xC1));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_RRA() {
 		reg.setRegister(A, 0x83);
@@ -590,9 +590,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(0x41));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_EX_DE_HL() {
 		reg.setRegister(DE, 12345);
@@ -603,9 +603,9 @@ public class I8080Test {
 
         assertThat(reg.getRegister(DE), is(33333));
 		assertThat(reg.getRegister(HL), is(12345));
-        assertThat(cpu.getCycles(), is(5));
+        assertThat(cpu.getCycles(), is(5L));
 	}
-	
+
 	@Test
 	public void test_EX_SP_HL() {
 		reg.setRegister(HL, 0x7012);
@@ -620,9 +620,9 @@ public class I8080Test {
 		assertThat(reg.getRegister(SP), is(0x8856));
 		assertThat(mem.readWord8(0x8856), is(0x12));
 		assertThat(mem.readWord8(0x8857), is(0x70));
-        assertThat(cpu.getCycles(), is(18));
+        assertThat(cpu.getCycles(), is(18L));
 	}
-	
+
 	@Test
 	public void test_ADD_A_r() {
 		reg.setRegister(A, 33);
@@ -632,9 +632,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(110));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_ADD_A_n() {
 		reg.setRegister(A, 15);
@@ -644,9 +644,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(55));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_ADD_A_HL() {
 		reg.setRegister(A, 60);
@@ -657,9 +657,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(122));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_ADC_A_n() {
 		reg.setRegister(A, 13);
@@ -670,9 +670,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(104));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_SUB_r() {
 		reg.setRegister(A, 100);
@@ -682,9 +682,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(52));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_SUB_n() {
 		reg.setRegister(A, 75);
@@ -692,9 +692,9 @@ public class I8080Test {
 		mem.writeWord8(1, 15);
 		cpu.step();
 		assertThat(reg.getRegister(A), is(60));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_SBC_A_n() {
 		reg.setRegister(A, 101);
@@ -705,9 +705,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(87));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_AND_n() {
 		reg.setRegister(A, 0x81);
@@ -717,9 +717,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(0x01));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_OR_r() {
 		reg.setRegister(A, 0x0F);
@@ -729,9 +729,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(0xEF));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_OR_n() {
 		reg.setRegister(A, 0x10);
@@ -741,9 +741,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(0x33));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_XOR_n() {
 		reg.setRegister(A, 0x81);
@@ -753,9 +753,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(0x03));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_CP_n() {
 		reg.setRegister(A, 33);
@@ -765,9 +765,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.testFlag(Flag.Z), is(true));
-        assertThat(cpu.getCycles(), is(7));
+        assertThat(cpu.getCycles(), is(7L));
 	}
-	
+
 	@Test
 	public void test_INC_r() {
 		reg.setRegister(L, 14);
@@ -776,9 +776,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(L), is(15));
-        assertThat(cpu.getCycles(), is(5));
+        assertThat(cpu.getCycles(), is(5L));
 	}
-	
+
 	@Test
 	public void test_DEC_r() {
 		reg.setRegister(B, 20);
@@ -787,9 +787,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(B), is(19));
-        assertThat(cpu.getCycles(), is(5));
+        assertThat(cpu.getCycles(), is(5L));
 	}
-	
+
 	@Test
 	public void test_CPL() {
 		reg.setRegister(A, 1);
@@ -798,18 +798,18 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(254));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_NOP() {
 		mem.writeWord8(0, 0x00); // NOP
 
         cpu.step(); // check if silently passes thru
 
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_JP_nn() {
 		mem.writeWord8(0, 0xC3);
@@ -818,9 +818,9 @@ public class I8080Test {
         cpu.step();
 
 		assertThat(reg.getRegister(PC), is(5000));
-        assertThat(cpu.getCycles(), is(10));
+        assertThat(cpu.getCycles(), is(10L));
 	}
-	
+
 	@Test
 	public void test_JP_cc_nn() {
 		reg.setFlag(Z, true);
@@ -830,9 +830,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(PC), is(3000));
-        assertThat(cpu.getCycles(), is(10));
+        assertThat(cpu.getCycles(), is(10L));
 	}
-	
+
 	@Test
 	public void test_JP_cc_nn_conditionNotFulfilled() {
 		reg.setFlag(Z, true);
@@ -842,13 +842,13 @@ public class I8080Test {
         cpu.step();
 
 		assertThat(reg.getRegister(PC), is(3));
-        assertThat(cpu.getCycles(), is(10));
+        assertThat(cpu.getCycles(), is(10L));
 	}
-	
+
 	@Test
 	public void test_CALL_nn() {
 		reg.setRegister(SP, 0xFFFF);
-		mem.writeWord8(0, 0xCD); // CALL 5000 
+		mem.writeWord8(0, 0xCD); // CALL 5000
 		mem.writeWord16(1, 5000);
 
         cpu.step();
@@ -856,9 +856,9 @@ public class I8080Test {
         assertThat(reg.getRegister(PC), is(5000));
 		assertThat(reg.getRegister(SP), is(0xFFFD));
 		assertThat(mem.readWord16(0xFFFD), is(3));
-        assertThat(cpu.getCycles(), is(17));
+        assertThat(cpu.getCycles(), is(17L));
 	}
-	
+
 	@Test
 	public void test_RET() {
 		reg.setRegister(SP, 0xFFFD);
@@ -869,9 +869,9 @@ public class I8080Test {
 
         assertThat(reg.getRegister(PC), is(12000));
 		assertThat(reg.getRegister(SP), is(0xFFFF));
-        assertThat(cpu.getCycles(), is(10));
+        assertThat(cpu.getCycles(), is(10L));
 	}
-	
+
 	@Test
 	public void test_IN_A_n() {
 		IOPort port = mock(IOPort.class);
@@ -884,9 +884,9 @@ public class I8080Test {
 
         verify(port).read();
 		assertThat(reg.getRegister(A), is(7));
-        assertThat(cpu.getCycles(), is(10));
+        assertThat(cpu.getCycles(), is(10L));
 	}
-	
+
 	@Test
 	public void test_OUT_n_A() {
 		IOPort port = mock(IOPort.class);
@@ -898,9 +898,9 @@ public class I8080Test {
         cpu.step();
 
         verify(port).write(123);
-        assertThat(cpu.getCycles(), is(10));
+        assertThat(cpu.getCycles(), is(10L));
 	}
-	
+
 	@Test
 	public void test_DAA() {
 		reg.setRegister(A, 0b00111011); // result of BCD 13 + 28
@@ -909,9 +909,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(reg.getRegister(A), is(0b01000001)); // BCD 41
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_EI() {
 		mem.writeWord8(0, 0xFB); // EI
@@ -919,9 +919,9 @@ public class I8080Test {
         cpu.step();
 
         assertThat(cpu.isInterruptsEnabled(), is(true));
-        assertThat(cpu.getCycles(), is(4));
+        assertThat(cpu.getCycles(), is(4L));
 	}
-	
+
 	@Test
 	public void test_DI() {
 		mem.writeWord8(0, 0xFB); // EI
@@ -931,53 +931,53 @@ public class I8080Test {
 		cpu.step();
 
         assertThat(cpu.isInterruptsEnabled(), is(false));
-        assertThat(cpu.getCycles(), is(8));
+        assertThat(cpu.getCycles(), is(8L));
 	}
-	
+
 	@Test
 	public void testInterruptWhenDisabled() {
 		cpu.interrupt(0x0100);
 		cpu.step(); // NOP
 		cpu.step(); // NOP
-		
+
 		assertThat(reg.getRegister(PC), is(0x0002));
 	}
-	
+
 	@Test
 	public void testInterruptWontInterrupt_DI() {
 		mem.writeWord8(0, 0xFB); // EI
 		mem.writeWord8(1, 0x00); // NOP
 		mem.writeWord8(2, 0xF3); // DI
 		mem.writeWord8(3, 0x00); // NOP
-		
+
 		cpu.step(); // EI
 		cpu.step(); // NOP
 		cpu.interrupt(0xFF);
 		cpu.step(); // DI
 		cpu.step(); // NOP
-		
+
 		assertThat(reg.getRegister(PC), is(0x0004));
 	}
-	
+
 	@Test
 	public void testInterruptWontInterrupt_EI() {
 		reg.setRegister(SP, 0xFFFF);
 		reg.setRegister(A, 0);
 		mem.writeWord8(0, 0x00); // NOP
 		mem.writeWord8(1, 0xFB); // EI
-		mem.writeWord8(2, 0x3C); // INR A 
+		mem.writeWord8(2, 0x3C); // INR A
 		mem.writeWord8(3, 0x3C); // INR A
-		
+
 		cpu.step(); // NOP
 		cpu.interrupt(0xFF);
 		cpu.step(); // EI
 		cpu.step(); // INR A
 		cpu.step(); // interrupt cycle #1
-		
+
 		assertThat(reg.getRegister(PC), is(0x0038));
 		assertThat(reg.getRegister(A), is(1));
 	}
-	
+
 	@Test
 	public void testSimpleInterrupt() {
 		reg.setRegister(SP, 0xFFFF);
@@ -987,30 +987,30 @@ public class I8080Test {
 		mem.writeWord8(2, 0x00); // NOP
 		mem.writeWord8(0x38, 0x3C); // INR A - interrupt handler
 		mem.writeWord8(0x39, 0xC9); // RET - end of interrupt handler
-		
+
 		cpu.step(); // EI
 		cpu.interrupt(0xFF); // RST 7
 		cpu.step(); // NOP
 		cpu.step(); // interrupt cycle #1
-		
+
 		assertThat(cpu.isInterruptsEnabled(), is(false));
 		assertThat(reg.getRegister(PC), is(0x0038));
 		assertThat(reg.getRegister(A), is(0));
-		
+
 		cpu.step(); // interrupt cycle #2
-		
+
 		assertThat(cpu.isInterruptsEnabled(), is(false));
 		assertThat(reg.getRegister(PC), is(0x0039));
 		assertThat(reg.getRegister(A), is(1));
-		
+
 		cpu.step(); // RET
-		
+
 		assertThat(reg.getRegister(PC), is(2));
-		
+
 		cpu.step(); // NOP
-		
+
 		assertThat(reg.getRegister(PC), is(3));
 		assertThat(cpu.isInterruptsEnabled(), is(false));
 	}
-	
+
 }
