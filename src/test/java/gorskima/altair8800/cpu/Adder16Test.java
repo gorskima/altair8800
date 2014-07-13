@@ -1,8 +1,9 @@
-package gorskima.altair8800;
+package gorskima.altair8800.cpu;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 

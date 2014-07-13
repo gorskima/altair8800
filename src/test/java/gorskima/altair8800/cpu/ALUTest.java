@@ -1,14 +1,15 @@
-package gorskima.altair8800;
+package gorskima.altair8800.cpu;
 
-import static gorskima.altair8800.Flag.P;
-import static gorskima.altair8800.Flag.S;
-import static gorskima.altair8800.Flag.Z;
-import static gorskima.altair8800.Register.A;
-import static gorskima.altair8800.Register.BC;
-import static gorskima.altair8800.Register.HL;
+import static gorskima.altair8800.cpu.Flag.P;
+import static gorskima.altair8800.cpu.Flag.S;
+import static gorskima.altair8800.cpu.Flag.Z;
+import static gorskima.altair8800.cpu.Register.A;
+import static gorskima.altair8800.cpu.Register.BC;
+import static gorskima.altair8800.cpu.Register.HL;
 import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 

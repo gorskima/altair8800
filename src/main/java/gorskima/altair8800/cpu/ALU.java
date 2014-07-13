@@ -1,4 +1,4 @@
-package gorskima.altair8800;
+package gorskima.altair8800.cpu;
 
 public class ALU {
 

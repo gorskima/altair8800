@@ -1,6 +1,6 @@
-package gorskima.altair8800;
+package gorskima.altair8800.cpu;
 
-import gorskima.altair8800.Decoder.RegisterType;
+import gorskima.altair8800.cpu.Decoder.RegisterType;
 
 public class I8080 {
 	

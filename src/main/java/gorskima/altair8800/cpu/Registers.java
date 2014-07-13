@@ -1,7 +1,7 @@
-package gorskima.altair8800;
+package gorskima.altair8800.cpu;
 
-import static gorskima.altair8800.Register.F;
-import static gorskima.altair8800.Register.PC;
+import static gorskima.altair8800.cpu.Register.F;
+import static gorskima.altair8800.cpu.Register.PC;
 
 import com.google.common.base.Preconditions;
 

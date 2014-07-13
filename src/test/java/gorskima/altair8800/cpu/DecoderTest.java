@@ -1,19 +1,19 @@
-package gorskima.altair8800;
+package gorskima.altair8800.cpu;
 
-import static gorskima.altair8800.Decoder.RegisterType.dd;
-import static gorskima.altair8800.Decoder.RegisterType.qq;
-import static gorskima.altair8800.Register.A;
-import static gorskima.altair8800.Register.AF;
-import static gorskima.altair8800.Register.B;
-import static gorskima.altair8800.Register.BC;
-import static gorskima.altair8800.Register.C;
-import static gorskima.altair8800.Register.D;
-import static gorskima.altair8800.Register.DE;
-import static gorskima.altair8800.Register.E;
-import static gorskima.altair8800.Register.H;
-import static gorskima.altair8800.Register.HL;
-import static gorskima.altair8800.Register.L;
-import static gorskima.altair8800.Register.SP;
+import static gorskima.altair8800.cpu.Decoder.RegisterType.dd;
+import static gorskima.altair8800.cpu.Decoder.RegisterType.qq;
+import static gorskima.altair8800.cpu.Register.A;
+import static gorskima.altair8800.cpu.Register.AF;
+import static gorskima.altair8800.cpu.Register.B;
+import static gorskima.altair8800.cpu.Register.BC;
+import static gorskima.altair8800.cpu.Register.C;
+import static gorskima.altair8800.cpu.Register.D;
+import static gorskima.altair8800.cpu.Register.DE;
+import static gorskima.altair8800.cpu.Register.E;
+import static gorskima.altair8800.cpu.Register.H;
+import static gorskima.altair8800.cpu.Register.HL;
+import static gorskima.altair8800.cpu.Register.L;
+import static gorskima.altair8800.cpu.Register.SP;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 

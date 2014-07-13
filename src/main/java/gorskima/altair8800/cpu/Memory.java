@@ -1,4 +1,4 @@
-package gorskima.altair8800;
+package gorskima.altair8800.cpu;
 
 import com.google.common.base.Preconditions;
 

@@ -1,4 +1,4 @@
-package gorskima.altair8800;
+package gorskima.altair8800.cpu;
 
 public enum Flag {
 	S(0x80), Z(0x40), H(0x10), P(0x04), C(0x01);

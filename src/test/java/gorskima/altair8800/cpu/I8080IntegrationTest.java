@@ -1,7 +1,7 @@
-package gorskima.altair8800;
+package gorskima.altair8800.cpu;
 
-import static gorskima.altair8800.CpuRunner.run;
-import static gorskima.altair8800.CpuRunner.runWithRunner;
+import static gorskima.altair8800.cpu.CpuRunner.run;
+import static gorskima.altair8800.cpu.CpuRunner.runWithRunner;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
