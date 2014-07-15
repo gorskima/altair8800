@@ -43,7 +43,7 @@ public class Mits88SioTest {
 
 		classUnderTest.notifyInputAvailable();
 
-        assertThat(dataPort.read(), is(123));
+		assertThat(dataPort.read(), is(123));
 
 		classUnderTest.notifyInputAvailable(); // Read 80
 		classUnderTest.notifyInputAvailable(); // Overrun 80 with 15
