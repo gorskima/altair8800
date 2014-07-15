@@ -13,8 +13,8 @@ public class Mits88Sio implements InputListener {
 	private final SerialDevice serialDevice;
 	
 	// TODO all synchronization stuff
-	private int status = 0x71;
-	private final Queue<Integer> data = Lists.newLinkedList();
+	private int status = 0x00 | _INPUT_DEVICE_READY_;
+	private int data = 0x00;
 
 	public Mits88Sio(final SerialDevice serialDevice) {
 		this.serialDevice = serialDevice;
@@ -30,12 +30,8 @@ public class Mits88Sio implements InputListener {
 			
 			@Override
 			public int read() {
-				if (!data.isEmpty()) {
-					status |= _INPUT_DEVICE_READY_;
-					return data.poll().intValue();
-				} else {
-					return 0;
-				}
+                status |= _INPUT_DEVICE_READY_;
+                return data;
 			}
 		};
 	}
@@ -57,7 +53,7 @@ public class Mits88Sio implements InputListener {
 
     @Override
 	public void notifyInputAvailable() {
-		data.add(new Integer(serialDevice.read()));
+		data = serialDevice.read();
 		status &= ~_INPUT_DEVICE_READY_;
 	}
 

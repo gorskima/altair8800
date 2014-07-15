@@ -38,14 +38,18 @@ public class Mits88SioTest {
 				return testValues.next();
 			}
 		});
-		
-		classUnderTest.notifyInputAvailable();
-		classUnderTest.notifyInputAvailable();
-		classUnderTest.notifyInputAvailable();
 
 		IOPort dataPort = classUnderTest.getDataPort();
-		assertThat(dataPort.read(), is(123));
-		assertThat(dataPort.read(), is(80));
+
+		classUnderTest.notifyInputAvailable();
+
+        assertThat(dataPort.read(), is(123));
+
+		classUnderTest.notifyInputAvailable(); // Read 80
+		classUnderTest.notifyInputAvailable(); // Overrun 80 with 15
+
+        // TODO assert on data overrun
+
 		assertThat(dataPort.read(), is(15));
 	}
 	
