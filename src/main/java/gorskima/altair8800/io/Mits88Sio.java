@@ -54,9 +54,6 @@ public class Mits88Sio implements InputListener {
 
 	public void notifyInputAvailable() {
 		data.add(new Integer(serialDevice.read()));
-        if (data.size() > 1) {
-            throw new RuntimeException("Buffer overrun");
-        }
 		status &= 0xFE;
 	}
 
