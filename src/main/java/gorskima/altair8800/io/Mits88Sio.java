@@ -7,6 +7,9 @@ import java.util.Queue;
 
 public class Mits88Sio implements InputListener {
 
+    final static int _OUTPUT_DEVICE_READY_ = 0x80;
+    final static int _INPUT_DEVICE_READY_ = 0x01;
+
 	private final SerialDevice serialDevice;
 	
 	// TODO all synchronization stuff
@@ -28,7 +31,7 @@ public class Mits88Sio implements InputListener {
 			@Override
 			public int read() {
 				if (!data.isEmpty()) {
-					status |= 0x01;
+					status |= _INPUT_DEVICE_READY_;
 					return data.poll().intValue();
 				} else {
 					return 0;
@@ -52,9 +55,10 @@ public class Mits88Sio implements InputListener {
 		};
 	}
 
+    @Override
 	public void notifyInputAvailable() {
 		data.add(new Integer(serialDevice.read()));
-		status &= 0xFE;
+		status &= ~_INPUT_DEVICE_READY_;
 	}
 
 }
