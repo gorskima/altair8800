@@ -2,6 +2,7 @@ package gorskima.altair8800;
 
 import gorskima.altair8800.cpu.I8080;
 
+//TODO test it
 public class Clock {
 
     private static final int RESOLUTION = 100;
