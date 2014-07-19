@@ -23,7 +23,7 @@ public class Altair8800 {
 		i8080.attachDevice(0, serialController.getStatusPort());
 		i8080.attachDevice(1, serialController.getDataPort());
 
-        new Clock(i8080, 10000).start();
+        new Clock(i8080, 2_000_000).start();
     }
 	
 	private static I8080 initCpu(final String programPath) {
@@ -37,6 +37,7 @@ public class Altair8800 {
 		return new I8080(new Registers(), memory);
 	}
 
+	// TODO move this to some util class?
 	private static void writeMemory(final Memory memory, final byte[] code) {
 		for (int addr = 0; addr < code.length; addr++) {
 			memory.writeWord8(addr, 0xFF & code[addr]);
