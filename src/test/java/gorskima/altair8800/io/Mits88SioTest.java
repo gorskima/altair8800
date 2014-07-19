@@ -2,15 +2,16 @@ package gorskima.altair8800.io;
 
 import com.google.common.collect.Lists;
 import gorskima.altair8800.cpu.IOPort;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.util.Iterator;
 
+import static gorskima.altair8800.io.Mits88Sio.DATA_OVERFLOW;
 import static gorskima.altair8800.io.Mits88Sio._INPUT_DEVICE_READY_;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
@@ -64,6 +65,33 @@ public class Mits88SioTest {
 	}
 
 	@Test
+	public void testInputBufferOverrun() {
+		IOPort statusPort = classUnderTest.getStatusPort();
+		IOPort dataPort = classUnderTest.getDataPort();
+		final Iterator<Integer> testValues = Lists.newArrayList(123, 80, 15).iterator();
+		stub(serialDevice.read()).toAnswer(new Answer<Integer>() {
+			@Override
+			public Integer answer(final InvocationOnMock invocation) throws Throwable {
+				return testValues.next();
+			}
+		});
+
+		assertThat(statusPort.read() & DATA_OVERFLOW, is(0x00));
+
+		classUnderTest.notifyInputAvailable();
+
+		assertThat(statusPort.read() & DATA_OVERFLOW, is(0x00));
+
+		classUnderTest.notifyInputAvailable();
+
+		assertThat(statusPort.read() & DATA_OVERFLOW, is(DATA_OVERFLOW));
+
+		dataPort.read();
+
+		assertThat(statusPort.read() & DATA_OVERFLOW, is(0x00));
+	}
+
+	@Test
 	public void testReadingBufferedData() {
 		IOPort dataPort = classUnderTest.getDataPort();
 		final Iterator<Integer> testValues = Lists.newArrayList(123, 80, 15).iterator();
@@ -80,8 +108,6 @@ public class Mits88SioTest {
 
 		classUnderTest.notifyInputAvailable(); // Read 80
 		classUnderTest.notifyInputAvailable(); // Overrun 80 with 15
-
-		// TODO assert on data overrun
 
 		assertThat(dataPort.read(), is(15));
 	}
@@ -107,13 +133,13 @@ public class Mits88SioTest {
 	}
 
 	@Test
-	@Ignore("This is probably wrong, verify")
-	public void testWritingAndReadingStatus() {
+	public void testThatWritingToStatusDoesntModifyIt() {
 		IOPort statusPort = classUnderTest.getStatusPort();
+		assertThat(statusPort.read(), is(0x01));
 
-		statusPort.write(160);
+		statusPort.write(0xFE);
 
-		assertThat(statusPort.read(), is(160));
+		assertThat(statusPort.read(), is(0x01));
 	}
 
 	// TODO add matcher for bit mask checking
