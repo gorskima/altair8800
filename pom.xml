@@ -34,7 +34,7 @@
 					<appendAssemblyId>false</appendAssemblyId>
 					<archive>
 						<manifest>
-							<mainClass>gorskima.altair8800.Altair8080</mainClass>
+							<mainClass>gorskima.altair8800.Altair8800</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
