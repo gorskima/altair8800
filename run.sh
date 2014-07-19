@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "[Altair 8080 emulator]"
+echo "[Altair 8800 emulator]"
 echo 
 echo "After the emulation starts, use Ctrl+K to quit"
 echo
