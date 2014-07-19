@@ -41,7 +41,7 @@ public class Mits88Sio implements InputListener {
 			
 			@Override
 			public void write(final int n) {
-				status = n;
+				// Do nothing for now. In the future implement interrupt control
 			}
 			
 			@Override

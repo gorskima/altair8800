@@ -107,13 +107,13 @@ public class Mits88SioTest {
 	}
 
 	@Test
-	@Ignore("This is probably wrong, verify")
-	public void testWritingAndReadingStatus() {
+	public void testThatWritingToStatusDoesntModifyIt() {
 		IOPort statusPort = classUnderTest.getStatusPort();
+		assertThat(statusPort.read(), is(0x01));
 
-		statusPort.write(160);
+		statusPort.write(0xFE);
 
-		assertThat(statusPort.read(), is(160));
+		assertThat(statusPort.read(), is(0x01));
 	}
 
 	// TODO add matcher for bit mask checking
