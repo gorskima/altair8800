@@ -8,6 +8,7 @@ import java.util.Queue;
 public class Mits88Sio implements InputListener {
 
     final static int _OUTPUT_DEVICE_READY_ = 0x80;
+	final static int DATA_OVERFLOW = 0x10;
     final static int _INPUT_DEVICE_READY_ = 0x01;
 
 	private final SerialDevice serialDevice;
@@ -30,6 +31,7 @@ public class Mits88Sio implements InputListener {
 			
 			@Override
 			public int read() {
+				status &= ~DATA_OVERFLOW;
                 status |= _INPUT_DEVICE_READY_;
                 return data;
 			}
@@ -54,6 +56,9 @@ public class Mits88Sio implements InputListener {
     @Override
 	public void notifyInputAvailable() {
 		data = serialDevice.read();
+		if ((status & _INPUT_DEVICE_READY_) == 0x00) {
+			status |= DATA_OVERFLOW;
+		}
 		status &= ~_INPUT_DEVICE_READY_;
 	}
 
