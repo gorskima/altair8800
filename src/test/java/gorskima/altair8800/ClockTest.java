@@ -10,8 +10,9 @@ import static org.junit.Assert.assertThat;
 
 public class ClockTest {
 
+	// TODO this test likes to fail once in a while, is 1% delta not to strict?
     @Test
-    public void test() throws InterruptedException {
+    public void testClockPrecision() throws InterruptedException {
         I8080 cpu = new I8080(new Registers(), new Memory());
         Clock clock = new Clock(cpu, 2_000_000);
 
