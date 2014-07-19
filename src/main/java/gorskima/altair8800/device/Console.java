@@ -15,6 +15,7 @@ public class Console extends ListenableDevice implements SerialDevice {
 	
 	@Override
 	public void write(int n) {
+		// TODO masks out MSB, hack for Altair BASIC 4K; clean this up, or at least make it configuratble
 		System.out.print((char)(n & 0x7f));
 	}
 
