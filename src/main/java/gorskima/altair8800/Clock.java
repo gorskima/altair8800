@@ -2,7 +2,6 @@ package gorskima.altair8800;
 
 import gorskima.altair8800.cpu.I8080;
 
-//TODO test it
 public class Clock {
 
     private static final int RESOLUTION = 100;
@@ -35,7 +34,8 @@ public class Clock {
                 try {
                     Thread.sleep(ms);
                 } catch (InterruptedException e) {
-                    // TODO handle it gently?
+					// TODO think it over if it ever causes some weird shit...
+                    Thread.currentThread().interrupt();
                 }
             }
         };
