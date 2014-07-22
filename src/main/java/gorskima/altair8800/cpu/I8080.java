@@ -598,7 +598,15 @@ public class I8080 {
 		}
 
 		// NOP
-		case 0x00: {
+		case 0x00:
+		// unofficial opCodes:
+		case 0x08:
+		case 0x10:
+		case 0x18:
+		case 0x20:
+		case 0x28:
+		case 0x30:
+		case 0x38: {
 			// do nothing :)
 			return 4;
 		}
@@ -690,7 +698,9 @@ public class I8080 {
 		 */
 
 		// JP nn
-		case 0xC3: {
+		case 0xC3:
+		// unofficial opCodes:
+		case 0xCB: {
 			int nn = fetchWord16();
 			registers.setRegister(Register.PC, nn);
 			return 10;
@@ -725,7 +735,11 @@ public class I8080 {
 		 */
 
 		// CALL nn
-		case 0xCD: {
+		case 0xCD:
+		// unofficial opCodes:
+		case 0xDD:
+		case 0xED:
+		case 0xFD: {
 			int addr = fetchWord16();
 			pushOnStack(registers.getRegister(Register.PC));
 			registers.setRegister(Register.PC, addr);
@@ -752,7 +766,9 @@ public class I8080 {
 		}
 
 		// RET
-		case 0xC9: {
+		case 0xC9:
+		// unofficial opCodes:
+		case 0xD9: {
 			registers.setRegister(Register.PC, popFromStack());
 			return 10;
 		}

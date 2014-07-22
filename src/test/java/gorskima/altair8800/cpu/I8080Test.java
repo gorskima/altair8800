@@ -13,6 +13,7 @@ import static gorskima.altair8800.cpu.Register.HL;
 import static gorskima.altair8800.cpu.Register.L;
 import static gorskima.altair8800.cpu.Register.PC;
 import static gorskima.altair8800.cpu.Register.SP;
+import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
@@ -20,7 +21,12 @@ import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+
+@RunWith(JUnitParamsRunner.class)
 public class I8080Test {
 
 	private Registers reg = new Registers();
@@ -801,24 +807,34 @@ public class I8080Test {
         assertThat(cpu.getCycles(), is(4L));
 	}
 
+	private Object[] NOP_opCodes() {
+		return $(0x00, 0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38);
+	}
+
 	@Test
-	public void test_NOP() {
-		mem.writeWord8(0, 0x00); // NOP
+	@Parameters(method = "NOP_opCodes")
+	public void test_NOP(int opCode) {
+		mem.writeWord8(0, opCode); // NOP
 
         cpu.step(); // check if silently passes thru
 
         assertThat(cpu.getCycles(), is(4L));
 	}
 
+	private Object[] JP_nn_opCodes() {
+		return $(0xC3, 0xCB);
+	}
+
 	@Test
-	public void test_JP_nn() {
-		mem.writeWord8(0, 0xC3);
+	@Parameters(method = "JP_nn_opCodes")
+	public void test_JP_nn(int opCode) {
+		mem.writeWord8(0, opCode);
 		mem.writeWord16(1, 5000); // JP 5000
 
-        cpu.step();
+		cpu.step();
 
 		assertThat(reg.getRegister(PC), is(5000));
-        assertThat(cpu.getCycles(), is(10L));
+		assertThat(cpu.getCycles(), is(10L));
 	}
 
 	@Test
@@ -827,10 +843,10 @@ public class I8080Test {
 		mem.writeWord8(0, 0xCA); // JP Z,3000
 		mem.writeWord16(1, 3000);
 
-        cpu.step();
+		cpu.step();
 
-        assertThat(reg.getRegister(PC), is(3000));
-        assertThat(cpu.getCycles(), is(10L));
+		assertThat(reg.getRegister(PC), is(3000));
+		assertThat(cpu.getCycles(), is(10L));
 	}
 
 	@Test
@@ -839,37 +855,47 @@ public class I8080Test {
 		mem.writeWord8(0, 0xC2); // JP NZ,3000
 		mem.writeWord16(1, 3000);
 
-        cpu.step();
+		cpu.step();
 
 		assertThat(reg.getRegister(PC), is(3));
-        assertThat(cpu.getCycles(), is(10L));
+		assertThat(cpu.getCycles(), is(10L));
+	}
+
+	private Object[] CALL_nn_opCodes() {
+		return $(0xCD, 0xDD, 0xED, 0xFD);
 	}
 
 	@Test
-	public void test_CALL_nn() {
+	@Parameters(method = "CALL_nn_opCodes")
+	public void test_CALL_nn(int opCode) {
 		reg.setRegister(SP, 0xFFFF);
-		mem.writeWord8(0, 0xCD); // CALL 5000
+		mem.writeWord8(0, opCode); // CALL 5000
 		mem.writeWord16(1, 5000);
 
-        cpu.step();
+		cpu.step();
 
-        assertThat(reg.getRegister(PC), is(5000));
+		assertThat(reg.getRegister(PC), is(5000));
 		assertThat(reg.getRegister(SP), is(0xFFFD));
 		assertThat(mem.readWord16(0xFFFD), is(3));
-        assertThat(cpu.getCycles(), is(17L));
+		assertThat(cpu.getCycles(), is(17L));
+	}
+
+	private Object[] RET_opCodes() {
+		return $(0xC9, 0xD9);
 	}
 
 	@Test
-	public void test_RET() {
+	@Parameters(method = "RET_opCodes")
+	public void test_RET(int opCode) {
 		reg.setRegister(SP, 0xFFFD);
-		mem.writeWord8(0, 0xC9); // RET
+		mem.writeWord8(0, opCode); // RET
 		mem.writeWord16(0xFFFD, 12000);
 
-        cpu.step();
+		cpu.step();
 
-        assertThat(reg.getRegister(PC), is(12000));
+		assertThat(reg.getRegister(PC), is(12000));
 		assertThat(reg.getRegister(SP), is(0xFFFF));
-        assertThat(cpu.getCycles(), is(10L));
+		assertThat(cpu.getCycles(), is(10L));
 	}
 
 	@Test
@@ -880,11 +906,11 @@ public class I8080Test {
 		mem.writeWord8(0, 0xDB); // IN A,(100)
 		mem.writeWord8(1, 100);
 
-        cpu.step();
+		cpu.step();
 
-        verify(port).read();
+		verify(port).read();
 		assertThat(reg.getRegister(A), is(7));
-        assertThat(cpu.getCycles(), is(10L));
+		assertThat(cpu.getCycles(), is(10L));
 	}
 
 	@Test
@@ -895,10 +921,10 @@ public class I8080Test {
 		mem.writeWord8(0, 0xD3); // OUT (50),A
 		mem.writeWord8(1, 50);
 
-        cpu.step();
+		cpu.step();
 
-        verify(port).write(123);
-        assertThat(cpu.getCycles(), is(10L));
+		verify(port).write(123);
+		assertThat(cpu.getCycles(), is(10L));
 	}
 
 	@Test
@@ -906,20 +932,20 @@ public class I8080Test {
 		reg.setRegister(A, 0b00111011); // result of BCD 13 + 28
 		mem.writeWord8(0, 0x27); // DAA
 
-        cpu.step();
+ 		cpu.step();
 
-        assertThat(reg.getRegister(A), is(0b01000001)); // BCD 41
-        assertThat(cpu.getCycles(), is(4L));
+		assertThat(reg.getRegister(A), is(0b01000001)); // BCD 41
+		assertThat(cpu.getCycles(), is(4L));
 	}
 
 	@Test
 	public void test_EI() {
 		mem.writeWord8(0, 0xFB); // EI
 
-        cpu.step();
+		cpu.step();
 
-        assertThat(cpu.isInterruptsEnabled(), is(true));
-        assertThat(cpu.getCycles(), is(4L));
+		assertThat(cpu.isInterruptsEnabled(), is(true));
+		assertThat(cpu.getCycles(), is(4L));
 	}
 
 	@Test
@@ -927,11 +953,11 @@ public class I8080Test {
 		mem.writeWord8(0, 0xFB); // EI
 		mem.writeWord8(1, 0xF3); // DI
 
-        cpu.step();
+		cpu.step();
 		cpu.step();
 
-        assertThat(cpu.isInterruptsEnabled(), is(false));
-        assertThat(cpu.getCycles(), is(8L));
+		assertThat(cpu.isInterruptsEnabled(), is(false));
+		assertThat(cpu.getCycles(), is(8L));
 	}
 
 	@Test
