@@ -762,7 +762,9 @@ public class I8080 {
 		}
 
 		// RET
-		case 0xC9: {
+		case 0xC9:
+        // unofficial opCodes:
+        case 0xD9: {
 			registers.setRegister(Register.PC, popFromStack());
 			return 10;
 		}

@@ -875,10 +875,15 @@ public class I8080Test {
         assertThat(cpu.getCycles(), is(17L));
 	}
 
+    private Object[] RET_opCodes() {
+        return $(0xC9, 0xD9);
+    }
+
 	@Test
-	public void test_RET() {
+    @Parameters(method = "RET_opCodes")
+	public void test_RET(int opCode) {
 		reg.setRegister(SP, 0xFFFD);
-		mem.writeWord8(0, 0xC9); // RET
+		mem.writeWord8(0, opCode); // RET
 		mem.writeWord16(0xFFFD, 12000);
 
         cpu.step();
