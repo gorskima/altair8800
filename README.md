@@ -40,4 +40,3 @@ It will load BASIC into memory and start executing it. Sample output:
 * Find a way to slow down input/output, so that it resembles baud rate of 9600
 * Implement MITS 88-2SIO serial controller
 * Test interrupts with some actual running code
-* Add support for unofficial opcodes
