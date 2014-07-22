@@ -807,12 +807,12 @@ public class I8080Test {
         assertThat(cpu.getCycles(), is(4L));
 	}
 
-    private Object[] nopOpcodes() {
+    private Object[] NOP_opCodes() {
         return $(0x00, 0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38);
     }
 
 	@Test
-    @Parameters(method = "nopOpcodes")
+    @Parameters(method = "NOP_opCodes")
 	public void test_NOP(int opCode) {
 		mem.writeWord8(0, opCode); // NOP
 
@@ -821,9 +821,14 @@ public class I8080Test {
         assertThat(cpu.getCycles(), is(4L));
 	}
 
+    private Object[] JP_nn_opCodes() {
+        return $(0xC3, 0xCB);
+    }
+
 	@Test
-	public void test_JP_nn() {
-		mem.writeWord8(0, 0xC3);
+    @Parameters(method = "JP_nn_opCodes")
+	public void test_JP_nn(int opCode) {
+		mem.writeWord8(0, opCode);
 		mem.writeWord16(1, 5000); // JP 5000
 
         cpu.step();

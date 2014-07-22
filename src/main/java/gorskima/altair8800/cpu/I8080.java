@@ -698,7 +698,9 @@ public class I8080 {
 		 */
 
 		// JP nn
-		case 0xC3: {
+		case 0xC3:
+        // unofficial opCodes:
+        case 0xCB: {
 			int nn = fetchWord16();
 			registers.setRegister(Register.PC, nn);
 			return 10;
