@@ -13,6 +13,7 @@ import static gorskima.altair8800.cpu.Register.HL;
 import static gorskima.altair8800.cpu.Register.L;
 import static gorskima.altair8800.cpu.Register.PC;
 import static gorskima.altair8800.cpu.Register.SP;
+import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
@@ -20,7 +21,12 @@ import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+
+@RunWith(JUnitParamsRunner.class)
 public class I8080Test {
 
 	private Registers reg = new Registers();
@@ -801,9 +807,14 @@ public class I8080Test {
         assertThat(cpu.getCycles(), is(4L));
 	}
 
+    private Object[] nopOpcodes() {
+        return $(0x00, 0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38);
+    }
+
 	@Test
-	public void test_NOP() {
-		mem.writeWord8(0, 0x00); // NOP
+    @Parameters(method = "nopOpcodes")
+	public void test_NOP(int opCode) {
+		mem.writeWord8(0, opCode); // NOP
 
         cpu.step(); // check if silently passes thru
 
