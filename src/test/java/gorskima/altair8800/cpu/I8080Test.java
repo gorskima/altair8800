@@ -861,10 +861,15 @@ public class I8080Test {
         assertThat(cpu.getCycles(), is(10L));
 	}
 
+    private Object[] CALL_nn_opCodes() {
+        return $(0xCD, 0xDD, 0xED, 0xFD);
+    }
+
 	@Test
-	public void test_CALL_nn() {
+    @Parameters(method = "CALL_nn_opCodes")
+	public void test_CALL_nn(int opCode) {
 		reg.setRegister(SP, 0xFFFF);
-		mem.writeWord8(0, 0xCD); // CALL 5000
+		mem.writeWord8(0, opCode); // CALL 5000
 		mem.writeWord16(1, 5000);
 
         cpu.step();

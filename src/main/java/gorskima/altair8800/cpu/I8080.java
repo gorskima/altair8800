@@ -735,7 +735,11 @@ public class I8080 {
 		 */
 
 		// CALL nn
-		case 0xCD: {
+		case 0xCD:
+        // unofficial opCodes:
+        case 0xDD:
+        case 0xED:
+        case 0xFD: {
 			int addr = fetchWord16();
 			pushOnStack(registers.getRegister(Register.PC));
 			registers.setRegister(Register.PC, addr);
