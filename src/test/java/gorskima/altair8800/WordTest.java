@@ -47,4 +47,32 @@ public class WordTest {
 		);
 	}
 
+	@Test
+	@Parameters(method = "bitSettingParams")
+	public void testBitSettings(int value, int mask, int result) {
+		assertThat(new Word(value).setBits(new Word(mask)).toInt(), is(result));
+	}
+
+	private Object[] bitSettingParams() {
+		return $(
+				$(0x00, 0x01, 0x01),
+				$(0xFF, 0x10, 0xFF),
+				$(0x18, 0x03, 0x1B)
+		);
+	}
+
+	@Test
+	@Parameters(method = "bitUnsettingParams")
+	public void testBitUnsettings(int value, int mask, int result) {
+		assertThat(new Word(value).unsetBits(new Word(mask)).toInt(), is(result));
+	}
+
+	private Object[] bitUnsettingParams() {
+		return $(
+				$(0xA3, 0x00, 0xA3),
+				$(0x00, 0x11, 0x00),
+				$(0xF3, 0x39, 0xC2)
+		);
+	}
+
 }

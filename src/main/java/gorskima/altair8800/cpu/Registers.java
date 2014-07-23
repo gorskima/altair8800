@@ -67,12 +67,13 @@ public class Registers {
 	}
 
 	public void setFlag(final Flag flag, final boolean value) {
-		int f = getRegister8(F).toInt();
+		Word f = getRegister8(F);
+		Word mask = new Word(flag.mask);
 
 		if (value) {
-			setRegister8(F, new Word(f | flag.mask));
+			setRegister8(F, f.setBits(mask));
 		} else {
-			setRegister8(F, new Word(f & ~flag.mask));
+			setRegister8(F, f.unsetBits(mask));
 		}
 	}
 

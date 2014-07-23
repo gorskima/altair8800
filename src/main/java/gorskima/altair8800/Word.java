@@ -26,4 +26,12 @@ public class Word {
 	public boolean testBitmask(Word mask) {
 		return (value & mask.toInt()) == mask.toInt();
 	}
+
+	public Word setBits(Word word) {
+		return new Word(value | word.toInt());
+	}
+
+	public Word unsetBits(Word word) {
+		return new Word(value & ~word.toInt());
+	}
 }
