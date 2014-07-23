@@ -32,4 +32,4 @@ public class DoubleWordTest {
 		assertThat(new DoubleWord(0x73A0).getLowerByte().toInt(), is(0xA0));
 	}
 
-}g
+}

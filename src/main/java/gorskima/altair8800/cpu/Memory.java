@@ -1,32 +1,40 @@
 package gorskima.altair8800.cpu;
 
-import com.google.common.base.Preconditions;
+import gorskima.altair8800.DoubleWord;
+import gorskima.altair8800.Word;
 
 
 public class Memory {
 
 	private static final int DEFAULT_SIZE = 1 << 16;
-	private int[] mem = new int[DEFAULT_SIZE];
-	
+	private static final Word UNINITIALIZED_BYTE = new Word(0);
+
+	private Word[] mem = new Word[DEFAULT_SIZE];
+
+	public Memory() {
+		for (int addr = 0; addr < mem.length; addr++) {
+			mem[addr] = UNINITIALIZED_BYTE;
+		}
+	}
+
 	public int readWord8(final int addr) {
-		return mem[addr];
+		return mem[addr].toInt();
 	}
 	
 	public void writeWord8(final int addr, final int word) {
-		Preconditions.checkArgument((word & 0xFFFFFF00) == 0, "Value may use only 1 least significant byte");
-		mem[addr] = word;
+		mem[addr] = new Word(word);
 	}
 	
 	public int readWord16(final int addr) {
-		int l = mem[addr];
-		int h = mem[addr + 1];
-		return ((h << 8) + l);
+		Word lower = mem[addr];
+		Word upper = mem[addr + 1];
+		return lower.withUpperByte(upper).toInt();
 	}
 	
 	public void writeWord16(final int addr, final int word) {
-		Preconditions.checkArgument((word & 0xFFFF0000) == 0, "Value may use only 2 least significant bytes");
-		mem[addr] = word & 0xFF;
-		mem[addr + 1] = word >> 8;
+		DoubleWord doubleWord = new DoubleWord(word);
+		mem[addr] = doubleWord.getLowerByte();
+		mem[addr + 1] = doubleWord.getUpperByte();
 	}
 	
 }

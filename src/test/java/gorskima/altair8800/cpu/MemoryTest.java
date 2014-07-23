@@ -1,6 +1,8 @@
 package gorskima.altair8800.cpu;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
@@ -31,6 +33,13 @@ public class MemoryTest {
 		memory.writeWord8(200, 255);
 		memory.writeWord8(201, 255);
 		assertEquals(65535, memory.readWord16(200));
+	}
+
+	@Test
+	public void testUninitializedMemory() {
+		// Not necessarily true in real life, but at least it's deterministic :)
+		assertThat(memory.readWord8(0), is(0));
+		assertThat(memory.readWord16(0), is(0));
 	}
 
 }

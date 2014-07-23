@@ -7,7 +7,7 @@ public class DoubleWord {
 	private final int value;
 
 	public DoubleWord(int value) {
-		checkArgument((value & 0xFFFF0000) == 0x00000000, "Data overflow");
+		checkArgument((value & 0xFFFF0000) == 0x00000000, "Data out of range");
 		this.value = value;
 	}
 

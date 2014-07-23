@@ -7,7 +7,7 @@ public class Word {
 	private final int value;
 
 	public Word(int value) {
-		checkArgument((value & 0xFFFFFF00) == 0x00000000, "Data overflow");
+		checkArgument((value & 0xFFFFFF00) == 0x00000000, "Data out of range");
 		this.value = value;
 	}
 
@@ -18,4 +18,9 @@ public class Word {
 	public DoubleWord toDoubleWord() {
 		return new DoubleWord(value);
 	}
+
+	public DoubleWord withUpperByte(Word word) {
+		return new DoubleWord(word.toInt() << 8 | value);
+	}
+
 }

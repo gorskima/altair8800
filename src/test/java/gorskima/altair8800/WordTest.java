@@ -22,4 +22,9 @@ public class WordTest {
 		assertThat(new Word(0x7C).toDoubleWord().toInt(), is(0x7C));
 	}
 
+	@Test
+	public void testMergingWithUpperByte() {
+		assertThat(new Word(0xF0).withUpperByte(new Word(0x3A)).toInt(), is(0x3AF0));
+	}
+
 }

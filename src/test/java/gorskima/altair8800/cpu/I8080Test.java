@@ -962,6 +962,9 @@ public class I8080Test {
 
 	@Test
 	public void testInterruptWhenDisabled() {
+		mem.writeWord8(0, 0x00);
+		mem.writeWord8(1, 0x00);
+
 		cpu.interrupt(0x0100);
 		cpu.step(); // NOP
 		cpu.step(); // NOP
