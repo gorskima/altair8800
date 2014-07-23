@@ -23,4 +23,7 @@ public class Word {
 		return new DoubleWord(word.toInt() << 8 | value);
 	}
 
+	public boolean testBitmask(Word mask) {
+		return (value & mask.toInt()) == mask.toInt();
+	}
 }

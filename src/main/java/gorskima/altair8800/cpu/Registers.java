@@ -63,7 +63,7 @@ public class Registers {
 	}
 
 	public boolean testFlag(final Flag flag) {
-		return (getRegister(F) & flag.mask) > 0;
+		return getRegister8(F).testBitmask(new Word(flag.mask));
 	}
 
 	public void setFlag(final Flag flag, final boolean value) {
