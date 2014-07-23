@@ -28,9 +28,9 @@ public class Registers {
 
 	public void setRegister(final Register r, final int value) {
 		if (r.size == 1) {
-			setRegister8(r, value);
+			setRegister8(r, new Word(value));
 		} else {
-			setRegister16(r, value);
+			setRegister16(r, new DoubleWord(value));
 		}
 	}
 
@@ -39,9 +39,9 @@ public class Registers {
 		return mem[addr];
 	}
 
-	private void setRegister8(final Register r, final int value) {
+	private void setRegister8(final Register r, final Word value) {
 		int addr = r.offset;
-		mem[addr] = new Word(value);
+		mem[addr] = value;
 	}
 
 	private DoubleWord getRegister16(final Register r) {
@@ -51,17 +51,15 @@ public class Registers {
 		return lowerByte.withUpperByte(upperByte);
 	}
 
-	private void setRegister16(final Register r, final int value) {
+	private void setRegister16(final Register r, final DoubleWord doubleWord) {
 		int addr = r.offset;
-		DoubleWord doubleWord = new DoubleWord(value);
 		mem[addr] = doubleWord.getUpperByte();
 		mem[addr + 1] = doubleWord.getLowerByte();
 	}
 
 	public void incPC() {
-		int pc = getRegister16(PC).toInt();
-		int newPc = (pc + 1) & 0xFFFF;
-		setRegister16(PC, newPc);
+		DoubleWord pc = getRegister16(PC);
+		setRegister16(PC, pc.increment());
 	}
 
 	public boolean testFlag(final Flag flag) {
@@ -72,9 +70,9 @@ public class Registers {
 		int f = getRegister8(F).toInt();
 
 		if (value) {
-			setRegister8(F, f | flag.mask);
+			setRegister8(F, new Word(f | flag.mask));
 		} else {
-			setRegister8(F, f & ~flag.mask);
+			setRegister8(F, new Word(f & ~flag.mask));
 		}
 	}
 

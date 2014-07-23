@@ -26,4 +26,9 @@ public class DoubleWord {
 	public Word getLowerByte() {
 		return new Word(value & 0x000000FF);
 	}
+
+	public DoubleWord increment() {
+		return new DoubleWord((value + 1) & 0x0000FFFF);
+	}
+
 }
