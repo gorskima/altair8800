@@ -3,17 +3,26 @@ package gorskima.altair8800.cpu;
 import static gorskima.altair8800.cpu.Register.F;
 import static gorskima.altair8800.cpu.Register.PC;
 
-import com.google.common.base.Preconditions;
+import gorskima.altair8800.DoubleWord;
+import gorskima.altair8800.Word;
 
 public class Registers {
 
-	private int[] mem = new int[12];
+	private static final Word UNINITIALIZED_BYTE = new Word(0);
+
+	private Word[] mem = new Word[12];
+
+	public Registers() {
+		for (int addr = 0; addr < mem.length; addr++) {
+			mem[addr] = UNINITIALIZED_BYTE;
+		}
+	}
 
 	public int getRegister(final Register r) {
 		if (r.size == 1) {
-			return getRegister8(r);
+			return getRegister8(r).toInt();
 		} else {
-			return getRegister16(r);
+			return getRegister16(r).toInt();
 		}
 	}
 
@@ -25,35 +34,32 @@ public class Registers {
 		}
 	}
 
-	private int getRegister8(final Register r) {
+	private Word getRegister8(final Register r) {
 		int addr = r.offset;
 		return mem[addr];
 	}
 
 	private void setRegister8(final Register r, final int value) {
-		Preconditions.checkArgument((value & 0xFFFFFF00) == 0, "Value may use only 1 least significant byte");
 		int addr = r.offset;
-		mem[addr] = value;
+		mem[addr] = new Word(value);
 	}
 
-	private int getRegister16(final Register r) {
+	private DoubleWord getRegister16(final Register r) {
 		int addr = r.offset;
-		int h = mem[addr];
-		int l = mem[addr + 1];
-		return ((h << 8) + l);
+		Word upperByte = mem[addr];
+		Word lowerByte = mem[addr + 1];
+		return lowerByte.withUpperByte(upperByte);
 	}
 
 	private void setRegister16(final Register r, final int value) {
-		Preconditions.checkArgument((value & 0xFFFF0000) == 0, "Value may use only 2 least significant bytes");
 		int addr = r.offset;
-		int h = value >> 8;
-		int l = value & 0xFF;
-		mem[addr] = h;
-		mem[addr + 1] = l;
+		DoubleWord doubleWord = new DoubleWord(value);
+		mem[addr] = doubleWord.getUpperByte();
+		mem[addr + 1] = doubleWord.getLowerByte();
 	}
 
 	public void incPC() {
-		int pc = getRegister16(PC);
+		int pc = getRegister16(PC).toInt();
 		int newPc = (pc + 1) & 0xFFFF;
 		setRegister16(PC, newPc);
 	}
@@ -63,7 +69,7 @@ public class Registers {
 	}
 
 	public void setFlag(final Flag flag, final boolean value) {
-		int f = getRegister8(F);
+		int f = getRegister8(F).toInt();
 
 		if (value) {
 			setRegister8(F, f | flag.mask);
