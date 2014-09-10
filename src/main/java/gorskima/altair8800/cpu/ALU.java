@@ -1,5 +1,7 @@
 package gorskima.altair8800.cpu;
 
+import gorskima.altair8800.Word;
+
 public class ALU {
 
 	private final Registers registers;
@@ -94,15 +96,19 @@ public class ALU {
 	}
 
 	public void and(final int op2) {
-		int op1 = registers.getRegister(Register.A);
-		int result = (op1 & op2) & 0xFF;
-		registers.setRegister(Register.A, result);
-
-		setLogicalFlags(result);
-		registers.setFlag(Flag.H, true);
+        and2(new Word(op2));
 	}
 
-	public void or(final int op2) {
+    private void and2(Word op2) {
+        Word op1 = new Word(registers.getRegister(Register.A));
+        Word result = op1.and(op2);
+        registers.setRegister(Register.A, result.toInt());
+
+        setLogicalFlags(result.toInt());
+        registers.setFlag(Flag.H, true);
+    }
+
+    public void or(final int op2) {
 		int op1 = registers.getRegister(Register.A);
 		int result = (op1 | op2) & 0xFF;
 		registers.setRegister(Register.A, result);

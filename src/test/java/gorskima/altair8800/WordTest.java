@@ -75,4 +75,18 @@ public class WordTest {
 		);
 	}
 
+    @Test
+    @Parameters(method = "andParams")
+    public void testAnd(int value, int other, int result) {
+        assertThat(new Word(value).and(new Word(other)).toInt(), is(result));
+    }
+
+    private Object[] andParams() {
+        return $(
+                $(0xFE, 0x03, 0x02),
+                $(0xFF, 0x3A, 0x3A),
+                $(0x00, 0x56, 0x00)
+        );
+    }
+
 }

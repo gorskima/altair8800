@@ -34,4 +34,8 @@ public class Word {
 	public Word unsetBits(Word word) {
 		return new Word(value & ~word.toInt());
 	}
+
+    public Word and(Word other) {
+        return new Word(value & other.value);
+    }
 }
