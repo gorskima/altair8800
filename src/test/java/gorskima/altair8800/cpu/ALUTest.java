@@ -309,14 +309,14 @@ public class ALUTest {
 	@Test
 	public void testInc16() {
 		reg.setRegister(HL, 40000);
-		alu.inc(HL);
+		alu.inc16(HL);
 		assertThat(reg.getRegister(HL), is(40001));
 	}
 	
 	@Test
 	public void testDec16() {
 		reg.setRegister(BC, 40000);
-		alu.dec(BC);
+		alu.dec16(BC);
 		assertThat(reg.getRegister(BC), is(39999));
 	}
 	

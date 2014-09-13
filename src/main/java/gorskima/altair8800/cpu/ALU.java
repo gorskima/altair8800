@@ -1,5 +1,6 @@
 package gorskima.altair8800.cpu;
 
+import gorskima.altair8800.DoubleWord;
 import gorskima.altair8800.Word;
 
 public class ALU {
@@ -15,52 +16,52 @@ public class ALU {
 	}
 
 	public void add(final int op2) {
-		int op1 = registers.getRegister(Register.A);
+		Word op1 = registers.getRegister8(Register.A);
 
 		Adder adder = Adder.newAdder8();
-		int result = adder.add(op1, op2, 0);
-		registers.setRegister(Register.A, result);
+		int result = adder.add(op1.toInt(), op2, 0);
+		registers.setRegister8(Register.A, new Word(result));
 
 		setAdditionFlags(adder, result);
 	}
 
 	public void adc(final int op2) {
-		int op1 = registers.getRegister(Register.A);
+		Word op1 = registers.getRegister8(Register.A);
 		int carry = getCarry();
 
 		Adder adder = Adder.newAdder8();
-		int result = adder.add(op1, op2, carry);
-		registers.setRegister(Register.A, result);
+		int result = adder.add(op1.toInt(), op2, carry);
+		registers.setRegister8(Register.A, new Word(result));
 
 		setAdditionFlags(adder, result);
 	}
 
 	public void sub(final int op2) {
-		int op1 = registers.getRegister(Register.A);
+		Word op1 = registers.getRegister8(Register.A);
 
 		Adder adder = Adder.newAdder8();
-		int result = adder.sub(op1, op2, 0);
-		registers.setRegister(Register.A, result);
+		int result = adder.sub(op1.toInt(), op2, 0);
+		registers.setRegister8(Register.A, new Word(result));
 
 		setSubstractionFlags(adder, result);
 	}
 
 	public void sbc(final int op2) {
-		int op1 = registers.getRegister(Register.A);
+		Word op1 = registers.getRegister8(Register.A);
 		int carry = getCarry();
 
 		Adder adder = Adder.newAdder8();
-		int result = adder.sub(op1, op2, carry);
-		registers.setRegister(Register.A, result);
+		int result = adder.sub(op1.toInt(), op2, carry);
+		registers.setRegister8(Register.A, new Word(result));
 
 		setSubstractionFlags(adder, result);
 	}
 
 	public void cp(final int op2) {
-		int op1 = registers.getRegister(Register.A);
+		Word op1 = registers.getRegister8(Register.A);
 
 		Adder adder = Adder.newAdder8();
-		int result = adder.sub(op1, op2, 0);
+		int result = adder.sub(op1.toInt(), op2, 0);
 
 		setSubstractionFlags(adder, result);
 	}
@@ -100,27 +101,27 @@ public class ALU {
 	}
 
     private void and2(Word op2) {
-        Word op1 = new Word(registers.getRegister(Register.A));
+        Word op1 = registers.getRegister8(Register.A);
         Word result = op1.and(op2);
-        registers.setRegister(Register.A, result.toInt());
+        registers.setRegister8(Register.A, result);
 
         setLogicalFlags(result.toInt());
         registers.setFlag(Flag.H, true);
     }
 
     public void or(final int op2) {
-		int op1 = registers.getRegister(Register.A);
-		int result = (op1 | op2) & 0xFF;
-		registers.setRegister(Register.A, result);
+		Word op1 = registers.getRegister8(Register.A);
+		int result = (op1.toInt() | op2) & 0xFF;
+		registers.setRegister8(Register.A, new Word(result));
 
 		setLogicalFlags(result);
 		registers.setFlag(Flag.H, false);
 	}
 
 	public void xor(final int op2) {
-		int op1 = registers.getRegister(Register.A);
-		int result = (op1 ^ op2) & 0xFF;
-		registers.setRegister(Register.A, result);
+		Word op1 = registers.getRegister8(Register.A);
+		int result = (op1.toInt() ^ op2) & 0xFF;
+		registers.setRegister8(Register.A, new Word(result));
 
 		setLogicalFlags(result);
 		registers.setFlag(Flag.H, false);
@@ -140,9 +141,9 @@ public class ALU {
 
 	// TODO not sure if CPL belongs to ALU, let's leave it here for now
 	public void cpl() {
-		int op = registers.getRegister(Register.A);
-		int result = invert(op);
-		registers.setRegister(Register.A, result);
+		Word op = registers.getRegister8(Register.A);
+		int result = invert(op.toInt());
+		registers.setRegister8(Register.A, new Word(result));
 
 		registers.setFlag(Flag.H, true);
 	}
@@ -169,10 +170,10 @@ public class ALU {
 	}
 
 	public void add16(final int op2) {
-		int op1 = registers.getRegister(Register.HL);
+		DoubleWord op1 = registers.getRegister16(Register.HL);
 		Adder adder = Adder.newAdder16();
-		int result = adder.add(op1, op2, 0);
-		registers.setRegister(Register.HL, result);
+		int result = adder.add(op1.toInt(), op2, 0);
+		registers.setRegister16(Register.HL, new DoubleWord(result));
 
 		registers.setFlag(Flag.C, adder.isCarry());
 		registers.setFlag(Flag.H, adder.isHalfCarry());
@@ -195,15 +196,23 @@ public class ALU {
 	}
 	
 	public void inc(final Register r) {
-		int op1 = registers.getRegister(r);
+		Word op1 = registers.getRegister8(r);
 		
 		Adder adder = createAdderForRegister(r);
-		int result = adder.add(op1, 1, 0);
-		registers.setRegister(r, result);
+		int result = adder.add(op1.toInt(), 1, 0);
+		registers.setRegister8(r, new Word(result));
 		
 		if (r.size == 1) {
 			setIncrementFlags(adder, result);
 		}
+	}
+
+	public void inc16(final Register r) {
+		DoubleWord op1 = registers.getRegister16(r);
+
+		Adder adder = createAdderForRegister(r);
+		int result = adder.add(op1.toInt(), 1, 0);
+		registers.setRegister16(r, new DoubleWord(result));
 	}
 
 	private Adder createAdderForRegister(Register r) {
@@ -211,47 +220,55 @@ public class ALU {
 	}
 
 	public void dec(final Register r) {
-		int op1 = registers.getRegister(r);
+		Word op1 = registers.getRegister8(r);
 
 		Adder adder = createAdderForRegister(r);
-		int result = adder.sub(op1, 1, 0);
-		registers.setRegister(r, result);
+		int result = adder.sub(op1.toInt(), 1, 0);
+		registers.setRegister8(r, new Word(result));
 
 		if (r.size == 1) {
 			setDecrementFlags(adder, result);
 		}
 	}
 
+	public void dec16(final Register r) {
+		DoubleWord op1 = registers.getRegister16(r);
+
+		Adder adder = createAdderForRegister(r);
+		int result = adder.sub(op1.toInt(), 1, 0);
+		registers.setRegister16(r, new DoubleWord(result));
+	}
+
 	public void rlca() {
-		int op = registers.getRegister(Register.A);
+		int op = registers.getRegister8(Register.A).toInt();
 		int result = ((op << 1) | (op >>> 7)) & 0xFF;
-		registers.setRegister(Register.A, result);
+		registers.setRegister8(Register.A, new Word(result));
 		registers.setFlag(Flag.C, ((op >>> 7) & 0x01) == 1);
 		setCommonRotationFlags();
 	}
 
 	public void rrca() {
-		int op = registers.getRegister(Register.A);
+		int op = registers.getRegister8(Register.A).toInt();
 		int result = ((op >>> 1) | (op << 7)) & 0xFF;
-		registers.setRegister(Register.A, result);
+		registers.setRegister8(Register.A, new Word(result));
 		registers.setFlag(Flag.C, (op & 0x01) == 1);
 		setCommonRotationFlags();
 	}
 
 	public void rla() {
-		int op = registers.getRegister(Register.A);
+		int op = registers.getRegister8(Register.A).toInt();
 		int c = getCarry();
 		int result = ((op << 1) | c) & 0xFF;
-		registers.setRegister(Register.A, result);
+		registers.setRegister8(Register.A, new Word(result));
 		registers.setFlag(Flag.C, ((op >>> 7) & 0x01) == 1);
 		setCommonRotationFlags();
 	}
 
 	public void rra() {
-		int op = registers.getRegister(Register.A);
+		int op = registers.getRegister8(Register.A).toInt();
 		int c = getCarry();
 		int result = (op >> 1) | (c << 7);
-		registers.setRegister(Register.A, result);
+		registers.setRegister8(Register.A, new Word(result));
 		registers.setFlag(Flag.C, (op & 0x01) == 1);
 		setCommonRotationFlags();
 	}
@@ -266,7 +283,7 @@ public class ALU {
 
 	public void daa() {
 		// TODO it works, now make it pretty
-		int result = registers.getRegister(Register.A);
+		int result = registers.getRegister8(Register.A).toInt();
 		if ((result & 0x0F) > 9) {
 			Adder adder = Adder.newAdder8();
 			result = adder.add(result, 0x06, 0);
@@ -278,7 +295,7 @@ public class ALU {
 			registers.setFlag(Flag.C, adder.isCarry());
 		}
 		
-		registers.setRegister(Register.A, result);
+		registers.setRegister8(Register.A, new Word(result));
 		registers.setFlag(Flag.S, getSign8(result));
 		registers.setFlag(Flag.Z, isZero(result));
 		registers.setFlag(Flag.P, getParity(result));

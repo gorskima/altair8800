@@ -17,24 +17,43 @@ public class Memory {
 		}
 	}
 
-	public int readWord8(final int addr) {
-		return mem[addr].toInt();
+	public Word readWord8(final DoubleWord addr) {
+		return mem[addr.toInt()];
 	}
-	
-	public void writeWord8(final int addr, final int word) {
-		mem[addr] = new Word(word);
+
+	public void writeWord8(final DoubleWord addr, final Word word) {
+		mem[addr.toInt()] = word;
 	}
-	
-	public int readWord16(final int addr) {
-		Word lower = mem[addr];
-		Word upper = mem[addr + 1];
-		return lower.withUpperByte(upper).toInt();
+
+	public DoubleWord readWord16(final DoubleWord addr) {
+		Word lower = mem[addr.toInt()];
+		Word upper = mem[addr.toInt() + 1];
+		return lower.withUpperByte(upper);
 	}
-	
-	public void writeWord16(final int addr, final int word) {
-		DoubleWord doubleWord = new DoubleWord(word);
-		mem[addr] = doubleWord.getLowerByte();
-		mem[addr + 1] = doubleWord.getUpperByte();
+
+	public void writeWord16(final DoubleWord addr, final DoubleWord doubleWord) {
+		mem[addr.toInt()] = doubleWord.getLowerByte();
+		mem[addr.toInt() + 1] = doubleWord.getUpperByte();
+	}
+
+	/*
+	 * Deprecated methods, used only in old tests
+	 */
+
+	int readWord8(final int addr) {
+		return readWord8(new DoubleWord(addr)).toInt();
+	}
+
+	void writeWord8(final int addr, final int word) {
+		writeWord8(new DoubleWord(addr), new Word(word));
+	}
+
+	int readWord16(final int addr) {
+		return readWord16(new DoubleWord(addr)).toInt();
+	}
+
+	void writeWord16(final int addr, final int doubleWord) {
+		writeWord16(new DoubleWord(addr), new DoubleWord(doubleWord));
 	}
 	
 }
