@@ -418,14 +418,14 @@ public class I8080 {
 		case 0xA7: {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			Word n = registers.getRegister8(srcReg);
-			alu.and(n.toInt());
+			alu.and(n);
 			return 4;
 		}
 
 		// AND n
 		case 0xE6: {
 			Word n = fetchWord8();
-			alu.and(n.toInt());
+			alu.and(n);
 			return 7;
 		}
 
@@ -433,7 +433,7 @@ public class I8080 {
 		case 0xA6: {
 			DoubleWord addr = registers.getRegister16(Register.HL);
 			Word n = memory.readWord8(addr);
-			alu.and(n.toInt());
+			alu.and(n);
 			return 7;
 		}
 

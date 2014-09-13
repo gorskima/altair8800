@@ -10,6 +10,7 @@ import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import gorskima.altair8800.Word;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
@@ -171,7 +172,7 @@ public class ALUTest {
 			final boolean s, final boolean z, final boolean p) {
 		
 		reg.setRegister(A, op1);
-		alu.and(op2);
+		alu.and(new Word(op2));
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));

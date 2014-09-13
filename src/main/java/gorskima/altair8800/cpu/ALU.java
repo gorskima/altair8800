@@ -96,11 +96,7 @@ public class ALU {
 		registers.setFlag(Flag.P, getParity(result));
 	}
 
-	public void and(final int op2) {
-        and2(new Word(op2));
-	}
-
-    private void and2(Word op2) {
+    public void and(Word op2) {
         Word op1 = registers.getRegister8(Register.A);
         Word result = op1.and(op2);
         registers.setRegister8(Register.A, result);
