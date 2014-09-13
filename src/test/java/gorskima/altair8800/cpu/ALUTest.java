@@ -195,7 +195,7 @@ public class ALUTest {
 			final boolean s, final boolean z, final boolean p) {
 		
 		reg.setRegister(A, op1);
-		alu.or(op2);
+		alu.or(new Word(op2));
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
@@ -218,7 +218,7 @@ public class ALUTest {
 			final boolean s, final boolean z, final boolean p) {
 		
 		reg.setRegister(A, op1);
-		alu.xor(op2);
+		alu.xor(new Word(op2));
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));

@@ -96,7 +96,7 @@ public class ALU {
 		registers.setFlag(Flag.P, getParity(result));
 	}
 
-    public void and(Word op2) {
+    public void and(final Word op2) {
         Word op1 = registers.getRegister8(Register.A);
         Word result = op1.and(op2);
         registers.setRegister8(Register.A, result);
@@ -105,21 +105,21 @@ public class ALU {
         registers.setFlag(Flag.H, true);
     }
 
-    public void or(final int op2) {
+    public void or(final Word op2) {
 		Word op1 = registers.getRegister8(Register.A);
-		int result = (op1.toInt() | op2) & 0xFF;
-		registers.setRegister8(Register.A, new Word(result));
+		Word result = op1.or(op2);
+		registers.setRegister8(Register.A, result);
 
-		setLogicalFlags(result);
+		setLogicalFlags(result.toInt());
 		registers.setFlag(Flag.H, false);
 	}
 
-	public void xor(final int op2) {
+	public void xor(final Word op2) {
 		Word op1 = registers.getRegister8(Register.A);
-		int result = (op1.toInt() ^ op2) & 0xFF;
-		registers.setRegister8(Register.A, new Word(result));
+		Word result = op1.xor(op2);
+		registers.setRegister8(Register.A, result);
 
-		setLogicalFlags(result);
+		setLogicalFlags(result.toInt());
 		registers.setFlag(Flag.H, false);
 	}
 

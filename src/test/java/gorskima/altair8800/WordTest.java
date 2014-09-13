@@ -89,4 +89,32 @@ public class WordTest {
         );
     }
 
+	@Test
+	@Parameters(method = "orParams")
+	public void testOr(int value, int other, int result) {
+		assertThat(new Word(value).or(new Word(other)).toInt(), is(result));
+	}
+
+	private Object[] orParams() {
+		return $(
+				$(0xF0, 0x0F, 0xFF),
+				$(0x00, 0x3A, 0x3A),
+				$(0xF2, 0x16, 0xF6)
+		);
+	}
+
+	@Test
+	@Parameters(method = "xorParams")
+	public void testXor(int value, int other, int result) {
+		assertThat(new Word(value).xor(new Word(other)).toInt(), is(result));
+	}
+
+	private Object[] xorParams() {
+		return $(
+				$(0x00, 0x00, 0x00),
+				$(0xFF, 0x00, 0xFF),
+				$(0x03, 0xF1, 0xF2)
+		);
+	}
+
 }

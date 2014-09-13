@@ -38,4 +38,12 @@ public class Word {
     public Word and(Word other) {
         return new Word(value & other.value);
     }
+
+	public Word or(Word other) {
+		return new Word(value | other.value);
+	}
+
+	public Word xor(Word other) {
+		return new Word(value ^ other.value);
+	}
 }
