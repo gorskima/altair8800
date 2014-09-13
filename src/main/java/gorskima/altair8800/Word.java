@@ -35,6 +35,10 @@ public class Word {
 		return new Word(value & ~word.toInt());
 	}
 
+	public Word invert() {
+		return new Word(~value & 0xFF);
+	}
+
     public Word and(Word other) {
         return new Word(value & other.value);
     }

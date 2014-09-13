@@ -75,6 +75,20 @@ public class WordTest {
 		);
 	}
 
+	@Test
+	@Parameters(method = "invertParams")
+	public void testInvert(int value, int result) {
+		assertThat(new Word(value).invert().toInt(), is(result));
+	}
+
+	private Object[] invertParams() {
+		return $(
+				$(0x00, 0xFF),
+				$(0xFF, 0x00),
+				$(0xA3, 0x5C)
+		);
+	}
+
     @Test
     @Parameters(method = "andParams")
     public void testAnd(int value, int other, int result) {

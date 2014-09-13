@@ -138,14 +138,9 @@ public class ALU {
 	// TODO not sure if CPL belongs to ALU, let's leave it here for now
 	public void cpl() {
 		Word op = registers.getRegister8(Register.A);
-		int result = invert(op.toInt());
-		registers.setRegister8(Register.A, new Word(result));
+		registers.setRegister8(Register.A, op.invert());
 
 		registers.setFlag(Flag.H, true);
-	}
-
-	private int invert(final int op) {
-		return ~op & 0xFF;
 	}
 
 	private boolean getSign8(final int op) {
