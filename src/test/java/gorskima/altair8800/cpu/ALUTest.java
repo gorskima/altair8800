@@ -10,6 +10,7 @@ import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import gorskima.altair8800.DoubleWord;
 import gorskima.altair8800.Word;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -29,7 +30,7 @@ public class ALUTest {
 			final boolean s, final boolean z, final boolean h, final boolean p, final boolean c) {
 		
 		reg.setRegister(A, op1);
-		alu.add(op2);
+		alu.add(new Word(op2));
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
@@ -50,7 +51,7 @@ public class ALUTest {
 		
 		reg.setRegister(A, op1);
 		reg.setFlag(Flag.C, carry);
-		alu.adc(op2);
+		alu.adc(new Word(op2));
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
@@ -70,7 +71,7 @@ public class ALUTest {
 			final boolean s, final boolean z, final boolean h, final boolean p, final boolean c) {
 		
 		reg.setRegister(A, op1);
-		alu.sub(op2);
+		alu.sub(new Word(op2));
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
@@ -91,7 +92,7 @@ public class ALUTest {
 		
 		reg.setRegister(A, op1);
 		reg.setFlag(Flag.C, carry);
-		alu.sbc(op2);
+		alu.sbc(new Word(op2));
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
@@ -151,7 +152,7 @@ public class ALUTest {
 			final boolean s, final boolean z, final boolean h, final boolean p, final boolean c) {
 		
 		reg.setRegister(A, op1);
-		alu.cp(op2);
+		alu.cp(new Word(op2));
 		assertThat(reg.getRegister(A), is(op1)); // always
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
@@ -257,7 +258,7 @@ public class ALUTest {
 			final boolean c, final boolean h) {
 		
 		reg.setRegister(HL, op1);
-		alu.add16(op2);
+		alu.add16(new DoubleWord(op2));
 		assertThat(reg.getRegister(HL), is(result));
 		assertThat(reg.testFlag(Flag.C), is(c));
 		assertThat(reg.testFlag(Flag.H), is(h));

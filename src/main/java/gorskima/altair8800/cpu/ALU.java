@@ -15,53 +15,53 @@ public class ALU {
 		this(new Registers());
 	}
 
-	public void add(final int op2) {
+	public void add(final Word op2) {
 		Word op1 = registers.getRegister8(Register.A);
 
 		Adder adder = Adder.newAdder8();
-		int result = adder.add(op1.toInt(), op2, 0);
+		int result = adder.add(op1.toInt(), op2.toInt(), 0);
 		registers.setRegister8(Register.A, new Word(result));
 
 		setAdditionFlags(adder, result);
 	}
 
-	public void adc(final int op2) {
+	public void adc(final Word op2) {
 		Word op1 = registers.getRegister8(Register.A);
 		int carry = getCarry();
 
 		Adder adder = Adder.newAdder8();
-		int result = adder.add(op1.toInt(), op2, carry);
+		int result = adder.add(op1.toInt(), op2.toInt(), carry);
 		registers.setRegister8(Register.A, new Word(result));
 
 		setAdditionFlags(adder, result);
 	}
 
-	public void sub(final int op2) {
+	public void sub(final Word op2) {
 		Word op1 = registers.getRegister8(Register.A);
 
 		Adder adder = Adder.newAdder8();
-		int result = adder.sub(op1.toInt(), op2, 0);
+		int result = adder.sub(op1.toInt(), op2.toInt(), 0);
 		registers.setRegister8(Register.A, new Word(result));
 
 		setSubstractionFlags(adder, result);
 	}
 
-	public void sbc(final int op2) {
+	public void sbc(final Word op2) {
 		Word op1 = registers.getRegister8(Register.A);
 		int carry = getCarry();
 
 		Adder adder = Adder.newAdder8();
-		int result = adder.sub(op1.toInt(), op2, carry);
+		int result = adder.sub(op1.toInt(), op2.toInt(), carry);
 		registers.setRegister8(Register.A, new Word(result));
 
 		setSubstractionFlags(adder, result);
 	}
 
-	public void cp(final int op2) {
+	public void cp(final Word op2) {
 		Word op1 = registers.getRegister8(Register.A);
 
 		Adder adder = Adder.newAdder8();
-		int result = adder.sub(op1.toInt(), op2, 0);
+		int result = adder.sub(op1.toInt(), op2.toInt(), 0);
 
 		setSubstractionFlags(adder, result);
 	}
@@ -155,10 +155,10 @@ public class ALU {
 		return parity;
 	}
 
-	public void add16(final int op2) {
+	public void add16(final DoubleWord op2) {
 		DoubleWord op1 = registers.getRegister16(Register.HL);
 		Adder adder = Adder.newAdder16();
-		int result = adder.add(op1.toInt(), op2, 0);
+		int result = adder.add(op1.toInt(), op2.toInt(), 0);
 		registers.setRegister16(Register.HL, new DoubleWord(result));
 
 		registers.setFlag(Flag.C, adder.isCarry());

@@ -302,14 +302,14 @@ public class I8080 {
 		case 0x87: {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			Word n = registers.getRegister8(srcReg);
-			alu.add(n.toInt());
+			alu.add(n);
 			return 4;
 		}
 
 		// ADD A,n
 		case 0xC6: {
 			Word n = fetchWord8();
-			alu.add(n.toInt());
+			alu.add(n);
 			return 7;
 		}
 
@@ -317,7 +317,7 @@ public class I8080 {
 		case 0x86: {
 			DoubleWord addr = registers.getRegister16(Register.HL);
 			Word n = memory.readWord8(addr);
-			alu.add(n.toInt());
+			alu.add(n);
 			return 7;
 		}
 
@@ -331,14 +331,14 @@ public class I8080 {
 		case 0x8F: {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			Word n = registers.getRegister8(srcReg);
-			alu.adc(n.toInt());
+			alu.adc(n);
 			return 4;
 		}
 
 		// ADC A,n
 		case 0xCE: {
 			Word n = fetchWord8();
-			alu.adc(n.toInt());
+			alu.adc(n);
 			return 7;
 		}
 
@@ -346,7 +346,7 @@ public class I8080 {
 		case 0x8E: {
 			DoubleWord addr = registers.getRegister16(Register.HL);
 			Word n = memory.readWord8(addr);
-			alu.adc(n.toInt());
+			alu.adc(n);
 			return 7;
 		}
 
@@ -360,14 +360,14 @@ public class I8080 {
 		case 0x97: {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			Word n = registers.getRegister8(srcReg);
-			alu.sub(n.toInt());
+			alu.sub(n);
 			return 4;
 		}
 
 		// SUB n
 		case 0xD6: {
 			Word n = fetchWord8();
-			alu.sub(n.toInt());
+			alu.sub(n);
 			return 7;
 		}
 
@@ -375,7 +375,7 @@ public class I8080 {
 		case 0x96: {
 			DoubleWord addr = registers.getRegister16(Register.HL);
 			Word n = memory.readWord8(addr);
-			alu.sub(n.toInt());
+			alu.sub(n);
 			return 7;
 		}
 
@@ -389,14 +389,14 @@ public class I8080 {
 		case 0x9F: {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			Word n = registers.getRegister8(srcReg);
-			alu.sbc(n.toInt());
+			alu.sbc(n);
 			return 4;
 		}
 
 		// SBC A,n
 		case 0xDE: {
 			Word n = fetchWord8();
-			alu.sbc(n.toInt());
+			alu.sbc(n);
 			return 7;
 		}
 
@@ -404,7 +404,7 @@ public class I8080 {
 		case 0x9E: {
 			DoubleWord addr = registers.getRegister16(Register.HL);
 			Word n = memory.readWord8(addr);
-			alu.sbc(n.toInt());
+			alu.sbc(n);
 			return 7;
 		}
 
@@ -505,14 +505,14 @@ public class I8080 {
 		case 0xBF: {
 			Register srcReg = decoder.decodeLowerR(opCode);
 			Word n = registers.getRegister8(srcReg);
-			alu.cp(n.toInt());
+			alu.cp(n);
 			return 4;
 		}
 
 		// CP n
 		case 0xFE: {
 			Word n = fetchWord8();
-			alu.cp(n.toInt());
+			alu.cp(n);
 			return 7;
 		}
 
@@ -520,7 +520,7 @@ public class I8080 {
 		case 0xBE: {
 			DoubleWord addr = registers.getRegister16(Register.HL);
 			Word n = memory.readWord8(addr);
-			alu.cp(n.toInt());
+			alu.cp(n);
 			return 7;
 		}
 
@@ -643,7 +643,7 @@ public class I8080 {
 		case 0x39: {
 			Register reg = decoder.decodeRegister(RegisterType.ss, opCode);
 			DoubleWord value = registers.getRegister16(reg);
-			alu.add16(value.toInt());
+			alu.add16(value);
 			return 10;
 		}
 
