@@ -19,7 +19,7 @@ public class I8080 {
 	private boolean interruptsEnabled = false; // INTE
 	private boolean interruptAwaiting = false; // INT
 	private boolean interruptAccepted = false; // INTA
-	private int interruptOpCode;
+	private Word interruptOpCode;
 
     // At 2 MHz it will overflow in 146 years, so let's ignore it for now ;)
     private long cycles;
@@ -39,12 +39,12 @@ public class I8080 {
 	}
 	
 	public void step() {
-		int opCode = fetchOpCode();
+		Word opCode = fetchOpCode();
 		cycles += executeSingleInstruction(opCode);
 		checkInterrupts(opCode);
 	}
-	private int executeSingleInstruction(int opCode) {
-		switch (opCode) {
+	private int executeSingleInstruction(Word opCode) {
+		switch (opCode.toInt()) {
 
 		/*
 		 * 8-bit load group
@@ -833,7 +833,7 @@ public class I8080 {
 		}
 	}
 
-	private void checkInterrupts(int opCode) {
+	private void checkInterrupts(Word opCode) {
 		if (interruptsEnabled && interruptAwaiting && !isEIorDI(opCode)) {
 			interruptsEnabled = false;
 			interruptAwaiting = false;
@@ -842,13 +842,13 @@ public class I8080 {
 			interruptAccepted = false;
 		}
 	}
-	private boolean isEIorDI(int opCode) {
-		return opCode == 0xFB || opCode == 0xF3;
+	private boolean isEIorDI(Word opCode) {
+		return opCode.toInt() == 0xFB || opCode.toInt() == 0xF3;
 	}
 
 	// TODO clean up
-	private int fetchOpCode() {
-		return interruptAccepted ? interruptOpCode : fetchWord8().toInt();
+	private Word fetchOpCode() {
+		return interruptAccepted ? interruptOpCode : fetchWord8();
 	}
 
 	private Word fetchWord8() {
@@ -900,7 +900,7 @@ public class I8080 {
 	}
 
 	public void interrupt(int opCode) {
-		interruptOpCode = opCode;
+		interruptOpCode = new Word(opCode);
 		interruptAwaiting = true;
 	}
 
