@@ -872,14 +872,14 @@ public class I8080 {
 
 	private void pushOnStack(DoubleWord nn) {
 		DoubleWord sp = registers.getRegister16(Register.SP);
-		// TODO clean up
-		registers.setRegister16(Register.SP, new DoubleWord(sp.toInt() - 2));
-		memory.writeWord16(new DoubleWord(sp.toInt() - 2), nn);
+		DoubleWord newSP = sp.subtract(2);
+		registers.setRegister16(Register.SP, newSP);
+		memory.writeWord16(newSP, nn);
 	}
 
 	private DoubleWord popFromStack() {
 		DoubleWord sp = registers.getRegister16(Register.SP);
-		registers.setRegister16(Register.SP, new DoubleWord(sp.toInt() + 2));
+		registers.setRegister16(Register.SP, sp.add(2));
 		return memory.readWord16(sp);
 	}
 

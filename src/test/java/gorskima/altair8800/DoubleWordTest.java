@@ -51,4 +51,30 @@ public class DoubleWordTest {
 		);
 	}
 
+	@Test
+	@Parameters(method = "testAddParams")
+	public void testAdd(int value, int n, int expected) {
+		assertThat(new DoubleWord(value).add(n).toInt(), is(expected));
+	}
+
+	private Object[] testAddParams() {
+		return $(
+				$(0xFFF8, 2, 0xFFFA),
+				$(0xFFFE, 3, 0x0001)
+		);
+	}
+
+	@Test
+	@Parameters(method = "testSubtractParams")
+	public void testSubtract(int value, int n, int expected) {
+		assertThat(new DoubleWord(value).subtract(n).toInt(), is(expected));
+	}
+
+	private Object[] testSubtractParams() {
+		return $(
+				$(0xFFF8, 2, 0xFFF6),
+				$(0x0001, 4, 0xFFFD)
+		);
+	}
+
 }

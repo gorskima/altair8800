@@ -28,7 +28,15 @@ public class DoubleWord {
 	}
 
 	public DoubleWord increment() {
-		return new DoubleWord((value + 1) & 0x0000FFFF);
+		return add(1);
+	}
+
+	public DoubleWord add(int n) {
+		return new DoubleWord((value + n) & 0x0000FFFF);
+	}
+
+	public DoubleWord subtract(int n) {
+		return new DoubleWord((value - n) & 0x0000FFFF);
 	}
 
 }
