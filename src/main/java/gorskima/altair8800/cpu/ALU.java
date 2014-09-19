@@ -166,19 +166,19 @@ public class ALU {
 	}
 	
 	// TODO temp. solution; move it out of ALU or combine with existing inc()
-	public int incExtern(final int op1) {
+	public Word incExtern(final Word op1) {
 		Adder adder = Adder.newAdder8();
-		int result = adder.add(op1, 1, 0);
+		int result = adder.add(op1.toInt(), 1, 0);
 		setIncrementFlags(adder, result);
-		return result;
+		return new Word(result);
 	}
 
 	// TODO temp. solution; move it out of ALU or combine with existing dec()
-	public int decExtern(final int op1) {
+	public Word decExtern(final Word op1) {
 		Adder adder = Adder.newAdder8();
-		int result = adder.sub(op1, 1, 0);
+		int result = adder.sub(op1.toInt(), 1, 0);
 		setDecrementFlags(adder, result);
-		return result;
+		return new Word(result);
 	}
 	
 	public void inc(final Register r) {

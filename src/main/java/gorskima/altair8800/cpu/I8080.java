@@ -541,8 +541,8 @@ public class I8080 {
 		case 0x34: {
 			DoubleWord addr = registers.getRegister16(Register.HL);
 			Word oldValue = memory.readWord8(addr);
-			int newValue = alu.incExtern(oldValue.toInt());
-			memory.writeWord8(addr, new Word(newValue));
+			Word newValue = alu.incExtern(oldValue);
+			memory.writeWord8(addr, newValue);
 			return 10;
 		}
 
@@ -563,8 +563,8 @@ public class I8080 {
 		case 0x35: {
 			DoubleWord addr = registers.getRegister16(Register.HL);
 			Word oldValue = memory.readWord8(addr);
-			int newValue = alu.decExtern(oldValue.toInt());
-			memory.writeWord8(addr, new Word(newValue));
+			Word newValue = alu.decExtern(oldValue);
+			memory.writeWord8(addr, newValue);
 			return 10;
 		}
 

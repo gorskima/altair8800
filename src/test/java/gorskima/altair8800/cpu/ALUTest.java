@@ -275,8 +275,8 @@ public class ALUTest {
 	public void testIncExtern(final int op, final int result,
 			final boolean s, final boolean z, final boolean h, final boolean p) {
 		
-		int incremented = alu.incExtern(op);
-		assertThat(incremented, is(result));
+		Word incremented = alu.incExtern(new Word(op));
+		assertThat(incremented.toInt(), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
@@ -294,8 +294,8 @@ public class ALUTest {
 	public void testDecExtern(final int op, final int result,
 			final boolean s, final boolean z, final boolean h, final boolean p) {
 		
-		int decremented = alu.decExtern(op);
-		assertThat(decremented, is(result));
+		Word decremented = alu.decExtern(new Word(op));
+		assertThat(decremented.toInt(), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
