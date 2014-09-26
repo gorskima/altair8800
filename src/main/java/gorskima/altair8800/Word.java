@@ -50,4 +50,23 @@ public class Word {
 	public Word xor(Word other) {
 		return new Word(value ^ other.value);
 	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+
+		if (!(other instanceof Word)) {
+			return false;
+		}
+
+		Word otherWord = (Word) other;
+		return this.value == otherWord.value;
+	}
+
+	@Override
+	public int hashCode() {
+		return value;
+	}
 }

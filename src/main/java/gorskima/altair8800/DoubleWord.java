@@ -39,4 +39,22 @@ public class DoubleWord {
 		return new DoubleWord((value - n) & 0x0000FFFF);
 	}
 
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+
+		if (!(other instanceof Word)) {
+			return false;
+		}
+
+		DoubleWord otherWord = (DoubleWord) other;
+		return this.value == otherWord.value;
+	}
+
+	@Override
+	public int hashCode() {
+		return value;
+	}
 }
