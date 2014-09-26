@@ -3,73 +3,82 @@ package gorskima.altair8800.cpu;
 import static gorskima.altair8800.cpu.Register.F;
 import static gorskima.altair8800.cpu.Register.PC;
 
-import com.google.common.base.Preconditions;
+import gorskima.altair8800.DoubleWord;
+import gorskima.altair8800.Word;
 
 public class Registers {
 
-	private int[] mem = new int[12];
+	private static final Word UNINITIALIZED_BYTE = new Word(0);
 
-	public int getRegister(final Register r) {
-		if (r.size == 1) {
-			return getRegister8(r);
-		} else {
-			return getRegister16(r);
+	private Word[] mem = new Word[12];
+
+	public Registers() {
+		for (int addr = 0; addr < mem.length; addr++) {
+			mem[addr] = UNINITIALIZED_BYTE;
 		}
 	}
 
-	public void setRegister(final Register r, final int value) {
-		if (r.size == 1) {
-			setRegister8(r, value);
-		} else {
-			setRegister16(r, value);
-		}
-	}
 
-	private int getRegister8(final Register r) {
+	public Word getRegister8(final Register r) {
 		int addr = r.offset;
 		return mem[addr];
 	}
 
-	private void setRegister8(final Register r, final int value) {
-		Preconditions.checkArgument((value & 0xFFFFFF00) == 0, "Value may use only 1 least significant byte");
+	public void setRegister8(final Register r, final Word value) {
 		int addr = r.offset;
 		mem[addr] = value;
 	}
 
-	private int getRegister16(final Register r) {
+	public DoubleWord getRegister16(final Register r) {
 		int addr = r.offset;
-		int h = mem[addr];
-		int l = mem[addr + 1];
-		return ((h << 8) + l);
+		Word upperByte = mem[addr];
+		Word lowerByte = mem[addr + 1];
+		return lowerByte.withUpperByte(upperByte);
 	}
 
-	private void setRegister16(final Register r, final int value) {
-		Preconditions.checkArgument((value & 0xFFFF0000) == 0, "Value may use only 2 least significant bytes");
+	public void setRegister16(final Register r, final DoubleWord doubleWord) {
 		int addr = r.offset;
-		int h = value >> 8;
-		int l = value & 0xFF;
-		mem[addr] = h;
-		mem[addr + 1] = l;
+		mem[addr] = doubleWord.getUpperByte();
+		mem[addr + 1] = doubleWord.getLowerByte();
 	}
 
 	public void incPC() {
-		int pc = getRegister16(PC);
-		int newPc = (pc + 1) & 0xFFFF;
-		setRegister16(PC, newPc);
+		DoubleWord pc = getRegister16(PC);
+		setRegister16(PC, pc.increment());
 	}
 
 	public boolean testFlag(final Flag flag) {
-		return (getRegister(F) & flag.mask) > 0;
+		return getRegister8(F).testBitmask(new Word(flag.mask));
 	}
 
 	public void setFlag(final Flag flag, final boolean value) {
-		int f = getRegister8(F);
+		Word f = getRegister8(F);
+		Word mask = new Word(flag.mask);
 
 		if (value) {
-			setRegister8(F, f | flag.mask);
+			setRegister8(F, f.setBits(mask));
 		} else {
-			setRegister8(F, f & ~flag.mask);
+			setRegister8(F, f.unsetBits(mask));
 		}
 	}
 
+	/*
+	 * Deprecated methods, used only in old tests
+	 */
+
+	int getRegister(final Register r) {
+		if (r.size == 1) {
+			return getRegister8(r).toInt();
+		} else {
+			return getRegister16(r).toInt();
+		}
+	}
+
+	void setRegister(final Register r, final int value) {
+		if (r.size == 1) {
+			setRegister8(r, new Word(value));
+		} else {
+			setRegister16(r, new DoubleWord(value));
+		}
+	}
 }

@@ -40,7 +40,8 @@ public class Altair8800 {
 	// TODO move this to some util class?
 	private static void writeMemory(final Memory memory, final byte[] code) {
 		for (int addr = 0; addr < code.length; addr++) {
-			memory.writeWord8(addr, 0xFF & code[addr]);
+			// TODO clean up
+			memory.writeWord8(new DoubleWord(addr), new Word(0xFF & code[addr]));
 		}
 	}
 

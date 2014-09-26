@@ -10,6 +10,8 @@ import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import gorskima.altair8800.DoubleWord;
+import gorskima.altair8800.Word;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
@@ -28,7 +30,7 @@ public class ALUTest {
 			final boolean s, final boolean z, final boolean h, final boolean p, final boolean c) {
 		
 		reg.setRegister(A, op1);
-		alu.add(op2);
+		alu.add(new Word(op2));
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
@@ -49,7 +51,7 @@ public class ALUTest {
 		
 		reg.setRegister(A, op1);
 		reg.setFlag(Flag.C, carry);
-		alu.adc(op2);
+		alu.adc(new Word(op2));
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
@@ -69,7 +71,7 @@ public class ALUTest {
 			final boolean s, final boolean z, final boolean h, final boolean p, final boolean c) {
 		
 		reg.setRegister(A, op1);
-		alu.sub(op2);
+		alu.sub(new Word(op2));
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
@@ -90,7 +92,7 @@ public class ALUTest {
 		
 		reg.setRegister(A, op1);
 		reg.setFlag(Flag.C, carry);
-		alu.sbc(op2);
+		alu.sbc(new Word(op2));
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
@@ -150,7 +152,7 @@ public class ALUTest {
 			final boolean s, final boolean z, final boolean h, final boolean p, final boolean c) {
 		
 		reg.setRegister(A, op1);
-		alu.cp(op2);
+		alu.cp(new Word(op2));
 		assertThat(reg.getRegister(A), is(op1)); // always
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
@@ -171,7 +173,7 @@ public class ALUTest {
 			final boolean s, final boolean z, final boolean p) {
 		
 		reg.setRegister(A, op1);
-		alu.and(op2);
+		alu.and(new Word(op2));
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
@@ -194,7 +196,7 @@ public class ALUTest {
 			final boolean s, final boolean z, final boolean p) {
 		
 		reg.setRegister(A, op1);
-		alu.or(op2);
+		alu.or(new Word(op2));
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
@@ -217,7 +219,7 @@ public class ALUTest {
 			final boolean s, final boolean z, final boolean p) {
 		
 		reg.setRegister(A, op1);
-		alu.xor(op2);
+		alu.xor(new Word(op2));
 		assertThat(reg.getRegister(A), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
@@ -256,7 +258,7 @@ public class ALUTest {
 			final boolean c, final boolean h) {
 		
 		reg.setRegister(HL, op1);
-		alu.add16(op2);
+		alu.add16(new DoubleWord(op2));
 		assertThat(reg.getRegister(HL), is(result));
 		assertThat(reg.testFlag(Flag.C), is(c));
 		assertThat(reg.testFlag(Flag.H), is(h));
@@ -273,8 +275,8 @@ public class ALUTest {
 	public void testIncExtern(final int op, final int result,
 			final boolean s, final boolean z, final boolean h, final boolean p) {
 		
-		int incremented = alu.incExtern(op);
-		assertThat(incremented, is(result));
+		Word incremented = alu.incExtern(new Word(op));
+		assertThat(incremented.toInt(), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
@@ -292,8 +294,8 @@ public class ALUTest {
 	public void testDecExtern(final int op, final int result,
 			final boolean s, final boolean z, final boolean h, final boolean p) {
 		
-		int decremented = alu.decExtern(op);
-		assertThat(decremented, is(result));
+		Word decremented = alu.decExtern(new Word(op));
+		assertThat(decremented.toInt(), is(result));
 		assertThat(reg.testFlag(S), is(s));
 		assertThat(reg.testFlag(Z), is(z));
 		assertThat(reg.testFlag(Flag.H), is(h));
@@ -309,14 +311,14 @@ public class ALUTest {
 	@Test
 	public void testInc16() {
 		reg.setRegister(HL, 40000);
-		alu.inc(HL);
+		alu.inc16(HL);
 		assertThat(reg.getRegister(HL), is(40001));
 	}
 	
 	@Test
 	public void testDec16() {
 		reg.setRegister(BC, 40000);
-		alu.dec(BC);
+		alu.dec16(BC);
 		assertThat(reg.getRegister(BC), is(39999));
 	}
 	

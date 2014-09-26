@@ -1,9 +1,11 @@
 package gorskima.altair8800.io;
 
+import gorskima.altair8800.Word;
+
 public interface SerialDevice {
 
-	int read();
+	Word read();
 
-	void write(int n);
+	void write(Word n);
 
 }

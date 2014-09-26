@@ -3,6 +3,7 @@ package gorskima.altair8800.cpu;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
+import gorskima.altair8800.Word;
 
 public class Decoder {
 
@@ -36,19 +37,19 @@ public class Decoder {
 			.build();
 	}
 
-	public Register decodeRegister(final RegisterType type, final int opCode) {
+	public Register decodeRegister(final RegisterType type, final Word opCode) {
 		if (type == RegisterType.r) {
 			throw new IllegalArgumentException("Call decodeUpperR or decodeLowerR");
 		}
-		return decode(type, extractDoubleRegisterCode(opCode));
+		return decode(type, extractDoubleRegisterCode(opCode.toInt()));
 	}
 
-	public Register decodeUpperR(final int opCode) {
-		return decode(RegisterType.r, extractHigherRegisterCode(opCode));
+	public Register decodeUpperR(final Word opCode) {
+		return decode(RegisterType.r, extractHigherRegisterCode(opCode.toInt()));
 	}
 
-	public Register decodeLowerR(final int opCode) {
-		return decode(RegisterType.r, opCode & 0x07);
+	public Register decodeLowerR(final Word opCode) {
+		return decode(RegisterType.r, opCode.toInt() & 0x07);
 	}
 
 	private Register decode(final RegisterType type, final int code) {
@@ -63,8 +64,8 @@ public class Decoder {
 		return (opCode >> 4) & 0x03;
 	}
 
-	public Condition decodeCondition(final int opCode) {
-		return new Condition(flagMap.get(extractFlagCode(opCode)), extractExpectedFlagValue(opCode));
+	public Condition decodeCondition(final Word opCode) {
+		return new Condition(flagMap.get(extractFlagCode(opCode.toInt())), extractExpectedFlagValue(opCode.toInt()));
 	}
 
 	private int extractFlagCode(final int opCode) {
@@ -75,8 +76,8 @@ public class Decoder {
 		return (opCode & 0x08) > 0;
 	}
 
-	public int decodePage(final int opCode) {
-		return opCode & 0x38;
+	public int decodePage(final Word opCode) {
+		return opCode.toInt() & 0x38;
 	}
 
 }
