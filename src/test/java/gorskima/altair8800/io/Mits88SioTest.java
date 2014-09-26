@@ -13,6 +13,7 @@ import static gorskima.altair8800.io.Mits88Sio.DATA_OVERFLOW;
 import static gorskima.altair8800.io.Mits88Sio._INPUT_DEVICE_READY_;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
@@ -27,11 +28,11 @@ public class Mits88SioTest {
 		IOPort statusPort = classUnderTest.getStatusPort();
 		stub(serialDevice.read()).toReturn(123);
 
-		assertTrue((statusPort.read().toInt() & _INPUT_DEVICE_READY_) == _INPUT_DEVICE_READY_);
+		assertTrue(statusPort.read().testBitmask(_INPUT_DEVICE_READY_));
 		
 		classUnderTest.notifyInputAvailable();
 
-		assertThat(statusPort.read().toInt() & _INPUT_DEVICE_READY_, is(0x00));
+		assertFalse(statusPort.read().testBitmask(_INPUT_DEVICE_READY_));
 	}
 	
 	@Test
@@ -41,11 +42,11 @@ public class Mits88SioTest {
 
 		classUnderTest.notifyInputAvailable();
 
-		assertThat(statusPort.read().toInt() & _INPUT_DEVICE_READY_, is(0x00));
+		assertFalse(statusPort.read().testBitmask(_INPUT_DEVICE_READY_));
 		
 		classUnderTest.getDataPort().read();
 
-		assertThat(statusPort.read().toInt() & _INPUT_DEVICE_READY_, is(_INPUT_DEVICE_READY_));
+		assertTrue(statusPort.read().testBitmask(_INPUT_DEVICE_READY_));
 	}
 
 	@Test
@@ -77,19 +78,19 @@ public class Mits88SioTest {
 			}
 		});
 
-		assertThat(statusPort.read().toInt() & DATA_OVERFLOW, is(0x00));
+		assertFalse(statusPort.read().testBitmask(DATA_OVERFLOW));
 
 		classUnderTest.notifyInputAvailable();
 
-		assertThat(statusPort.read().toInt() & DATA_OVERFLOW, is(0x00));
+		assertFalse(statusPort.read().testBitmask(DATA_OVERFLOW));
 
 		classUnderTest.notifyInputAvailable();
 
-		assertThat(statusPort.read().toInt() & DATA_OVERFLOW, is(DATA_OVERFLOW));
+		assertTrue(statusPort.read().testBitmask(DATA_OVERFLOW));
 
 		dataPort.read();
 
-		assertThat(statusPort.read().toInt() & DATA_OVERFLOW, is(0x00));
+		assertFalse(statusPort.read().testBitmask(DATA_OVERFLOW));
 	}
 
 	@Test
