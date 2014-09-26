@@ -1,6 +1,7 @@
 package gorskima.altair8800.io;
 
 import com.google.common.collect.Lists;
+import gorskima.altair8800.Word;
 import gorskima.altair8800.cpu.IOPort;
 
 import java.util.Queue;
@@ -26,16 +27,16 @@ public class Mits88Sio implements InputListener {
 		return new IOPort() {
 			
 			@Override
-			public void write(final int n) {
-				serialDevice.write(n);
+			public void write(final Word n) {
+				serialDevice.write(n.toInt());
 			}
 			
 			@Override
-			public int read() {
+			public Word read() {
 				synchronized (Mits88Sio.this) {
 					status &= ~DATA_OVERFLOW;
 					status |= _INPUT_DEVICE_READY_;
-					return data;
+					return new Word(data);
 				}
 			}
 		};
@@ -45,13 +46,13 @@ public class Mits88Sio implements InputListener {
 		return new IOPort() {
 			
 			@Override
-			public void write(final int n) {
+			public void write(final Word n) {
 				// Do nothing for now. In the future implement interrupt control
 			}
 			
 			@Override
-			public int read() {
-				return status;
+			public Word read() {
+				return new Word(status);
 			}
 		};
 	}

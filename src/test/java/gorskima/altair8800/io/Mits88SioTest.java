@@ -1,6 +1,7 @@
 package gorskima.altair8800.io;
 
 import com.google.common.collect.Lists;
+import gorskima.altair8800.Word;
 import gorskima.altair8800.cpu.IOPort;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -26,11 +27,11 @@ public class Mits88SioTest {
 		IOPort statusPort = classUnderTest.getStatusPort();
 		stub(serialDevice.read()).toReturn(123);
 
-		assertTrue((statusPort.read() & _INPUT_DEVICE_READY_) == _INPUT_DEVICE_READY_);
+		assertTrue((statusPort.read().toInt() & _INPUT_DEVICE_READY_) == _INPUT_DEVICE_READY_);
 		
 		classUnderTest.notifyInputAvailable();
 
-		assertThat(statusPort.read() & _INPUT_DEVICE_READY_, is(0x00));
+		assertThat(statusPort.read().toInt() & _INPUT_DEVICE_READY_, is(0x00));
 	}
 	
 	@Test
@@ -40,11 +41,11 @@ public class Mits88SioTest {
 
 		classUnderTest.notifyInputAvailable();
 
-		assertThat(statusPort.read() & _INPUT_DEVICE_READY_, is(0x00));
+		assertThat(statusPort.read().toInt() & _INPUT_DEVICE_READY_, is(0x00));
 		
 		classUnderTest.getDataPort().read();
 
-		assertThat(statusPort.read() & _INPUT_DEVICE_READY_, is(_INPUT_DEVICE_READY_));
+		assertThat(statusPort.read().toInt() & _INPUT_DEVICE_READY_, is(_INPUT_DEVICE_READY_));
 	}
 
 	@Test
@@ -60,8 +61,8 @@ public class Mits88SioTest {
 
 		classUnderTest.notifyInputAvailable();
 
-		assertThat(dataPort.read(), is(123));
-		assertThat(dataPort.read(), is(123)); // And not 80 or 0 or whatever
+		assertThat(dataPort.read().toInt(), is(123));
+		assertThat(dataPort.read().toInt(), is(123)); // And not 80 or 0 or whatever
 	}
 
 	@Test
@@ -76,19 +77,19 @@ public class Mits88SioTest {
 			}
 		});
 
-		assertThat(statusPort.read() & DATA_OVERFLOW, is(0x00));
+		assertThat(statusPort.read().toInt() & DATA_OVERFLOW, is(0x00));
 
 		classUnderTest.notifyInputAvailable();
 
-		assertThat(statusPort.read() & DATA_OVERFLOW, is(0x00));
+		assertThat(statusPort.read().toInt() & DATA_OVERFLOW, is(0x00));
 
 		classUnderTest.notifyInputAvailable();
 
-		assertThat(statusPort.read() & DATA_OVERFLOW, is(DATA_OVERFLOW));
+		assertThat(statusPort.read().toInt() & DATA_OVERFLOW, is(DATA_OVERFLOW));
 
 		dataPort.read();
 
-		assertThat(statusPort.read() & DATA_OVERFLOW, is(0x00));
+		assertThat(statusPort.read().toInt() & DATA_OVERFLOW, is(0x00));
 	}
 
 	@Test
@@ -104,19 +105,19 @@ public class Mits88SioTest {
 
 		classUnderTest.notifyInputAvailable();
 
-		assertThat(dataPort.read(), is(123));
+		assertThat(dataPort.read().toInt(), is(123));
 
 		classUnderTest.notifyInputAvailable(); // Read 80
 		classUnderTest.notifyInputAvailable(); // Overrun 80 with 15
 
-		assertThat(dataPort.read(), is(15));
+		assertThat(dataPort.read().toInt(), is(15));
 	}
 
 	@Test
 	public void testWriteData() {
 		IOPort dataPort = classUnderTest.getDataPort();
 
-		dataPort.write(7);
+		dataPort.write(new Word(7));
 
 		verify(serialDevice).write(7);
 	}
@@ -127,19 +128,19 @@ public class Mits88SioTest {
 		stub(serialDevice.read()).toReturn(80);
 
 		classUnderTest.notifyInputAvailable();
-		dataPort.write(7);
+		dataPort.write(new Word(7));
 
-		assertThat(dataPort.read(), is(80));
+		assertThat(dataPort.read().toInt(), is(80));
 	}
 
 	@Test
 	public void testThatWritingToStatusDoesntModifyIt() {
 		IOPort statusPort = classUnderTest.getStatusPort();
-		assertThat(statusPort.read(), is(0x01));
+		assertThat(statusPort.read().toInt(), is(0x01));
 
-		statusPort.write(0xFE);
+		statusPort.write(new Word(0xFE));
 
-		assertThat(statusPort.read(), is(0x01));
+		assertThat(statusPort.read().toInt(), is(0x01));
 	}
 
 	// TODO add matcher for bit mask checking

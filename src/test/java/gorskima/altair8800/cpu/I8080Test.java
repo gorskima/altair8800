@@ -20,6 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.verify;
 
+import gorskima.altair8800.Word;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -901,7 +902,7 @@ public class I8080Test {
 	@Test
 	public void test_IN_A_n() {
 		IOPort port = mock(IOPort.class);
-		stub(port.read()).toReturn(7);
+		stub(port.read()).toReturn(new Word(7));
 		cpu.attachDevice(100, port);
 		mem.writeWord8(0, 0xDB); // IN A,(100)
 		mem.writeWord8(1, 100);
@@ -923,7 +924,7 @@ public class I8080Test {
 
 		cpu.step();
 
-		verify(port).write(123);
+		verify(port).write(new Word(123));
 		assertThat(cpu.getCycles(), is(10L));
 	}
 

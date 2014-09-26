@@ -813,10 +813,12 @@ public class I8080 {
 
 		// IN A,(n)
 		case 0xDB: {
+			// TODO move this I/O magic out of here
+
 			Word portId = fetchWord8();
 			// TODO clean up
-			int n = ioPorts[portId.toInt()] != null ? ioPorts[portId.toInt()].read() : 0;
-			registers.setRegister8(Register.A, new Word(n));
+			Word n = ioPorts[portId.toInt()] != null ? ioPorts[portId.toInt()].read() : new Word(0);
+			registers.setRegister8(Register.A, n);
 			return 10;
 		}
 
@@ -824,7 +826,7 @@ public class I8080 {
 		case 0xD3: {
 			Word portId = fetchWord8();
 			Word n = registers.getRegister8(Register.A);
-			ioPorts[portId.toInt()].write(n.toInt());
+			ioPorts[portId.toInt()].write(n);
 			return 10;
 		}
 
