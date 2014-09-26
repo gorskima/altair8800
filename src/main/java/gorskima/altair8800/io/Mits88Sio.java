@@ -28,7 +28,7 @@ public class Mits88Sio implements InputListener {
 			
 			@Override
 			public void write(final Word n) {
-				serialDevice.write(n.toInt());
+				serialDevice.write(n);
 			}
 			
 			@Override
@@ -59,7 +59,7 @@ public class Mits88Sio implements InputListener {
     @Override
 	public void notifyInputAvailable() {
 		synchronized (this) {
-			data = new Word(serialDevice.read());
+			data = serialDevice.read();
 			if (!status.testBitmask(_INPUT_DEVICE_READY_)) {
 				status = status.setBits(DATA_OVERFLOW);
 			}

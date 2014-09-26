@@ -1,22 +1,23 @@
 package gorskima.altair8800.device;
 
+import gorskima.altair8800.Word;
 import gorskima.altair8800.io.SerialDevice;
 
 import java.io.IOException;
 
 public class Console extends ListenableDevice implements SerialDevice {
 
-	private int inputBuffer;
+	private Word inputBuffer;
 
     @Override
-	public int read() {
+	public Word read() {
 		return inputBuffer;
 	};
 	
 	@Override
-	public void write(int n) {
+	public void write(Word n) {
 		// TODO masks out MSB, hack for Altair BASIC 4K; clean this up, or at least make it configuratble
-		System.out.print((char)(n & 0x7f));
+		System.out.print((char)(n.toInt() & 0x7f));
 	}
 
     public void startPolling() {
@@ -25,7 +26,7 @@ public class Console extends ListenableDevice implements SerialDevice {
             public void run() {
                 try {
                     while (true) {
-                        inputBuffer = System.in.read();
+                        inputBuffer = new Word(System.in.read());
                         notifyListener();
                     }
                 } catch (IOException e) {

@@ -26,7 +26,7 @@ public class Mits88SioTest {
 	@Test
 	public void testStatusWhenDataBecomesAvailable() {
 		IOPort statusPort = classUnderTest.getStatusPort();
-		stub(serialDevice.read()).toReturn(123);
+		stub(serialDevice.read()).toReturn(new Word(123));
 
 		assertTrue(statusPort.read().testBitmask(_INPUT_DEVICE_READY_));
 		
@@ -38,7 +38,7 @@ public class Mits88SioTest {
 	@Test
 	public void testStatusWhenDataIsNotAvailableAnymore() {
 		IOPort statusPort = classUnderTest.getStatusPort();
-		stub(serialDevice.read()).toReturn(25);
+		stub(serialDevice.read()).toReturn(new Word(25));
 
 		classUnderTest.notifyInputAvailable();
 
@@ -53,10 +53,10 @@ public class Mits88SioTest {
 	public void testThatMultipleReadsReturnSameValue() {
 		IOPort dataPort = classUnderTest.getDataPort();
 		final Iterator<Integer> testValues = Lists.newArrayList(123, 80).iterator();
-		stub(serialDevice.read()).toAnswer(new Answer<Integer>() {
+		stub(serialDevice.read()).toAnswer(new Answer<Word>() {
 			@Override
-			public Integer answer(final InvocationOnMock invocation) throws Throwable {
-				return testValues.next();
+			public Word answer(final InvocationOnMock invocation) throws Throwable {
+				return new Word(testValues.next());
 			}
 		});
 
@@ -71,10 +71,10 @@ public class Mits88SioTest {
 		IOPort statusPort = classUnderTest.getStatusPort();
 		IOPort dataPort = classUnderTest.getDataPort();
 		final Iterator<Integer> testValues = Lists.newArrayList(123, 80, 15).iterator();
-		stub(serialDevice.read()).toAnswer(new Answer<Integer>() {
+		stub(serialDevice.read()).toAnswer(new Answer<Word>() {
 			@Override
-			public Integer answer(final InvocationOnMock invocation) throws Throwable {
-				return testValues.next();
+			public Word answer(final InvocationOnMock invocation) throws Throwable {
+				return new Word(testValues.next());
 			}
 		});
 
@@ -97,10 +97,10 @@ public class Mits88SioTest {
 	public void testReadingBufferedData() {
 		IOPort dataPort = classUnderTest.getDataPort();
 		final Iterator<Integer> testValues = Lists.newArrayList(123, 80, 15).iterator();
-		stub(serialDevice.read()).toAnswer(new Answer<Integer>() {
+		stub(serialDevice.read()).toAnswer(new Answer<Word>() {
 			@Override
-			public Integer answer(final InvocationOnMock invocation) throws Throwable {
-				return testValues.next();
+			public Word answer(final InvocationOnMock invocation) throws Throwable {
+				return new Word(testValues.next());
 			}
 		});
 
@@ -120,13 +120,13 @@ public class Mits88SioTest {
 
 		dataPort.write(new Word(7));
 
-		verify(serialDevice).write(7);
+		verify(serialDevice).write(new Word(7));
 	}
 
 	@Test
 	public void testThatWritingDoesntInfluenceReading() {
 		IOPort dataPort = classUnderTest.getDataPort();
-		stub(serialDevice.read()).toReturn(80);
+		stub(serialDevice.read()).toReturn(new Word(80));
 
 		classUnderTest.notifyInputAvailable();
 		dataPort.write(new Word(7));
