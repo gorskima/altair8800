@@ -39,9 +39,9 @@ public class Word {
 		return new Word(~value & 0xFF);
 	}
 
-    public Word and(Word other) {
-        return new Word(value & other.value);
-    }
+	public Word and(Word other) {
+		return new Word(value & other.value);
+	}
 
 	public Word or(Word other) {
 		return new Word(value | other.value);
